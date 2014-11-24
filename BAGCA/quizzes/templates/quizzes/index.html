@@ -1,0 +1,12 @@
+{% load embed_video_tags %}
+        {% video 'http://www.youtube.com/watch?v=jeIQ2fy_eOQ' 'small' %}
+{% if latest_question_list %}
+        {% csrf_token %}
+        <ul>
+            {% for question in latest_question_list %}
+                <li><a href="{% url 'quizzes:detail' question.id">{{ question.question_text }}</a></li>
+            {% endfor %}
+        </ul>
+{% else %}
+        <p>No questions are available.</p>
+{% endif %}
