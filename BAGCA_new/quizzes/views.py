@@ -1,5 +1,6 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
+from django.core.mail import send_mail
 
 from quizzes.models import Question
 
@@ -26,3 +27,13 @@ def vote(request, question_id):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     context = {'latest_question_list': latest_question_list}
     return render(request, 'quizzes/index.html', context)
+
+def email(request, question_id):
+    subject = 'Email subject'
+    message = 'Email message'
+    from_email = 'chas.barnajr@tsgforce.com'
+    to_email = 'chas.barnajr@tsgforce.com'
+    
+    send_mail(subject, message, from_email, [to_email], fail_silently=False)
+
+    return render(request, 'quizzes/index.html')
