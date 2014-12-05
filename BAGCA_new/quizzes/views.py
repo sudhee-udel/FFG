@@ -54,7 +54,11 @@ def get_formatted_message(post_data, list):
 
     for item in sorted(list):
         question_re = re.match(r'question_(.*)', item, re.M)
-        message = message + "For question: " + str(Question.objects.get(pk=question_re.groups(1)[0])) + " you chose: " + str(Choice.objects.get(pk=post_data.get(item, ''))) + "\n"
+        choice_value = Choice.objects.get(pk=post_data.get(item, ''))
+        choice_result = ' wrong.'
+        if choice_value.answer:
+            choice_result = ' correct.'
+        message = message + "For question: " + str(Question.objects.get(pk=question_re.groups(1)[0])) + " you chose: " + str(choice_value) + ". It is " + choice_result + "\n"
 
 
     return message
