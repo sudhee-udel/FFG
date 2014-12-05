@@ -1,16 +1,19 @@
 {% load embed_video_tags %}
         {% video 'http://www.youtube.com/watch?v=jeIQ2fy_eOQ' 'small' %}
-{% if latest_question_list %}
-        {% csrf_token %}
-        <ul>
-            {% for question in latest_question_list %}
-                <li><a href="{% url 'quizzes:detail' question.id %}">{{ question.question_text }}</a></li>
-    <a href="{% url 'quizzes:email'  question.id %}">Send test email</a>
+{% if question_dictionary %}
+        <form action="{% url 'quizzes:index' %}" method="post">
+            {% for question, choices in question_dictionary.items %}
+                <p>{{ forloop.counter }}) {{ question }}</p>
+                <ul>
+                    {% for choice in choices %}
+                    <input type="radio" name="question_{{ question.id }}" id="choice_{{ choice.id }}" value="{{ choice.id }}" />
+                    <label for="choice_{{ choice.id }}">{{ choice }}</label><br />
+                    {% endfor %}
+                </ul>
             {% endfor %}
-        </ul>
+            {% csrf_token %}
+            <input type="submit" value="Submit">
+        </form>
 {% else %}
-        <p>No questions are available.</p>
+<p>No questions are available.</p>
 {% endif %}
-
-<div>
-</div>
