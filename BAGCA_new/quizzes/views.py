@@ -1,4 +1,6 @@
-from django.http import HttpResponse, Http404
+import time
+
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.mail import send_mail
 
@@ -28,12 +30,12 @@ def vote(request, question_id):
     context = {'latest_question_list': latest_question_list}
     return render(request, 'quizzes/index.html', context)
 
-def email(request, question_id):
-    subject = 'Email subject'
-    message = 'Email message'
+def email(request):
+    subject = 'Test - You have successfully completed training!'
+    message = "Test\r\n\r\nThis is your training certificate\r\nDate: " + time.strftime("%m/%d/%Y %H:%M %Z")
     from_email = 'chas.barnajr@tsgforce.com'
-    to_email = 'chas.barnajr@tsgforce.com'
+    to_email = request.POST.get('address_field') 
     
     send_mail(subject, message, from_email, [to_email], fail_silently=False)
 
-    return render(request, 'quizzes/index.html')
+    return HttpResponseRedirect('/quizzes/')
