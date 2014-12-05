@@ -3,12 +3,30 @@ import time
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.mail import send_mail
-
-from quizzes.models import Question
+from quizzes.models import Question, Choice
+import re
 
 def index(request):
+    if request.method == 'POST':
+        list = []
+        message = ''
+        for value in request.POST:
+            if 'question' in value:
+                list.append(value)
+
+         #message = message + "question_1 = " + request.POST.get('question_1', '') + "\n"
+
+        message = get_formatted_message(request.POST, list)
+
+        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', ['sudhee1@gmail.com'], fail_silently=False)
+
+        return HttpResponse(str(message))
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    context = {'latest_question_list': latest_question_list}
+    question_dictionary = {}
+    for q in latest_question_list:
+        question_dictionary[q] = q.choice_set.all()
+
+    context = {'question_dictionary': question_dictionary}
     return render(request, 'quizzes/index.html', context)
 
 def detail(request, question_id):
@@ -30,12 +48,29 @@ def vote(request, question_id):
     context = {'latest_question_list': latest_question_list}
     return render(request, 'quizzes/index.html', context)
 
-def email(request):
-    subject = 'Test - You have successfully completed training!'
-    message = "Test\r\n\r\nThis is your training certificate\r\nDate: " + time.strftime("%m/%d/%Y %H:%M %Z")
-    from_email = 'chas.barnajr@tsgforce.com'
-    to_email = request.POST.get('address_field') 
-    
-    send_mail(subject, message, from_email, [to_email], fail_silently=False)
+def results(request):
+    return HttpResponse("Hello.")
 
-    return HttpResponseRedirect('/quizzes/')
+def get_formatted_message(post_data, list):
+    message = ''
+
+    for item in sorted(list):
+        question_re = re.match(r'question_(.*)', item, re.M)
+        choice_value = Choice.objects.get(pk=post_data.get(item, ''))
+        choice_result = ' wrong.'
+        if choice_value.answer:
+            choice_result = ' correct.'
+        message = message + "For question: " + str(Question.objects.get(pk=question_re.groups(1)[0])) + " you chose: " + str(choice_value) + ". It is " + choice_result + "\n"
+
+
+    return message
+
+def email(subject, message, from_addr, to_addr):
+    #subject = 'Email subject'
+    #message = 'Email message'
+    #from_email = 'chas.barnajr@tsgforce.com'
+    #to_email = 'chas.barnajr@tsgforce.com'
+
+    send_mail(subject, message, from_addr, to_addr, fail_silently=False)
+
+    return
