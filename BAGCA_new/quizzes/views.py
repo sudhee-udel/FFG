@@ -1,15 +1,18 @@
 import time
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.mail import send_mail
 from quizzes.models import Question, Choice
 import re
 
+@login_required
 def index(request):
     if request.method == 'POST':
         list = []
         message = ''
+
         for value in request.POST:
             if 'question' in value:
                 list.append(value)
@@ -18,7 +21,9 @@ def index(request):
 
         message = get_formatted_message(request.POST, list)
 
-        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', ['sudhee1@gmail.com'], fail_silently=False)
+#        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', ['sudhee1@gmail.com'], fail_silently=False)
+        send_mail('Hello', message, request.user.email, ['chas.barnajr@tsgforce.com'], fail_silently=False)
+
 
         return HttpResponse(str(message))
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
