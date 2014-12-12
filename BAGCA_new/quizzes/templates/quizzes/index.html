@@ -9,7 +9,7 @@
 {% endif %}
 
 {% load embed_video_tags %}
-        {% video 'http://www.youtube.com/watch?v=jeIQ2fy_eOQ' 'small' %}
+        {% video category.url 'small' %}
 {% if question_dictionary %}
         <form action="{% url 'quizzes:index' %}" method="post">
             {% for question, choices in question_dictionary.items %}

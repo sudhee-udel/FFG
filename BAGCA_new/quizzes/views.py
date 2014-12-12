@@ -5,6 +5,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.mail import send_mail
 from quizzes.models import Question, Choice
+from quiz_admin.models import Categories
 import re
 
 @login_required
@@ -22,16 +23,19 @@ def index(request):
         message = get_formatted_message(request.POST, list)
 
 #        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', ['sudhee1@gmail.com'], fail_silently=False)
-        send_mail('Hello', message, request.user.email, ['chas.barnajr@tsgforce.com'], fail_silently=False)
+        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
 
 
         return HttpResponse(str(message))
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.order_by('question_text')[:]
     question_dictionary = {}
     for q in latest_question_list:
         question_dictionary[q] = q.choice_set.all()
 
-    context = {'question_dictionary': question_dictionary}
+    category = {}
+    category['url'] = Categories.objects.get(pk=Categories._get_pk_val(latest_question_list[0].category)).url
+
+    context = {'question_dictionary': question_dictionary, 'category': category}
     return render(request, 'quizzes/index.html', context)
 
 def detail(request, question_id):
@@ -49,7 +53,7 @@ def results(request, question_id):
 
 def vote(request, question_id):
     #return HttpResponse("You're voting on question %s." % question_id)
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.order_by('question_text')[:]
     context = {'latest_question_list': latest_question_list}
     return render(request, 'quizzes/index.html', context)
 
