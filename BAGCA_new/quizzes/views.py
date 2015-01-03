@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from quizzes.models import Question, Choice
 from quiz_admin.models import Categories
+from reportlab.pdfgen import canvas
 import re
 
 @login_required
@@ -46,19 +47,28 @@ def detail(request, question_id):
 
     return render(request, 'quizzes/detail.html', {'question': question})
 
-
-def results(request, question_id):
-    response = "You're looking at the results of the question %s."
-    return HttpResponse(response % question_id)
-
 def vote(request, question_id):
     #return HttpResponse("You're voting on question %s." % question_id)
     latest_question_list = Question.objects.order_by('question_text')[:]
     context = {'latest_question_list': latest_question_list}
     return render(request, 'quizzes/index.html', context)
 
-def results(request):
-    return HttpResponse("Hello.")
+def pdfs(request):
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+
+    # Create the PDF object, using the response object as its "file."
+    p = canvas.Canvas(response)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(100, 100, "Hello world.")
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+    return response
 
 def get_formatted_message(post_data, list):
     message = ''
