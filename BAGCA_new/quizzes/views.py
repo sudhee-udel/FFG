@@ -7,6 +7,10 @@ from django.core.mail import send_mail
 from quizzes.models import Question, Choice
 from quiz_admin.models import Categories
 from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.utils import ImageReader, Image
+import StringIO
+from io import BytesIO
 import re
 
 @login_required
@@ -55,19 +59,31 @@ def vote(request, question_id):
 
 def pdfs(request):
     # Create the HttpResponse object with the appropriate PDF headers.
+    image = canvas.ImageReader('quizzes/BAGCA.jpg') # image_data is a raw string containing a JPEG
+
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
 
-    # Create the PDF object, using the response object as its "file."
-    p = canvas.Canvas(response)
+    buffer = BytesIO()
+
+    # Create the PDF object, using the BytesIO object as its "file."
+    p = canvas.Canvas(buffer)
 
     # Draw things on the PDF. Here's where the PDF generation happens.
     # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, "Hello world.")
+    p.drawImage(image, 100, 600, 400, 200)
+    p.drawString(250, 410, "Course Participant")
+    p.drawString(215, 380, "has completed 10 hours of training.")
+    #p.drawString(500, 825, "Hello world.")
 
-    # Close the PDF object cleanly, and we're done.
+    # Close the PDF object cleanly.
     p.showPage()
     p.save()
+
+    # Get the value of the BytesIO buffer and write it to the response.
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
     return response
 
 def get_formatted_message(post_data, list):
