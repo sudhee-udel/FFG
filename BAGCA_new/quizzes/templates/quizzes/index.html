@@ -1,29 +1,50 @@
 <head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
 </head>
 
-{% if user.is_authenticated %}
-    <p>Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
-{% else %}
+<!-- INSERT A PICTURE -->
 
-{% endif %}
 
-{% load embed_video_tags %}
-        {% video category.url 'small' %}
-{% if question_dictionary %}
-        <form action="{% url 'quizzes:index' %}" method="post">
-            {% for question, choices in question_dictionary.items %}
-                <p>{{ forloop.counter }}) {{ question }}</p>
-                <ul>
-                    {% for choice in choices %}
-                    <input type="radio" name="question_{{ question.id }}" id="choice_{{ choice.id }}" value="{{ choice.id }}" />
-                    <label for="choice_{{ choice.id }}">{{ choice }}</label><br />
-                    {% endfor %}
-                </ul>
-            {% endfor %}
-            {% csrf_token %}
-            <input type="submit" value="Submit">
-        </form>
-{% else %}
-<p>No questions are available.</p>
-{% endif %}
+<div class="container" style="background-color:red;">
+    {% if user.is_authenticated %}
+        <p>Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
+    {% else %}
+
+    {% endif %}
+
+    <div class="row">
+            <div class="col-xs-6 col-lg-4">
+                <p>kjkkljklj</p>
+            </div>
+            <div class="col-xs-6 col-lg-4">
+                {% load embed_video_tags %}
+                        {% video category.url 'small' %}
+            </div>
+    </div>        
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    {% if question_dictionary %}
+            <form action="{% url 'quizzes:index' %}" method="post">
+                {% for question, choices in question_dictionary.items %}
+                    <p>{{ forloop.counter }}) {{ question }}</p>
+                    <ul>
+                        {% for choice in choices %}
+                        <input type="radio" name="question_{{ question.id }}" id="choice_{{ choice.id }}" value="{{ choice.id }}" />
+                        <label for="choice_{{ choice.id }}">{{ choice }}</label><br />
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+                {% csrf_token %}
+                <input type="submit" value="Submit">
+            </form>
+    {% else %}
+    <p>No questions are available.</p>
+    {% endif %}
+</div>
