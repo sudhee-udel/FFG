@@ -83,3 +83,7 @@ def email(subject, message, from_addr, to_addr):
     send_mail(subject, message, from_addr, to_addr, fail_silently=False)
 
     return
+
+
+def test(request):
+    return render(request, 'quizzes/test.html', {})

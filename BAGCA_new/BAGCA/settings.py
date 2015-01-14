@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'quizzes',
     'quiz_admin',
     'jquery',
+    'bootstrap_toolkit',
 )
 
 MIDDLEWARE_CLASSES = (
