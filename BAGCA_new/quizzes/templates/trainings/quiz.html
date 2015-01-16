@@ -7,30 +7,19 @@
 
 <!-- INSERT A PICTURE -->
 
+<body>
+    <div class="container" style="">
+        <br/>
+        {% if user.is_authenticated %}
+            <p>Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
+        {% else %}
 
-<div class="container" style="background-color:red;">
-    {% if user.is_authenticated %}
-        <p>Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
-    {% else %}
+        {% endif %}
 
-    {% endif %}
-
-    <div class="row">
-            <div class="col-xs-6 col-lg-4">
-                <p>kjkkljklj</p>
-            </div>
-            <div class="col-xs-6 col-lg-4">
-                {% load embed_video_tags %}
-                        {% video category.url 'small' %}
-            </div>
-    </div>        
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    {% if question_dictionary %}
+        <hr/>
+        <h2>Quiz:</h2>
+        <br/>
+        {% if question_dictionary %}
             <form action="{% url 'quizzes:index' %}" method="post">
                 {% for question, choices in question_dictionary.items %}
                     <p>{{ forloop.counter }}) {{ question }}</p>
@@ -44,7 +33,8 @@
                 {% csrf_token %}
                 <input type="submit" value="Submit">
             </form>
-    {% else %}
-    <p>No questions are available.</p>
-    {% endif %}
-</div>
+        {% else %}
+            <p>No questions are available.</p>
+        {% endif %}
+    </div>
+</body>

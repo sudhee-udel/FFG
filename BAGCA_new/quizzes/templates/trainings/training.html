@@ -1,0 +1,37 @@
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+</head>
+
+<body>
+    <div class="container" style="">
+        <br/>
+        <!-- This user code will be moved to parent wrapper view -->
+        {% if user.is_authenticated %}
+            <p>Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
+        {% else %}
+
+        {% endif %}
+
+        <hr/>
+        <h2>Training:</h2>
+        <br/>
+        <div class="row">
+                <div class="col-xs-6 col-lg-4">
+                    <p>{{ training_info.text }}</p>
+                </div>
+                <div class="col-xs-6 col-lg-4">
+                    {% load embed_video_tags %}
+                    {% video training_info.url 'small' %}
+                </div>
+        </div>
+
+        <br/>
+        <br/>
+        <div class="container" style="width:100%;text-align:center;">
+            <a href="/trainings/{{ training_info.id }}/quiz">Take the Quiz!</a>
+        </div>
+    </div>
+</body>
