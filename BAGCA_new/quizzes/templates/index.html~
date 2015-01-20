@@ -45,7 +45,6 @@
                     <th>Training Name</th>
                     <th>URL</th>
                     <th data-sortable="true">Status</th>
-                    <th>Code</th>
                     <th>Assigned Date</th>
                     <th>Due Date</th>
                     <th>Duration</th>
