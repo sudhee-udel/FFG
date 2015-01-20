@@ -3,10 +3,24 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+    <style>
+        body {background-color: LightSkyBlue;}
+        h5{
+            text-align: right;
+        }
+        h3{
+            text-align: center;
+        }
+        .col-xs-6 col-lg-4 {
+            float: none;
+            margin-left: auto;
+            margin-right: auto;
+        }   
+    </style>
 </head>
 
 <body>
-    <div class="container" style="">
+    <div class="container" style="background-color:whitesmoke;">
         <br/>
         <!-- This user code will be moved to parent wrapper view -->
         {% if user.is_authenticated %}
@@ -16,7 +30,7 @@
         {% endif %}
 
         <hr/>
-        <h2>Training:</h2>
+        <h2>Training Title:</h2>
         <br/>
         <div class="row">
                 <div class="col-xs-6 col-lg-4">
@@ -24,14 +38,18 @@
                 </div>
                 <div class="col-xs-6 col-lg-4">
                     {% load embed_video_tags %}
-                    {% video training_info.url 'small' %}
+                    {% video training_info.url 'medium' %} <br><br><br>
+                    <div class="btn-toolbar" style="text-align:center;">
+                        <a href="#" class="btn btn-danger btn-md">Go Back</a>
+                        <a href="#" class="btn btn-success btn-md">Continue</a>
+                    </div>
                 </div>
         </div>
 
         <br/>
         <br/>
         <div class="container" style="width:100%;text-align:center;">
-            <a href="/trainings/{{ training_info.id }}/quiz">Take the Quiz!</a>
+           <h3> <a href="/trainings/{{ training_info.id }}/quiz">Take the Quiz!</a> </h3>
         </div>
     </div>
 </body>
