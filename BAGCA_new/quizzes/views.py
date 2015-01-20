@@ -37,7 +37,8 @@ def training(request, training_id):
 @login_required
 def quiz(request, training_id):
     try:
-        latest_question_list = Question.objects.order_by('question_text')[:]
+        latest_question_list = Question.objects.filter(category=training_id)
+        #latest_question_list = Question.objects.order_by('question_text')[:]
     except Question.DoesNotExist:
         raise Http404
 
