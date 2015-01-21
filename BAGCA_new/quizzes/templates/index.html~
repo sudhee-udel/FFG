@@ -45,7 +45,6 @@
                     <th>Training Name</th>
                     <th>URL</th>
                     <th data-sortable="true">Status</th>
-                    <th>Code</th>
                     <th>Assigned Date</th>
                     <th>Due Date</th>
                     <th>Duration</th>
@@ -53,7 +52,7 @@
                 </tr>
                 {% for t in trainings %}
                     <tr>
-                        <td>Quiz Category {{ t.category_text }}</td>
+                        <td>{{ t.category_text }}</td>
                         <td>{{ t.url }}</td>
                         <td><a href="/trainings/{{ t.id }}/">Begin Training</a></td>
 <td></td>
