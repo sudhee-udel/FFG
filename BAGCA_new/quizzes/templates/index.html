@@ -12,7 +12,10 @@
           background-color: white;
         }
         th {
-          background-color: lime;
+          background-color: lightskyblue;
+        }
+        body {
+            background-color: LightSkyBlue;
         }
     </style>
 </head>
@@ -20,7 +23,7 @@
 <!-- INSERT A PICTURE -->
 
 <body>
-    <div class="container">
+    <div class="container" style="background-color: #ffffff; height:100%;">
         <br/>
         {% if user.is_authenticated %}
             <p>Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
@@ -29,6 +32,12 @@
         {% endif %}
 
         <hr/>
+
+<div class="image" style="text-align:center;">
+    <img src="{{ MEDIA_URL }}/BAGCDE.jpg"/>
+</div>
+
+
         <h3><b><span class="label label-primary">My Assigned Training</span></b></h3>
         <br/>
 <!--<form class="navbar-form navbar-left" role="search">
