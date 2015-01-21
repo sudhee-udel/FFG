@@ -2,7 +2,9 @@
     {% load bootstrap3 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+
 </head>
 
 <!-- INSERT A PICTURE -->
@@ -20,16 +22,18 @@
         <h2>Quiz:</h2>
         <br/>
         {% if question_dictionary %}
-            <form action="{% url 'quizzes:index' %}" method="post">
+            <form action="/trainings/{{ training_id }}/quiz/" method="post">
                 {% for question, choices in question_dictionary.items %}
                     <p>{{ forloop.counter }}) {{ question }}</p>
                     <ul>
                         {% for choice in choices %}
-                        <input type="radio" name="question_{{ question.id }}" id="choice_{{ choice.id }}" value="{{ choice.id }}" />
+                        <input type="radio" name="question[{{ question.id }}]" id="choice_{{ choice.id }}" value="{{ choice.id }}" />
                         <label for="choice_{{ choice.id }}">{{ choice }}</label><br />
                         {% endfor %}
                     </ul>
                 {% endfor %}
+
+                <input type="hidden" name="numQuestions" id="numQuestions" value="{{count}}" />
                 {% csrf_token %}
                 <input type="submit" value="Submit">
             </form>

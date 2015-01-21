@@ -1,0 +1,27 @@
+<body bgcolor="">
+    <div class="container">
+        <br/>
+        <div class="navbar">
+            <table style="width:100%;">
+                <tr style="border:none;">
+                    <td style="border:none;">
+                        <ul class="nav nav-pills">
+                            <li role="presentation"><a href="/">Trainings</a></li>
+                            <li role="presentation"><a href="#">Profile</a></li>
+                        </ul> 
+                    </td>
+                    <td style="float:right;border:none;">
+                        {% if user.is_authenticated %}
+                            <div style="display:table-cell;vertical-align:middle;">
+                            <p style="vertical-align:middle;">Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
+                            </div>
+                        {% else %}
+
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <hr/>
+    </div>
+</body>

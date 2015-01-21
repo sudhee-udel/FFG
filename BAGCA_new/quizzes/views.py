@@ -36,16 +36,26 @@ def training(request, training_id):
 
 @login_required
 def quiz(request, training_id):
-    try:
-        latest_question_list = Question.objects.order_by('question_text')[:]
-    except Question.DoesNotExist:
-        raise Http404
+    if request.method == 'GET':
+        try:
+            latest_question_list = Question.objects.order_by('question_text')[:]
+        except Question.DoesNotExist:
+            raise Http404
 
-    question_dictionary = {}
-    for q in latest_question_list:
-        question_dictionary[q] = q.choice_set.all()
+        question_dictionary = {}
+        for q in latest_question_list:
+            question_dictionary[q] = q.choice_set.all()
 
-    return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary})
+        return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary, 'training_id': training_id, 'count': len(question_dictionary)})
+
+    elif request.method == 'POST':
+        print request.POST['question']
+        for i in range(0, int(request.POST['numQuestions'])):
+            print request.POST[str('question_{}'.format(i))]
+            
+        print "num questions: " + request.POST['numQuestions']
+        return render(request, 'trainings/results.html', {})
+#        return render(request, 'trainings/results.html', {'results': results})
 
 @login_required
 def results(request, training_id):
