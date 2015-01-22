@@ -1,6 +1,20 @@
-<body bgcolor="">
-    <div class="container">
-        <br/>
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+    <style type="text/css">
+        html body {
+          background-color: #abddfc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="background-color:white;">
+        <div class="image" style="text-align:center;">
+            <img src="{{ MEDIA_ROOT }}/media/BAGCDE.jpg"/>
+        </div>
+
         <div class="navbar">
             <table style="width:100%;">
                 <tr style="border:none;">
@@ -12,9 +26,7 @@
                     </td>
                     <td style="float:right;border:none;">
                         {% if user.is_authenticated %}
-                            <div style="display:table-cell;vertical-align:middle;">
-                            <p style="vertical-align:middle;">Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
-                            </div>
+                            <p style="font-size:small;vertical-align:middle;">Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
                         {% else %}
 
                         {% endif %}
@@ -22,6 +34,7 @@
                 </tr>
             </table>
         </div>
-        <hr/>
     </div>
+    <br/>
+    <br/>
 </body>

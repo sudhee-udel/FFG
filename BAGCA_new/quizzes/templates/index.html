@@ -1,20 +1,12 @@
 {% include "base.html" %}
 
 <head>
-    {% load bootstrap3 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
-
     <style type="text/css">
-        tr, td, th {
-          border:1px solid black;  
-        }
         td {
           background-color: white;
         }
         th {
-          background-color: lime;
+          background-color: #abddfc;
         }
     </style>
 </head>
@@ -22,12 +14,13 @@
 <!-- INSERT A PICTURE -->
 
 <body>
-    <div class="container">
-        <h2>Trainings:</h1>
-        <hr/>
-        <h3><b><span class="label label-primary">My Assigned Training</span></b></h3>
+    <div class="container" style="background-color: #ffffff; height:100%;">
         <br/>
-
+        <h2><b>
+            <span class="label label-primary">My Assigned Training</span>
+        </b></h2>
+        <br/>
+        
 <!--<form class="navbar-form navbar-left" role="search">
   <div class="form-group">
     <input type="text" class="form-control" placeholder="Search">
@@ -35,28 +28,26 @@
   <button type="submit" class="btn btn-default">Submit</button>
 </form>-->
 
-
         {% if trainings %}
-            <table class= "table table-striped" style="width:100%;border:1px solid black;">
+            <table class="table table-bordered" style="width:100%;">
                 <tr>
                     <th>Training Name</th>
-                    <th>URL</th>
-                    <th data-sortable="true">Status</th>
                     <th>Code</th>
                     <th>Assigned Date</th>
                     <th>Due Date</th>
                     <th>Duration</th>
                     <th>Assignment Type</th>
+                    <th></th>
                 </tr>
                 {% for t in trainings %}
                     <tr>
                         <td>Quiz Category {{ t.category_text }}</td>
-                        <td>{{ t.url }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td><a href="/trainings/{{ t.id }}/">Begin Training</a></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
                     </tr>
                 {% endfor %}
             </table>

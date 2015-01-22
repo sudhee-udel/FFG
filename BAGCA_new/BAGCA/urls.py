@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+import settings
 
 urlpatterns = patterns('',
     # Examples:
@@ -14,5 +15,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'template_name': 'accounts/logout.html'}),
+    
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+                 {'document_root': settings.MEDIA_ROOT}),
 
 )
