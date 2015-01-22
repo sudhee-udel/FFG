@@ -12,10 +12,10 @@
         <h2>Training:</h2>
         <br/>
         <div class="row">
-                <div class="col-xs-6 col-lg-4">
+                <div class="col-md-6">
                     <p>{{ training_info.text }}</p>
                 </div>
-                <div class="col-xs-6 col-lg-4">
+                <div class="col-md-6">
                     {% load embed_video_tags %}
                     {% video training_info.url 'small' %}
                 </div>
@@ -23,8 +23,9 @@
 
         <br/>
         <br/>
-        <div class="container" style="width:100%;text-align:center;">
+        <div style="text-align:center;">
             <a href="/trainings/{{ training_info.id }}/quiz">Take the Quiz!</a>
         </div>
+        <br/>
     </div>
 </body>

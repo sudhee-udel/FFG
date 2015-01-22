@@ -32,21 +32,19 @@
             <table class="table table-bordered" style="width:100%;">
                 <tr>
                     <th>Training Name</th>
-                    <th>Code</th>
-                    <th>Assigned Date</th>
+                    <th>Course Code</th>
                     <th>Due Date</th>
                     <th>Duration</th>
-                    <th>Assignment Type</th>
+                    <th>Required Score</th>
                     <th></th>
                 </tr>
                 {% for t in trainings %}
                     <tr>
-                        <td>Quiz Category {{ t.category_text }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ t.category_text }}</td>
+                        <td>{{ t.course_code }}</td>
+                        <td>{{ t.due_date }}</td>
+                        <td>{{ t.duration_hours }}</td>
+                        <td>{{ t.required_score }}</td>
                         <td><a href="/trainings/{{ t.id }}/">Begin Training</a></td>
                     </tr>
                 {% endfor %}

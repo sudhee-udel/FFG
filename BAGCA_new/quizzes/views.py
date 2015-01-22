@@ -49,13 +49,31 @@ def quiz(request, training_id):
         return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary, 'training_id': training_id, 'count': len(question_dictionary)})
 
     elif request.method == 'POST':
-        print request.POST['question']
-        for i in range(0, int(request.POST['numQuestions'])):
-            print request.POST[str('question_{}'.format(i))]
-            
-        print "num questions: " + request.POST['numQuestions']
-        return render(request, 'trainings/results.html', {})
-#        return render(request, 'trainings/results.html', {'results': results})
+        questionList = []
+        for value in request.POST:
+            if 'question' in value:
+                questionList.append(value)
+
+        result_msg, correct, count = get_formatted_message(request.POST, questionList)    
+        print result_msg
+        print "training_id: " + str(training_id)
+        print "correct: " + str(correct)
+        print "count: " + str(count)
+
+        score = int((float(correct)/float(count)) * 100)
+        category = Categories.objects.get(pk=training_id)
+        result = ""
+
+        if score>=category.required_score:        
+            result = "passed"
+            color = "green"
+        else:
+            result = "failed"             
+            color = "red"
+ 
+        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color}
+
+        return render(request, 'trainings/results.html', context)
 
 @login_required
 def results(request, training_id):
@@ -92,19 +110,22 @@ def pdfs(request):
     return response
 
 # ***** this should probably go in a helper class
-def get_formatted_message(post_data, list):
-    message = ''
+def get_formatted_message(post_data, questionList):
+    message = []
+    count = 0
+    correct = 0
 
-    for item in sorted(list):
+    for item in sorted(questionList):
+        count += 1
         question_re = re.match(r'question_(.*)', item, re.M)
         choice_value = Choice.objects.get(pk=post_data.get(item, ''))
-        choice_result = ' wrong.'
+        choice_result = 'wrong.'
         if choice_value.answer:
-            choice_result = ' correct.'
-        message = message + "For question: " + str(Question.objects.get(pk=question_re.groups(1)[0])) + " you chose: " + str(choice_value) + ". It is " + choice_result + "\n"
+            correct += 1
+            choice_result = 'correct.'
+        message.append("For question: " + str(Question.objects.get(pk=question_re.groups(1)[0])) + " You chose: " + str(choice_value) + ". It is " + choice_result + "\n")
 
-
-    return message
+    return message, correct, count
 
 # ***** this should probably go in a helper class
 # this method currently does not link to anything. will be used to send email.

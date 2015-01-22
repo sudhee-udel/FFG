@@ -1,1 +1,26 @@
-<p>this is the results page.</p>
+{% include 'base.html' %}
+
+<body>
+    <div class="container" style="background-color:white; height:100%;">
+        <div class="container" style="text-align:center;">
+            <br/>
+            {% if result == 'passed' %}
+                <h2><b>Congratulations, you have passed the course!</b></h2>
+            {% else %}        
+                <h2>Sorry, but you did not receive a passing score.</h2>
+            {% endif %}
+            <h4>Score: {{ correct }} correct out of {{ count }} = <a style="color:{{color}};">{{ score }}%</a></h4> 
+        </div>
+        <hr/>
+        <div class="container">
+            {% for msg in result_msg %}
+                <p>{{ forloop.counter }}) {{ msg }}</p>
+            {% endfor %}
+        </div>
+        <br/>
+        <br/>
+        <div style="text-align:center;"> 
+            <a href="/">Go Back to Trainings</a>
+        </div>
+    </div>
+</body>
