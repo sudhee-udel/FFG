@@ -10,31 +10,32 @@
     </style>
 </head>
 <body>
-    <div class="container" style="background-color:white;">
-        <div class="image" style="text-align:center;">
-            <img src="{{ MEDIA_ROOT }}/media/BAGCDE.jpg"/>
-        </div>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <br/>
+            <div class="navbar-header" style="margin-top:-25px;">
+                <a class="navbar-brand" href="/"><img src="/media/bagcd_logo.png" alt="Boys & Girls Club of Delaware" height="70" width="110"></img></a>
+            </div>
 
-        <div class="navbar">
-            <table style="width:100%;">
-                <tr style="border:none;">
-                    <td style="border:none;">
-                        <ul class="nav nav-pills">
-                            <li role="presentation"><a href="/">Trainings</a></li>
-                            <li role="presentation"><a href="#">Profile</a></li>
-                        </ul> 
-                    </td>
-                    <td style="float:right;border:none;">
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li role="presentation"><a href="/">Trainings</a></li>
+                    <li role="presentation"><a href="#">Profile</a></li>
+                </ul> 
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
                         {% if user.is_authenticated %}
-                            <p style="font-size:small;vertical-align:middle;">Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
+                            <p class="navbar-text">Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
                         {% else %}
 
                         {% endif %}
-                    </td>
-                </tr>
-            </table>
+                    </li>
+                </ul>
+            </div>
+            <br/>
         </div>
-    </div>
+    </nav>
     <br/>
     <br/>
 </body>
