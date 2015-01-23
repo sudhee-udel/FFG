@@ -1,0 +1,52 @@
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+
+    <style type="text/css">
+        tr, td, th , p {
+          border:1px solid black;  
+        }
+    </style>
+    
+</head>
+
+<!-- INSERT A PICTURE -->
+
+<body>
+    <div class="container">
+        {% if user.is_authenticated %}
+            <p>Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
+        {% else %}
+
+        {% endif %}
+
+        <hr>
+
+        <h2>Trainings:</h1>
+
+        <div class="container" style="background-color:white;">
+
+            {% if trainings %}
+                <table style="width:100%;border:1px solid black;">
+                    <tr>
+                        <th>Name</th>
+                        <th>Url</th>
+                        <th></th>
+                    </tr>
+                    {% for t in trainings %}
+                        <tr>
+                            <td>{{ t.category_text }}</td>
+                            <td>{{ t.url }}</td>
+                            <td><a href="trainings/{{ t.id }}/">Begin Training</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>There are no trainings available to display.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
