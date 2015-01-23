@@ -28,7 +28,10 @@ ALLOWED_HOSTS = []
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
-#TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.request',)
+TEMPLATE_CONTEXT_PROCESSORS = ( 'django.core.context_processors.request',
+                                'django.contrib.auth.context_processors.auth',
+                            )
+
 
 # Application definition
 
@@ -99,3 +102,7 @@ EMAIL_HOST_USER = 'chas.barnajr@tsgforce.com'
 EMAIL_HOST_PASSWORD = 'zm49tb7w'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# typically, os.path.join(os.path.dirname(__file__), 'media')
+MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
+MEDIA_URL = '/media/'
