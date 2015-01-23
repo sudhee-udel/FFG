@@ -9,15 +9,29 @@
 
 <body>
     <div class="container" style="height:100%; background-color:white; box-shadow:0 0 10px black;">
-        <h2>Training:</h2>
+        <h2>Training: <i>{{ training_info.title }}</i></h2>
+        <hr/>
         <br/>
         <div class="row">
                 <div class="col-md-6">
-                    <p>{{ training_info.text }}</p>
+                    <div class="container">
+                        <h4><b>Training Description:</b></h4>
+                        <p>
+                            {% if training_info.description %}
+                                {{ training_info.description }}
+                            {% else %}
+                                <i>There is no description for this training.</i>
+                            {% endif %} 
+                        </p>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    {% load embed_video_tags %}
-                    {% video training_info.url 'small' %}
+                <div class="col-md-6" style="border-left:1px solid lightgray;">
+                    <br/>
+                    <div style="text-align:center;">
+                        {% load embed_video_tags %}
+                        {% video training_info.url 'small' %}
+                    </div>
+                    <br/>
                 </div>
         </div>
 

@@ -7,12 +7,13 @@
         }
         th {
           background-color: #abddfc;
+          text-align: center;
+        }
+        tr #centered {
+          text-align: center;
         }
     </style>
 </head>
-
-<!-- INSERT A PICTURE -->
-
 <body>
     <div class="container" style="background-color: #ffffff; height:100%; box-shadow:0 0 10px black;">
         <img src="{{ MEDIA_ROOT }}/media/BAGCDE.jpg" />
@@ -31,7 +32,7 @@
 </form>-->
 
         {% if trainings %}
-            <table class="table table-bordered" style="width:100%;">
+            <table class="table table-striped" style="width:100%;">
                 <tr>
                     <th>Training Name</th>
                     <th>Course Code</th>
@@ -43,11 +44,17 @@
                 {% for t in trainings %}
                     <tr>
                         <td>{{ t.category_text }}</td>
-                        <td>{{ t.course_code }}</td>
-                        <td>{{ t.due_date }}</td>
-                        <td>{{ t.duration_hours }}</td>
-                        <td>{{ t.required_score }}</td>
-                        <td><a href="/trainings/{{ t.id }}/">Begin Training</a></td>
+                        <td id="centered">{{ t.course_code }}</td>
+                        <td id="centered">{{ t.due_date }}</td>
+                        <td id="centered">{{ t.duration_hours }} 
+                            {% if t.duration_hours != 1 %}
+                                hours
+                            {% else %}
+                                hour
+                            {% endif %}
+                        </td>
+                        <td id="centered">{{ t.required_score }}%</td>
+                        <td id="centered"><a href="/trainings/{{ t.id }}/">Begin Training</a></td>
                     </tr>
                 {% endfor %}
             </table>

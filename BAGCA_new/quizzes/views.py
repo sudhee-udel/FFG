@@ -28,7 +28,8 @@ def training(request, training_id):
 
     training_info = {}
     training_info['url'] = category.url
-    training_info['text']= category.category_text
+    training_info['title']= category.category_text
+    training_info['description'] = category.category_description
     training_info['id'] = training_id
 
     context = {'training_info': training_info}
