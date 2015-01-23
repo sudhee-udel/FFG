@@ -2,27 +2,79 @@
     {% load bootstrap3 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    
+
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script type="text/javascript" src="TimeCircles.js"></script>
+    <link href="TimeCircles.css" rel="stylesheet"> 
+
+    <style>
+        body {background-color: LightSkyBlue;}
+        h5{
+            text-align: right;
+        }
+        h3{
+            text-align: center;
+        }
+        .col-xs-6 col-lg-4 {
+            float: none;
+            margin-left: auto;
+            margin-right: auto;
+        }   
+    </style>
 </head>
 
 <!-- INSERT A PICTURE -->
 
 <body>
+    <div class="container" style="background-color:whitesmoke;">
+        <br/>
     <div class="container" style="">
         <br/>
 
+        <h4>
+        <p id="date"></p>
+        <script>        
+       document.getElementById("date").innerHTML=Date();
+        </script>
+        </h4>
         {% if user.is_authenticated %}
             <p>Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
         {% else %}
 
         {% endif %}
 
-    
-        <hr/>
-      
-        <h2>QUESTIONS:</h2>
+        <div class="example" data-date="2014-01-01 00:00:00"></div>
+        <div class="example" data-timer="900"></div>
+<script>
+        (".example").TimeCircles({start: false});
+        (".example").TimeCircles({animation_interval: "smooth"});
+        (".example").TimeCircles({count_past_zero: false});
+        $(".example").TimeCircles({circle_bg_color: "#000000"});
+        $(".example").TimeCircles({use_background: false});
+        $(".example").TimeCircles({fg_width: 0.05});
+        $(".example").TimeCircles({text_size: 0.1}); 
+        $(".example").TimeCircles({total_duration: "Auto"});
+        $(".example").TimeCircles({direction: "Clockwise"});
+        $(".example").TimeCircles({start_angle: 0});
+        $(".example").TimeCircles({ time: {
+        Days: { color: "#C0C8CF" },
+        Hours: { color: "#C0C8CF" },
+        Minutes: { color: "#C0C8CF" },
+        Seconds: { color: "#C0C8CF" }
+    }});
+</script>
         
+  <script>
+   $(".example").TimeCircles();
+   $(".start").click(function(){ $(".example").TimeCircles().start(); });
+   $(".stop").click(function(){ $(".example").TimeCircles().stop(); });
+   $(".restart").click(function(){ $(".example").TimeCircles().restart(); });
+  </script>
+     
+        <h2><span class="label label-primary">QUESTIONS:</span></h2>
         <br/>
+
         {% if question_dictionary %}
             <form action="{% url 'quizzes:index' %}" method="post">
                 {% for question, choices in question_dictionary.items %}
@@ -35,11 +87,17 @@
                     </ul>
                 {% endfor %}
                 {% csrf_token %}
- 
-                <h3>Please click "SUBMIT" to check the results or  "CANCEL" to quit the Quiz!!</h3>
-                <button type="button" class="btn btn-success">SUBMIT</button>
 
-                <button type="button" class="btn btn-danger">CANCEL</button> 
+        <h2>QUIZ PROGRESS...</h2>
+        <div class="progress">
+             <div class="progress-bar" role="progressbar" aria-valunow="70' aria-valuemin="0" aria-valuemax="100" style="width:70%">
+               70%
+             </div>
+        </div>
+                <h2>Please click "SUBMIT" to check the results or  "CANCEL" to quit the Quiz!!</h2>
+                <button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">SUBMIT</button>
+                <button type="SUBMIT" class="btn btn-danger" ROLE="LINK" NAME="OP" VALUE="CANCEL">CANCEL</button>
+               
                 
             </form>
         {% else %}
