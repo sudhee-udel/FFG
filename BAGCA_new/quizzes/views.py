@@ -86,19 +86,39 @@ def pdfs(request):
     image = canvas.ImageReader('quizzes/BAGCA.jpg') # image_data is a raw string containing a JPEG
 
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="certificate_of_completion.pdf"'
 
     buffer = BytesIO()
 
     # Create the PDF object, using the BytesIO object as its "file."
     p = canvas.Canvas(buffer)
 
+    p.setLineWidth(.5)
+    p.setFont('Helvetica', 35)
+
     # Draw things on the PDF. Here's where the PDF generation happens.
     # See the ReportLab documentation for the full list of functionality.
     p.drawImage(image, 100, 600, 400, 200)
-    p.drawString(250, 410, "Course Participant")
-    p.drawString(215, 380, "has completed 10 hours of training.")
+    p.drawString(150, 410, "Course Participant")
+    p.setFont('Helvetica', 20)
+    p.drawString(145, 380, "has completed 10 hours of training.")
     #p.drawString(500, 825, "Hello world.")
+
+    #Add the outer borders; vertical lines
+    p.line(10,830,10,10)
+    p.line(585,830,585,10)
+
+    #Add the inner borders; vertical lines
+    p.line(15,825,15,15)
+    p.line(580,825,580,15)
+
+    #Add the outer borders; horizontal lines
+    p.line(10,10,585,10)
+    p.line(10,830,585,830)
+
+    #Add the inner borders; horizontal lines
+    p.line(15,15,580,15)
+    p.line(15,825,580,825)
 
     # Close the PDF object cleanly.
     p.showPage()
