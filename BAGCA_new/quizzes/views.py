@@ -38,7 +38,8 @@ def training(request, training_id):
 def quiz(request, training_id):
     if request.method == 'GET':
         try:
-            latest_question_list = Question.objects.order_by('question_text')[:]
+            latest_question_list = Question.objects.filter(category=training_id)
+            #latest_question_list = Question.objects.order_by('question_text')[:]
         except Question.DoesNotExist:
             raise Http404
 
