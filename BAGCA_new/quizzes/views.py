@@ -73,7 +73,7 @@ def quiz(request, training_id):
             result = "failed"             
             color = "red"
  
-        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color}
+        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color, 'required_score':category.required_score}
 
         return render(request, 'trainings/results.html', context)
 

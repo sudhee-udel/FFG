@@ -18,11 +18,7 @@
     <div class="container" style="background-color: #ffffff; height:100%; box-shadow:0 0 10px black;">
         <img src="{{ MEDIA_ROOT }}/media/BAGCA_DEE.png" style= "width: 877.5pt; margin-left:-11pt;"/>
 
-        <br/><br><br>
-        <h2><b>
-            <span class="label label-primary">My Assigned Trainings</span>
-        </b></h2>
-        <br/>
+        <br/><br>
         
 <!--<form class="navbar-form navbar-left" role="search">
   <div class="form-group">
@@ -31,33 +27,39 @@
   <button type="submit" class="btn btn-default">Submit</button>
 </form>-->
 
+        <hr/>
+        <br>
+
         {% if trainings %}
-            <table class="table table-striped" style="width:100%;">
-                <tr>
-                    <th>Training Name</th>
-                    <th>Course Code</th>
-                    <th>Due Date</th>
-                    <th>Duration</th>
-                    <th>Required Score</th>
-                    <th></th>
-                </tr>
-                {% for t in trainings %}
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;"><h4 style="color:white;"><b>My Assigned Trainings</b></h4></div>
+                <table class="table table-striped" style="width:100%;">
                     <tr>
-                        <td>{{ t.category_text }}</td>
-                        <td id="centered">{{ t.course_code }}</td>
-                        <td id="centered">{{ t.due_date }}</td>
-                        <td id="centered">{{ t.duration_hours }} 
-                            {% if t.duration_hours != 1 %}
-                                hours
-                            {% else %}
-                                hour
-                            {% endif %}
-                        </td>
-                        <td id="centered">{{ t.required_score }}%</td>
-                        <td id="centered"><a href="/trainings/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
+                        <th>Training Name</th>
+                        <th>Course Code</th>
+                        <th>Due Date</th>
+                        <th>Duration</th>
+                        <th>Required Score</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-            </table>
+                    {% for t in trainings %}
+                        <tr>
+                            <td>{{ t.category_text }}</td>
+                            <td id="centered">{{ t.course_code }}</td>
+                            <td id="centered">{{ t.due_date }}</td>
+                            <td id="centered">{{ t.duration_hours }} 
+                                {% if t.duration_hours != 1 %}
+                                    hours
+                                {% else %}
+                                    hour
+                                {% endif %}
+                            </td>
+                            <td id="centered">{{ t.required_score }}%</td>
+                            <td id="centered"><a href="/trainings/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
         {% else %}
             <p>There are no trainings available to display.</p>
         {% endif %}

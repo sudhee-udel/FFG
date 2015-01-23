@@ -7,9 +7,10 @@
             {% if result == 'passed' %}
                 <h2><b>Congratulations, you have passed the course!</b></h2>
             {% else %}        
-                <h2>Sorry, but you did not receive a passing score.</h2>
+                <h2><b>Sorry, but you did not receive a passing score.</b></h2>
             {% endif %}
-            <h4>Score: {{ correct }} correct out of {{ count }} = <a style="color:{{color}};">{{ score }}%</a></h4> 
+            <h4>Your Score: {{ correct }} correct out of {{ count }} = <a style="color:{{color}};">{{ score }}%</a></h4> 
+            <h5>Required Score: {{ required_score }}%</h5>
         </div>
         <hr/>
         <div class="container">
