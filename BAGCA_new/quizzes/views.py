@@ -81,8 +81,10 @@ def quiz(request, training_id):
 
         if result == 'passed':
             # Store the results of the user in the database; also allow admins to correct any mistakes.
-            store_result = Completed(category=training_id, user=request.user.email)
-            store_result.save()
+            check_if_user_finished_quiz = Completed.objects.filter(category=training_id,user=request.user.email)
+            if not check_if_user_finished_quiz:
+                store_result = Completed(category=training_id, user=request.user.email)
+                store_result.save()
 
             # Send the mail to users, if they have passed the quiz
             subject = "You have finished the " + category.category_text + " quiz."
@@ -120,7 +122,11 @@ def pdfs(request, training_id):
 
     user_first_last_name = request.user.first_name + " " + request.user.last_name
 
-    p.drawString(250 - len(user_first_last_name)/2, 410, user_first_last_name)
+    if user_first_last_name.strip() == '':
+        user_first_last_name = request.user.email.split("@")[0]
+
+    user_name_length = len(user_first_last_name)/2
+    p.drawString(250 - user_name_length, 410, user_first_last_name)
     p.setFont('Helvetica', 20)
 
     message = "has completed " + str(category.duration_hours) + " hours of training."
