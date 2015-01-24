@@ -71,7 +71,12 @@ def quiz(request, training_id):
         else:
             result = "failed"             
             color = "red"
- 
+
+        if result == 'passed':
+            subject = "You have finished the " + category.category_text + " quiz."
+            message = "You have passed!\n\nPlease retain this message for your records."
+            email(request, subject, message)
+
         context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color, 'training_id':training_id}
 
         return render(request, 'trainings/results.html', context)
@@ -156,24 +161,23 @@ def get_formatted_message(post_data, questionList):
 
 # ***** this should probably go in a helper class
 # this method currently does not link to anything. will be used to send email.
-def email(request, subject, message, from_addr, to_addr):
+def email(request, subject, message):
     #subject = 'Email subject'
     #message = 'Email message'
     #from_email = 'chas.barnajr@tsgforce.com'
     #to_email = 'chas.barnajr@tsgforce.com'
     if request.method == 'POST':
         list = []
-        message = ''
 
         for value in request.POST:
             if 'question' in value:
                 list.append(value)
 
-        message = get_formatted_message(request.POST, list)
+        #message = get_formatted_message(request.POST, list)
 
 #        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', ['sudhee1@gmail.com'], fail_silently=False)
-        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
-        return HttpResponse(str(message))
+        send_mail(subject, message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
+        #return HttpResponse(str(message))
 
-    send_mail(subject, message, from_addr, to_addr, fail_silently=False)
+#    send_mail(subject, message, from_addr, to_addr, fail_silently=False)
     return
