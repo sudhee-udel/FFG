@@ -5,7 +5,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.mail import send_mail
 from quizzes.models import Question, Choice
-from quiz_admin.models import Categories
+from quiz_admin.models import Categories, Videos
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader, Image
@@ -23,11 +23,17 @@ def index(request):
 def training(request, training_id):
     try:
         category = Categories.objects.get(pk=training_id)
+        videos = Videos.objects.filter(category_id=training_id)
     except Categories.DoesNotExist:
         raise Http404
 
     training_info = {}
-    training_info['url'] = category.url
+    video_list = []
+
+    for video in videos:
+        video_list.append(video)
+
+    training_info['videos'] = video_list
     training_info['text']= category.category_text
     training_info['id'] = training_id
 
