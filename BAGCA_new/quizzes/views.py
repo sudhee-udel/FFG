@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from quizzes.models import Question, Choice
 from quiz_admin.models import Categories, Videos
+from user_data.models import Completed
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader, Image
@@ -79,6 +80,11 @@ def quiz(request, training_id):
             color = "red"
 
         if result == 'passed':
+            # Store the results of the user in the database; also allow admins to correct any mistakes.
+            store_result = Completed(category=training_id, user=request.user.email)
+            store_result.save()
+
+            # Send the mail to users, if they have passed the quiz
             subject = "You have finished the " + category.category_text + " quiz."
             message = "You have passed!\n\nPlease retain this message for your records."
             email(request, subject, message)

@@ -3,6 +3,8 @@ from django.contrib.auth.models import Group
 import datetime
 
 class Categories(models.Model):
+    class Meta:
+        verbose_name_plural = "quizzes"
     def __str__(self):
         return self.category_text
 
