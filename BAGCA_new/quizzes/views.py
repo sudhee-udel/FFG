@@ -72,7 +72,7 @@ def quiz(request, training_id):
             result = "failed"             
             color = "red"
  
-        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color}
+        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color, 'training_id':training_id}
 
         return render(request, 'trainings/results.html', context)
 
@@ -81,7 +81,8 @@ def results(request, training_id):
     return render(request, 'quizzes/results.html', {})
 
 # ***** this should probably go in a helper class
-def pdfs(request):
+def pdfs(request, training_id):
+    category = Categories.objects.get(pk=training_id)
     # Create the HttpResponse object with the appropriate PDF headers.
     image = canvas.ImageReader('quizzes/BAGCA.jpg') # image_data is a raw string containing a JPEG
 
@@ -94,15 +95,20 @@ def pdfs(request):
     p = canvas.Canvas(buffer)
 
     p.setLineWidth(.5)
-    p.setFont('Helvetica', 35)
+    p.setFont('Helvetica', 30)
 
     # Draw things on the PDF. Here's where the PDF generation happens.
     # See the ReportLab documentation for the full list of functionality.
     p.drawImage(image, 100, 600, 400, 200)
-    p.drawString(150, 410, "Course Participant")
+
+    user_first_last_name = request.user.first_name + " " + request.user.last_name
+
+    p.drawString(250 - len(user_first_last_name)/2, 410, user_first_last_name)
     p.setFont('Helvetica', 20)
-    p.drawString(145, 380, "has completed 10 hours of training.")
-    #p.drawString(500, 825, "Hello world.")
+
+    message = "has completed " + str(category.duration_hours) + " hours of training."
+
+    p.drawString(175 - len(message)/2, 380, message)
 
     #Add the outer borders; vertical lines
     p.line(10,830,10,10)
