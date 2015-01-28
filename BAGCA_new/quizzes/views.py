@@ -5,7 +5,8 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.mail import send_mail
 from quizzes.models import Question, Choice
-from quiz_admin.models import Categories
+from quiz_admin.models import Categories, Videos
+from user_data.models import Completed
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader, Image
@@ -20,14 +21,36 @@ def index(request):
     return render(request, 'index.html', context)
 
 @login_required
+def profile(request):
+    if request.method == 'GET':
+
+        return render(request, 'profile.html', {})
+
+    elif request.method == 'POST':
+        user = request.user
+        user.email = request.POST['email']
+        user.save
+
+        context = {}
+
+        return render(request, 'profile.html', context)
+    
+
+@login_required
 def training(request, training_id):
     try:
         category = Categories.objects.get(pk=training_id)
+        videos = Videos.objects.filter(category_id=training_id)
     except Categories.DoesNotExist:
         raise Http404
 
     training_info = {}
-    training_info['url'] = category.url
+    video_list = []
+
+    for video in videos:
+        video_list.append(video)
+
+    training_info['videos'] = video_list
     training_info['title']= category.category_text
     training_info['description'] = category.category_description
     training_info['id'] = training_id
@@ -72,8 +95,19 @@ def quiz(request, training_id):
         else:
             result = "failed"             
             color = "red"
- 
-        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color, 'required_score':category.required_score}
+        if result == 'passed':
+            # Store the results of the user in the database; also allow admins to correct any mistakes.
+            check_if_user_finished_quiz = Completed.objects.filter(category=training_id,user=request.user.email)
+            if not check_if_user_finished_quiz:
+                store_result = Completed(category=training_id, user=request.user.email)
+                store_result.save()
+
+            # Send the mail to users, if they have passed the quiz
+            subject = "You have finished the " + category.category_text + " quiz."
+            message = "You have passed!\n\nPlease retain this message for your records."
+            email(request, subject, message)
+
+        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color, 'training_id':training_id}
 
         return render(request, 'trainings/results.html', context)
 
@@ -82,7 +116,8 @@ def results(request, training_id):
     return render(request, 'quizzes/results.html', {})
 
 # ***** this should probably go in a helper class
-def pdfs(request):
+def pdfs(request, training_id):
+    category = Categories.objects.get(pk=training_id)
     # Create the HttpResponse object with the appropriate PDF headers.
     image = canvas.ImageReader('quizzes/BAGCA.jpg') # image_data is a raw string containing a JPEG
 
@@ -95,15 +130,24 @@ def pdfs(request):
     p = canvas.Canvas(buffer)
 
     p.setLineWidth(.5)
-    p.setFont('Helvetica', 35)
+    p.setFont('Helvetica', 30)
 
     # Draw things on the PDF. Here's where the PDF generation happens.
     # See the ReportLab documentation for the full list of functionality.
     p.drawImage(image, 100, 600, 400, 200)
-    p.drawString(150, 410, "Course Participant")
+
+    user_first_last_name = request.user.first_name + " " + request.user.last_name
+
+    if user_first_last_name.strip() == '':
+        user_first_last_name = request.user.email.split("@")[0]
+
+    user_name_length = len(user_first_last_name)/2
+    p.drawString(250 - user_name_length, 410, user_first_last_name)
     p.setFont('Helvetica', 20)
-    p.drawString(145, 380, "has completed 10 hours of training.")
-    #p.drawString(500, 825, "Hello world.")
+
+    message = "has completed " + str(category.duration_hours) + " hours of training."
+
+    p.drawString(175 - len(message)/2, 380, message)
 
     #Add the outer borders; vertical lines
     p.line(10,830,10,10)
@@ -151,24 +195,23 @@ def get_formatted_message(post_data, questionList):
 
 # ***** this should probably go in a helper class
 # this method currently does not link to anything. will be used to send email.
-def email(request, subject, message, from_addr, to_addr):
+def email(request, subject, message):
     #subject = 'Email subject'
     #message = 'Email message'
     #from_email = 'chas.barnajr@tsgforce.com'
     #to_email = 'chas.barnajr@tsgforce.com'
     if request.method == 'POST':
         list = []
-        message = ''
 
         for value in request.POST:
             if 'question' in value:
                 list.append(value)
 
-        message = get_formatted_message(request.POST, list)
+        #message = get_formatted_message(request.POST, list)
 
 #        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', ['sudhee1@gmail.com'], fail_silently=False)
-        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
-        return HttpResponse(str(message))
+        send_mail(subject, message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
+        #return HttpResponse(str(message))
 
-    send_mail(subject, message, from_addr, to_addr, fail_silently=False)
+#    send_mail(subject, message, from_addr, to_addr, fail_silently=False)
     return

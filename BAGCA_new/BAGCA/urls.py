@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 
     #url(r'^$', TemplateView.as_view(template_name='accounts/signup.html'), name="signup"),
     url(r'^$', include('quizzes.urls', namespace="quizzes"), name="quizzes"),
+    url(r'^profile$', 'quizzes.views.profile', name='profile'),
     url(r'^trainings/', include('quizzes.urls', namespace="quizzes"), name="trainings"),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),

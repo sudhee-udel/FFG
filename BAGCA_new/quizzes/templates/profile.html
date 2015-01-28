@@ -1,0 +1,36 @@
+{% include "base.html" %}
+
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    
+
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script type="text/javascript" src="TimeCircles.js"></script>
+    <link href="TimeCircles.css" rel="stylesheet"> 
+
+    <style>
+        body {background-color: LightSkyBlue;}
+    </style>
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+</head>
+
+<body>
+    <div class="container" style="background-color:white; height:100%; box-shadow:0 0 10px black;">
+        <br/>
+        <h2><b>Profile</b></h2>
+        <hr/>
+        <br/>
+        <div class="container">
+            <form action="/profile" method="post">
+                <input type="text" name="email" value="{{user.email}}" />
+                {% csrf_token %}
+                <a href="/" class="btn btn-danger">Cancel</a>
+                <button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>

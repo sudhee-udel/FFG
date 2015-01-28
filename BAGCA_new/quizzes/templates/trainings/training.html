@@ -29,7 +29,10 @@
                     <br/>
                     <div style="text-align:center;">
                         {% load embed_video_tags %}
-                        {% video training_info.url 'small' %}
+                        {% for video in training_info.videos %}
+                            {% video video.url 'small' %}
+                            <br />
+                        {% endfor %}
                     </div>
                     <br/>
                 </div>
@@ -41,6 +44,7 @@
             <a href="/" class="btn btn-danger">Exit Training</a>
             <a href="/trainings/{{ training_info.id }}/quiz" class="btn btn-success">Take the Quiz!</a>
         </div>
+
         <br/>
     </div>
 </body>

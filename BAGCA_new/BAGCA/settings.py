@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'embed_video',
     'quizzes',
     'quiz_admin',
+    'user_data',
     'jquery',
     'bootstrap_toolkit',
     'bootstrap3',
