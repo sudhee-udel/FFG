@@ -1,0 +1,33 @@
+{% include "base.html" %}
+
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+</head>
+
+<body>
+    <div class="container" style="height:100%; background-color:white; box-shadow:0 0 10px black;">
+        <h2>Training:</h2>
+        <br/>
+        <div class="row">
+                <div class="col-md-6">
+                    <p>{{ training_info.text }}</p>
+                </div>
+                <div class="col-md-6">
+                    {% load embed_video_tags %}
+                    {% video training_info.url 'small' %}
+                </div>
+        </div>
+
+        <br/>
+        <br/>
+        <button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT"
+         <div style="text-align:center;">
+           <a href="/trainings/{{ training_info.id }}/quiz">Take the Quiz!</a>
+         </div>
+         </button>
+        <br/>
+    </div>
+</body>
