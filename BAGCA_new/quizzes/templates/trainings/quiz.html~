@@ -34,49 +34,47 @@
 <body>
     <div class="container" style="background-color:white; height:100%; box-shadow:0 0 10px black;">
         <br/>
-
+        <h2><b>Quiz</b></h2>
         <h4>
-        <p id="date"></p>
-        <script>        
-       document.getElementById("date").innerHTML=Date();
-        </script>
+            <p id="date"></p>
+            <script>        
+               document.getElementById("date").innerHTML=Date();
+            </script>
         </h4>
-        {% if user.is_authenticated %}
-            <p>Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
-        {% else %}
-
-        {% endif %}
-    
-     
-        <h2><span class="label label-primary">QUESTIONS:</span></h2>
+        <hr/>
         <br/>
-
         {% if question_dictionary %}
-            <form action="/trainings/{{ training_id }}/quiz/" method="post">
-                {% for question, choices in question_dictionary.items %}
-                    <p>{{ forloop.counter }}) {{ question }}</p>
-                    <ul>
-                        {% for choice in choices %}
-                        <input type="radio" name="question_{{ question.id }}" id="choice_{{ choice.id }}" value="{{ choice.id }}" />
-                        <label for="choice_{{ choice.id }}">{{ choice }}</label><br />
-                        {% endfor %}
-                    </ul>
-                {% endfor %}
-
-                {% csrf_token %}
-
-		<h2>QUIZ PROGRESS...</h2>
-		<div class="progress">
-		     <div class="progress-bar" role="progressbar" aria-valunow="70' aria-valuemin="0" aria-valuemax="100" style="width:70%">
-		       70%
-		     </div>
-		</div>
-                <h2>Please click "SUBMIT" to check the results or  "CANCEL" to quit the Quiz!!</h2>
-                <button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">SUBMIT</button>
-                <button type="SUBMIT" class="btn btn-danger" ROLE="LINK" NAME="OP" VALUE="CANCEL">CANCEL</button>
-               
-                
-            </form>
+            <div class="container">
+                <form action="/trainings/{{ training_id }}/quiz/" method="post">
+                    {% for question, choices in question_dictionary.items %}
+                        <p>{{ forloop.counter }}) {{ question }}</p>
+                        <ul>
+                            {% for choice in choices %}
+                            <input type="radio" name="question_{{ question.id }}" id="choice_{{ choice.id }}" value="{{ choice.id }}" />
+                            <label for="choice_{{ choice.id }}">{{ choice }}</label><br />
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                    {% csrf_token %}
+                    <br/>
+                    <hr/>
+                    <!--
+                        <h4>QUIZ PROGRESS...</h4>
+                        <div class="progress">
+                             <div class="progress-bar" role="progressbar" aria-valunow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                               70%
+                             </div>
+                        </div>
+                    -->
+                    <br/>
+                    <!-- <input type="submit" value="Submit"> -->
+                    <div style="text-align:center;">
+                        <h4>Please click "SUBMIT" to check the results or  "CANCEL" to quit the Quiz!</h4>
+                        <a href="/trainings/{{training_id}}" class="btn btn-danger">Cancel Quiz</a>
+                        <button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">Submit Answers</button>
+                    </div>
+                </form>
+            </div>
         {% else %}
             <p>No questions are available.</p>
         {% endif %}

@@ -53,6 +53,20 @@
       </div>
     </div>
 
+         <br/>
+        <div class="container">
+            <form action="/profile" method="post">
+           <div style="text-align:center;margin-left:10pt;">
+           <h3> <span class="label label-default">Email</span></h3> 
+           <input type="text" name="email" value="{{user.email}}" />
+           </div>
+               <div style="text-align:center;margin-left:10pt;">
+                {% csrf_token %}
+                <a href="/" class="btn btn-danger center">Cancel</a>
+                <button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">Submit</button>
+                </div>
+               </div>
+            </form>
         </div>
     </div>
 </body>
