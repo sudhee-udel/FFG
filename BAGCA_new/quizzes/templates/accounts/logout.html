@@ -1,1 +1,14 @@
-<p>You've successfully been logged out. - <a href="/accounts/login?next=/quizzes/">Login</a></p>
+{% include "base.html" %}
+
+<body>
+	<div class="container" style="background-color: #ffffff; height:100%; box-shadow:0 0 10px black;">
+        <img src="{{ MEDIA_ROOT }}/media/BAGCA_DEE.png" style= "width: 877.5pt; margin-left:-11pt;"/>
+
+        <br/><br><br>
+
+			<div style="text-align:center;">
+        		<h3>You've successfully been logged out.
+        			<br><br><a href="/accounts/login" class="btn btn-success">Login</a></h3>
+        	</div>
+    </div>
+</body>
