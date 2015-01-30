@@ -16,8 +16,22 @@ import re
 
 @login_required
 def index(request):
-    trainings = Categories.objects.order_by('category_text')[:]
-    context = {'trainings': trainings}
+    user_groups = []
+    display_groups = set()
+    trainings_need_to_be_completed = set()
+
+    for groups in request.user.groups.all():
+        user_groups.append(groups)
+        for available_trainings in Categories.objects.filter(groups=groups):
+            display_groups.add(available_trainings.id)
+
+    for quiz_id in display_groups:
+        check_if_user_finished_quiz = Completed.objects.filter(category=quiz_id,user=request.user.email)
+        quiz_name = Categories.objects.get(pk=quiz_id)
+        if not check_if_user_finished_quiz:
+            trainings_need_to_be_completed.add(quiz_name)
+
+    context = {'trainings': trainings_need_to_be_completed}
     return render(request, 'index.html', context)
 
 @login_required
