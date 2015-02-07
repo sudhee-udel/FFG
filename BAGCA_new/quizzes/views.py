@@ -80,7 +80,8 @@ def quiz(request, training_id):
 
         return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary, 'training_id': training_id})
 
-    elif request.method == 'POST':
+def process_results(request, training_id):
+    if request.method == 'POST':
         question_list = []
         for value in request.POST:
             if 'question' in value:
@@ -90,6 +91,7 @@ def quiz(request, training_id):
 
         score = int((float(correct)/float(count)) * 100)
         category = Categories.objects.get(pk=training_id)
+        required_score = category.required_score
 
         if score >= category.required_score:
             result = "passed"
@@ -110,7 +112,7 @@ def quiz(request, training_id):
             message = "You have passed!\n\nPlease retain this message for your records."
             email(request, subject, message)
 
-        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color, 'training_id':training_id}
+        context = {'result': result, 'required_score': required_score, 'result_msg': result_msg, 'correct': correct, 'count': count, 'score': score, 'color': color, 'training_id': training_id}
 
         return render(request, 'trainings/results.html', context)
 

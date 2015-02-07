@@ -6,6 +6,7 @@ urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
                        url(r'^(?P<training_id>\d+)/$', views.training, name='training'),
                        url(r'^(?P<training_id>\d+)/quiz/$', views.quiz, name='quiz'),
+                       url(r'^(?P<training_id>\d+)/process_results/$', views.process_results, name='process_results'),
                        url(r'^(?P<training_id>\d+)/quiz/results/$', views.results, name='results'),
                        url(r'^generate_certificate/(?P<training_id>\d+)/$', helpers.generate_certificate, name='generate_certificate'),
                     )

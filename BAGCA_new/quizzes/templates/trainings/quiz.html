@@ -18,11 +18,13 @@
         h3{
             text-align: center;
         }
+        /*
         .col-xs-6 col-lg-4 {
             float: none;
             margin-left: auto;
             margin-right: auto;
-        }   
+        }
+        */
     </style>
     <script type="text/javascript" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
@@ -45,7 +47,7 @@
         <br/>
         {% if question_dictionary %}
             <div class="container">
-                <form action="/trainings/{{ training_id }}/quiz/" method="post">
+                <form action="/trainings/{{ training_id }}/process_results/" method="post">
                     {% for question, choices in question_dictionary.items %}
                         <p>{{ forloop.counter }}) {{ question }}</p>
                         <ul>
