@@ -1,17 +1,11 @@
-import time
-
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import Http404
 from django.shortcuts import render
 from django.core.mail import send_mail
 from quizzes.models import Question, Choice
 from quiz_admin.models import Categories, Videos
 from user_data.models import Completed
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
-from reportlab.lib.utils import ImageReader, Image
-import StringIO
-from io import BytesIO
+from helpers import generate_certificate
 import re
 
 @login_required
@@ -77,7 +71,6 @@ def quiz(request, training_id):
     if request.method == 'GET':
         try:
             latest_question_list = Question.objects.filter(category=training_id)
-            #latest_question_list = Question.objects.order_by('question_text')[:]
         except Question.DoesNotExist:
             raise Http404
 
@@ -85,30 +78,26 @@ def quiz(request, training_id):
         for q in latest_question_list:
             question_dictionary[q] = q.choice_set.all()
 
-        return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary, 'training_id': training_id, 'count': len(question_dictionary)})
+        return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary, 'training_id': training_id})
 
     elif request.method == 'POST':
-        questionList = []
+        question_list = []
         for value in request.POST:
             if 'question' in value:
-                questionList.append(value)
+                question_list.append(value)
 
-        result_msg, correct, count = get_formatted_message(request.POST, questionList)    
-        print result_msg
-        print "training_id: " + str(training_id)
-        print "correct: " + str(correct)
-        print "count: " + str(count)
+        result_msg, correct, count = get_formatted_message(request.POST, question_list)
 
         score = int((float(correct)/float(count)) * 100)
         category = Categories.objects.get(pk=training_id)
-        result = ""
 
-        if score>=category.required_score:        
+        if score >= category.required_score:
             result = "passed"
             color = "green"
         else:
             result = "failed"             
             color = "red"
+
         if result == 'passed':
             # Store the results of the user in the database; also allow admins to correct any mistakes.
             check_if_user_finished_quiz = Completed.objects.filter(category=training_id,user=request.user.email)
@@ -130,66 +119,6 @@ def results(request, training_id):
     return render(request, 'quizzes/results.html', {})
 
 # ***** this should probably go in a helper class
-def pdfs(request, training_id):
-    category = Categories.objects.get(pk=training_id)
-    # Create the HttpResponse object with the appropriate PDF headers.
-    image = canvas.ImageReader('quizzes/BAGCA.jpg') # image_data is a raw string containing a JPEG
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="certificate_of_completion.pdf"'
-
-    buffer = BytesIO()
-
-    # Create the PDF object, using the BytesIO object as its "file."
-    p = canvas.Canvas(buffer)
-
-    p.setLineWidth(.5)
-    p.setFont('Helvetica', 30)
-
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawImage(image, 100, 600, 400, 200)
-
-    user_first_last_name = request.user.first_name + " " + request.user.last_name
-
-    if user_first_last_name.strip() == '':
-        user_first_last_name = request.user.email.split("@")[0]
-
-    user_name_length = len(user_first_last_name)/2
-    p.drawString(250 - user_name_length, 410, user_first_last_name)
-    p.setFont('Helvetica', 20)
-
-    message = "has completed " + str(category.duration_hours) + " hours of training."
-
-    p.drawString(175 - len(message)/2, 380, message)
-
-    #Add the outer borders; vertical lines
-    p.line(10,830,10,10)
-    p.line(585,830,585,10)
-
-    #Add the inner borders; vertical lines
-    p.line(15,825,15,15)
-    p.line(580,825,580,15)
-
-    #Add the outer borders; horizontal lines
-    p.line(10,10,585,10)
-    p.line(10,830,585,830)
-
-    #Add the inner borders; horizontal lines
-    p.line(15,15,580,15)
-    p.line(15,825,580,825)
-
-    # Close the PDF object cleanly.
-    p.showPage()
-    p.save()
-
-    # Get the value of the BytesIO buffer and write it to the response.
-    pdf = buffer.getvalue()
-    buffer.close()
-    response.write(pdf)
-    return response
-
-# ***** this should probably go in a helper class
 def get_formatted_message(post_data, questionList):
     message = []
     count = 0
@@ -207,25 +136,5 @@ def get_formatted_message(post_data, questionList):
 
     return message, correct, count
 
-# ***** this should probably go in a helper class
-# this method currently does not link to anything. will be used to send email.
 def email(request, subject, message):
-    #subject = 'Email subject'
-    #message = 'Email message'
-    #from_email = 'chas.barnajr@tsgforce.com'
-    #to_email = 'chas.barnajr@tsgforce.com'
-    if request.method == 'POST':
-        list = []
-
-        for value in request.POST:
-            if 'question' in value:
-                list.append(value)
-
-        #message = get_formatted_message(request.POST, list)
-
-#        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', ['sudhee1@gmail.com'], fail_silently=False)
-        send_mail(subject, message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
-        #return HttpResponse(str(message))
-
-#    send_mail(subject, message, from_addr, to_addr, fail_silently=False)
-    return
+    send_mail(subject, message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
