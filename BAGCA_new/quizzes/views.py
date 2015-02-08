@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render
-from django.core.mail import send_mail
-from quizzes.models import Question, Choice
+from quizzes.models import Question
 from quiz_admin.models import Categories, Videos
 from user_data.models import Completed
+from quizzes import helpers
+from quizzes.email_helpers import get_formatted_message
 import random
-import re
 
 @login_required
 def index(request):
@@ -70,7 +70,7 @@ def training(request, training_id):
 def quiz(request, training_id):
     if request.method == 'GET':
         try:
-            latest_question_list = Question.objects.filter(category=training_id)
+            latest_question_list = sorted(Question.objects.filter(category=training_id), key=lambda random_key: random.random())
         except Question.DoesNotExist:
             raise Http404
 
@@ -87,56 +87,25 @@ def process_results(request, training_id):
             if 'question' in value:
                 question_list.append(value)
 
-        result_msg, correct, count = get_formatted_message(request.POST, question_list)
+        result_page_message, correct_answers, total_number_of_questions = get_formatted_message(request.POST, question_list)
 
-        score = int((float(correct)/float(count)) * 100)
-        category = Categories.objects.get(pk=training_id)
-        required_score = category.required_score
+        current_quiz = Categories.objects.get(pk=training_id)
 
-        if score >= category.required_score:
-            result = "passed"
-            color = "green"
-        else:
-            result = "failed"             
-            color = "red"
+        required_score = current_quiz.required_score
 
-        if result == 'passed':
-            # Store the results of the user in the database; also allow admins to correct any mistakes.
-            check_if_user_finished_quiz = Completed.objects.filter(category=training_id,user=request.user.email)
-            if not check_if_user_finished_quiz:
-                store_result = Completed(category=training_id, user=request.user.email)
-                store_result.save()
+        result_package = {}
+        result_package['correct_answers'] = correct_answers
+        result_package['total_number_of_questions'] = total_number_of_questions
+        result_package['required_score'] = required_score
+        result_package['request'] = request
+        result_package['training_id'] = training_id
 
-            # Send the mail to users, if they have passed the quiz
-            subject = "You have finished the " + category.category_text + " quiz."
-            message = "You have passed!\n\nPlease retain this message for your records."
-            email(request, subject, message)
+        result, color, score = helpers.get_result_page_styling(result_package)
 
-        context = {'result': result, 'required_score': required_score, 'result_msg': result_msg, 'correct': correct, 'count': count, 'score': score, 'color': color, 'training_id': training_id}
+        context = {'result': result, 'required_score': required_score, 'result_msg': result_page_message, 'correct': correct_answers, 'count': total_number_of_questions, 'score': score, 'color': color, 'training_id': training_id}
 
         return render(request, 'trainings/results.html', context)
 
 @login_required
-def results(request, training_id):
+def results(request):
     return render(request, 'quizzes/results.html', {})
-
-# ***** this should probably go in a helper class
-def get_formatted_message(post_data, questionList):
-    message = []
-    count = 0
-    correct = 0
-
-    for item in sorted(questionList):
-        count += 1
-        question_re = re.match(r'question_(.*)', item, re.M)
-        choice_value = Choice.objects.get(pk=post_data.get(item, ''))
-        choice_result = 'wrong.'
-        if choice_value.answer:
-            correct += 1
-            choice_result = 'correct.'
-        message.append("For question: " + str(Question.objects.get(pk=question_re.groups(1)[0])) + " You chose: " + str(choice_value) + ". It is " + choice_result + "\n")
-
-    return message, correct, count
-
-def email(request, subject, message):
-    send_mail(subject, message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)

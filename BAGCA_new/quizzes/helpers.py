@@ -2,6 +2,23 @@ from quiz_admin.models import Categories
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from django.http import HttpResponse
+from quizzes.email_helpers import send_success_email
+
+def determine_pass_or_fail(correct_answers, total_number_of_questions, required_score):
+    score = int((float(correct_answers)/total_number_of_questions) * 100)
+
+    if score >= required_score:
+        return True, score
+    else:
+        return False, score
+
+def get_result_page_styling(result_package):
+    result, score = determine_pass_or_fail(result_package['correct_answers'], result_package['total_number_of_questions'], result_package['required_score'])
+    if result:
+        send_success_email(result_package['request'], result_package['training_id'])
+        return "passed", "green", score
+    else:
+        return "failed", "red", score
 
 def set_certificate_properties(pdf):
     image = canvas.ImageReader('quizzes/BAGCA.jpg') # image_data is a raw string containing a JPEG
@@ -9,19 +26,19 @@ def set_certificate_properties(pdf):
     pdf.drawImage(image, 100, 600, 400, 200)
     pdf.setLineWidth(.5)
 
-    #Add the outer borders; vertical lines
+    # Add the outer borders; vertical lines
     pdf.line(10,830,10,10)
     pdf.line(585,830,585,10)
 
-    #Add the inner borders; vertical lines
+    # Add the inner borders; vertical lines
     pdf.line(15,825,15,15)
     pdf.line(580,825,580,15)
 
-    #Add the outer borders; horizontal lines
+    # Add the outer borders; horizontal lines
     pdf.line(10,10,585,10)
     pdf.line(10,830,585,830)
 
-    #Add the inner borders; horizontal lines
+    # Add the inner borders; horizontal lines
     pdf.line(15,15,580,15)
     pdf.line(15,825,580,825)
 
