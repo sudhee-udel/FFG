@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from quizzes.models import Question, Choice
 from quiz_admin.models import Categories, Videos
 from user_data.models import Completed
-from helpers import generate_certificate
+import random
 import re
 
 @login_required
@@ -76,7 +76,7 @@ def quiz(request, training_id):
 
         question_dictionary = {}
         for q in latest_question_list:
-            question_dictionary[q] = q.choice_set.all()
+            question_dictionary[q] = sorted(q.choice_set.all(), key=lambda random_key: random.random())
 
         return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary, 'training_id': training_id})
 
