@@ -1,6 +1,5 @@
 from quiz_admin.models import Categories
 from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from io import BytesIO
 from django.http import HttpResponse
 from quizzes.email_helpers import send_success_email

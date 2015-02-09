@@ -6,6 +6,7 @@ from quiz_admin.models import Categories, Videos
 from user_data.models import Completed
 from quizzes import helpers
 from quizzes.email_helpers import get_formatted_message
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import random
 
 @login_required
@@ -58,12 +59,26 @@ def training(request, training_id):
     for video in videos:
         video_list.append(video)
 
-    training_info['videos'] = video_list
+    paginated_videos = Paginator(video_list, 1)
+    page = request.GET.get('page')
+
+    try:
+        training_info['videos'] = paginated_videos.page(page)
+    except PageNotAnInteger:
+        training_info['videos'] = paginated_videos.page(1)
+    except EmptyPage:
+        training_info['videos'] = paginated_videos.page(paginated_videos.num_pages)
+
     training_info['title']= category.category_text
     training_info['description'] = category.category_description
     training_info['id'] = training_id
 
-    context = {'training_info': training_info}
+    if paginated_videos.num_pages > 1:
+        paginate = True
+    else:
+        paginate = False
+
+    context = {'training_info': training_info, 'paginate': paginate}
     return render(request, 'trainings/training.html', context)
 
 @login_required
