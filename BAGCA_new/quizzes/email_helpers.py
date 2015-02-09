@@ -1,18 +1,14 @@
 import re
 from quizzes.models import Choice, Question
 from django.core.mail import send_mail
-from user_data.models import Completed
 from quiz_admin.models import Categories
+from quizzes.helpers import save_user_completion
 
 def email(request, subject, message):
     send_mail(subject, message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
 
 def send_success_email(request, training_id):
-    # Store the results of the user in the database; also allow admins to correct any mistakes.
-    check_if_user_finished_quiz = Completed.objects.filter(category=training_id,user=request.user.email)
-    if not check_if_user_finished_quiz:
-        store_result = Completed(category=training_id, user=request.user.email)
-        store_result.save()
+    save_user_completion(request, training_id)
 
     # Send the mail to users, if they have passed the quiz
     current_quiz = Categories.objects.get(pk=training_id)

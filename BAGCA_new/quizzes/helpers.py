@@ -1,8 +1,17 @@
 from quiz_admin.models import Categories
 from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from io import BytesIO
 from django.http import HttpResponse
 from quizzes.email_helpers import send_success_email
+from user_data.models import Completed
+
+def save_user_completion(request, training_id):
+    check_if_user_finished_quiz = Completed.objects.filter(category=training_id,user=request.user.email)
+
+    if not check_if_user_finished_quiz:
+        store_result = Completed(category=training_id, user=request.user.email)
+        store_result.save()
 
 def determine_pass_or_fail(correct_answers, total_number_of_questions, required_score):
     score = int((float(correct_answers)/total_number_of_questions) * 100)
@@ -69,6 +78,31 @@ def generate_certificate(request, training_id):
     message = "has completed " + str(category.duration_hours) + " hours of training."
 
     pdf.drawString(175 - len(message)/2, 380, message)
+
+    set_certificate_properties(pdf)
+
+    # Close the PDF object cleanly.
+    pdf.showPage()
+    pdf.save()
+
+    # Get the value of the BytesIO buffer and write it to the response.
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+
+def get_pdf(request, training_id):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="certificate_of_completion.pdf"'
+
+    buffer = BytesIO()
+
+    # Create the PDF object, using the BytesIO object as its "file."
+    pdf = canvas.Canvas(buffer)
+
+    pdf.setFont('Helvetica', 12)
+
+    pdf.drawString(20, 780, "This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. ")
 
     set_certificate_properties(pdf)
 
