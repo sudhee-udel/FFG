@@ -2,7 +2,6 @@ from quiz_admin.models import Categories
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from django.http import HttpResponse
-from quizzes.email_helpers import send_success_email
 from user_data.models import Completed
 
 def save_user_completion(request, training_id):
