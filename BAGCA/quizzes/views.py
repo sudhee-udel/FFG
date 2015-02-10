@@ -4,7 +4,7 @@ from django.shortcuts import render
 from quizzes.models import Question
 from quiz_admin.models import Categories, Videos
 from user_data.models import Completed
-from quizzes import helpers
+from quizzes.helpers import get_result_page_styling, save_user_completion
 from quizzes.email_helpers import get_formatted_message
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import random
@@ -102,22 +102,18 @@ def process_results(request, training_id):
             if 'question' in value:
                 question_list.append(value)
 
-        result_page_message, correct_answers, total_number_of_questions = get_formatted_message(request.POST, question_list)
+        correct_answers, total_number_of_questions = get_formatted_message(request.POST, question_list)
 
         current_quiz = Categories.objects.get(pk=training_id)
 
         required_score = current_quiz.required_score
 
-        result_package = {}
-        result_package['correct_answers'] = correct_answers
-        result_package['total_number_of_questions'] = total_number_of_questions
-        result_package['required_score'] = required_score
-        result_package['request'] = request
-        result_package['training_id'] = training_id
+        result, color, score = get_result_page_styling(correct_answers, total_number_of_questions, required_score)
 
-        result, color, score = helpers.get_result_page_styling(result_package)
+        if result == 'passed':
+            save_user_completion(request, training_id)
 
-        context = {'result': result, 'required_score': required_score, 'result_msg': result_page_message, 'correct': correct_answers, 'count': total_number_of_questions, 'score': score, 'color': color, 'training_id': training_id}
+        context = {'result': result, 'required_score': required_score, 'correct': correct_answers, 'count': total_number_of_questions, 'score': score, 'color': color, 'training_id': training_id}
 
         return render(request, 'trainings/results.html', context)
 

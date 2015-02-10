@@ -6,6 +6,7 @@ from quizzes.email_helpers import send_success_email
 from user_data.models import Completed
 
 def save_user_completion(request, training_id):
+    # Store the results of the user in the database; also allow admins to correct any mistakes.
     check_if_user_finished_quiz = Completed.objects.filter(category=training_id,user=request.user.email)
 
     if not check_if_user_finished_quiz:
@@ -20,10 +21,9 @@ def determine_pass_or_fail(correct_answers, total_number_of_questions, required_
     else:
         return False, score
 
-def get_result_page_styling(result_package):
-    result, score = determine_pass_or_fail(result_package['correct_answers'], result_package['total_number_of_questions'], result_package['required_score'])
+def get_result_page_styling(correct_answers, total_number_of_questions, required_score):
+    result, score = determine_pass_or_fail(correct_answers, total_number_of_questions, required_score)
     if result:
-        send_success_email(result_package['request'], result_package['training_id'])
         return "passed", "green", score
     else:
         return "failed", "red", score
