@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'template_name': 'accounts/logout.html'}),
-    
+    url(r'^create_quiz/', 'quizzes.helpers.create_quiz_form', name='create_quiz'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
                  {'document_root': settings.MEDIA_ROOT}),
 

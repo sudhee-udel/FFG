@@ -1,4 +1,4 @@
-from quizzes.models import Choice
+from .models import Choice
 from django.core.mail import send_mail
 from quiz_admin.models import Categories
 

@@ -3,9 +3,15 @@ from django.http import Http404
 from quiz_admin.models import Categories
 from reportlab.pdfgen import canvas
 from io import BytesIO
-from quizzes.models import Question
+from .models import Question
 from django.http import HttpResponse
 from user_data.models import Completed
+from .forms import UploadQuizData
+
+def create_quiz_form(request):
+    response = HttpResponse(content_type='text/plain')
+    response["Content-Disposition"]= "attachment; filename=quiz.txt"
+    response.write("in create_quiz")
 
 def get_questions_for_quiz(training_id):
     try:

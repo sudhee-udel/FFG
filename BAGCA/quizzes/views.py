@@ -3,8 +3,8 @@ from django.http import Http404
 from django.shortcuts import render
 from quiz_admin.models import Categories, Videos
 from user_data.models import Completed
-from quizzes.helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz
-from quizzes.email_helpers import get_formatted_message
+from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz
+from .email_helpers import get_formatted_message
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @login_required

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from quiz_admin.models import Categories, Videos
+from .models import Categories, Videos
 from quizzes.models import Question
 
 class VideosInLine(admin.TabularInline):

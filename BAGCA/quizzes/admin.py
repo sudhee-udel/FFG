@@ -1,5 +1,5 @@
 from django.contrib import admin
-from quizzes.models import Choice, Question
+from .models import Choice, Question
 
 class ChoiceInLine(admin.TabularInline):
     model = Choice
