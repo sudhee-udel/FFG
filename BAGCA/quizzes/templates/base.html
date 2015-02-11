@@ -22,6 +22,9 @@
                 <ul class="nav navbar-nav">
                     <li role="presentation"><a href="/">Trainings</a></li>
                     <li role="presentation"><a href="/profile">Profile</a></li>
+                    {% if user.is_superuser %}
+                        <li role="presentation"><a href="/create_quiz">Create Quiz</a></li>
+                    {% endif %}
                 </ul> 
 
                 <ul class="nav navbar-nav navbar-right">
