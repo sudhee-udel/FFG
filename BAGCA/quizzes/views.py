@@ -1,13 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render
-from quizzes.models import Question
 from quiz_admin.models import Categories, Videos
 from user_data.models import Completed
-from quizzes.helpers import get_result_page_styling, save_user_completion
+from quizzes.helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz
 from quizzes.email_helpers import get_formatted_message
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import random
 
 @login_required
 def index(request):
@@ -21,7 +19,7 @@ def index(request):
             display_groups.add(available_trainings.id)
 
     for quiz_id in display_groups:
-        check_if_user_finished_quiz = Completed.objects.filter(category=quiz_id,user=request.user.email)
+        check_if_user_finished_quiz = Completed.objects.filter(category=quiz_id, user=request.user.email)
         quiz_name = Categories.objects.get(pk=quiz_id)
         if not check_if_user_finished_quiz:
             trainings_need_to_be_completed.add(quiz_name)
@@ -83,17 +81,9 @@ def training(request, training_id):
 
 @login_required
 def quiz(request, training_id):
-    if request.method == 'GET':
-        try:
-            latest_question_list = sorted(Question.objects.filter(category=training_id), key=lambda random_key: random.random())
-        except Question.DoesNotExist:
-            raise Http404
+    question_dictionary = get_questions_for_quiz(training_id)
 
-        question_dictionary = {}
-        for q in latest_question_list:
-            question_dictionary[q] = sorted(q.choice_set.all(), key=lambda random_key: random.random())
-
-        return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary, 'training_id': training_id})
+    return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary, 'training_id': training_id})
 
 def process_results(request, training_id):
     if request.method == 'POST':

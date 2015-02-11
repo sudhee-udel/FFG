@@ -1,8 +1,42 @@
+import random
+from django.http import Http404
 from quiz_admin.models import Categories
 from reportlab.pdfgen import canvas
 from io import BytesIO
+from quizzes.models import Question
 from django.http import HttpResponse
 from user_data.models import Completed
+
+def get_questions_for_quiz(training_id):
+    try:
+        latest_question_list = sorted(Question.objects.filter(category=training_id), key=lambda random_key: random.random())
+    except Question.DoesNotExist:
+        raise Http404
+
+    question_dictionary = {}
+    for q in latest_question_list:
+        question_dictionary[q] = sorted(q.choice_set.all(), key=lambda random_key: random.random())
+
+    return question_dictionary
+
+def print_quiz(request, training_id):
+    response = HttpResponse(content_type='text/plain')
+    quiz = Categories.objects.get(pk=training_id)
+    response["Content-Disposition"]= "attachment; filename=" + quiz.category_text + "_quiz.txt"
+
+    question_dictionary = get_questions_for_quiz(training_id)
+
+    question_number = 1
+    for question in question_dictionary:
+        response.write(str(question_number) + ") " + question.question_text + "\n")
+
+        for choice in question_dictionary[question]:
+            response.write("   - " + choice.choice_text + "\n")
+
+        question_number += 1
+        response.write("\n")
+
+    return response
 
 def save_user_completion(request, training_id):
     # Store the results of the user in the database; also allow admins to correct any mistakes.
@@ -76,31 +110,6 @@ def generate_certificate(request, training_id):
     message = "has completed " + str(category.duration_hours) + " hours of training."
 
     pdf.drawString(175 - len(message)/2, 380, message)
-
-    set_certificate_properties(pdf)
-
-    # Close the PDF object cleanly.
-    pdf.showPage()
-    pdf.save()
-
-    # Get the value of the BytesIO buffer and write it to the response.
-    pdf = buffer.getvalue()
-    buffer.close()
-    response.write(pdf)
-    return response
-
-def get_pdf(request, training_id):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="certificate_of_completion.pdf"'
-
-    buffer = BytesIO()
-
-    # Create the PDF object, using the BytesIO object as its "file."
-    pdf = canvas.Canvas(buffer)
-
-    pdf.setFont('Helvetica', 12)
-
-    pdf.drawString(20, 780, "This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. This is a really long string. ")
 
     set_certificate_properties(pdf)
 
