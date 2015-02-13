@@ -7,11 +7,34 @@ from .models import Question
 from django.http import HttpResponse
 from user_data.models import Completed
 from .forms import UploadQuizData
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
 
 def create_quiz_form(request):
+    if request.method == 'POST':
+        form = UploadQuizData(request.POST, request.FILES)
+        if form.is_valid():
+            response = HttpResponse(content_type='text/plain')
+            response["Content-Disposition"]= "attachment; filename=quiz.txt"
+            for line in request.FILES['file'].read():
+                response.write(line)
+
+            return response
+    else:
+        form = UploadQuizData()
+
+    data = {'form': form}
+    return render(request, 'create_quiz_form.html', data)
+
+def create_quiz(file):
     response = HttpResponse(content_type='text/plain')
     response["Content-Disposition"]= "attachment; filename=quiz.txt"
-    response.write("in create_quiz")
+
+    for line in file.read():
+        response.write(line)
+
+    return response
 
 def get_questions_for_quiz(training_id):
     try:
