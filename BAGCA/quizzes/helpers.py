@@ -9,6 +9,7 @@ from user_data.models import Completed
 from .forms import UploadQuizData
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from BAGCA.settings import MEDIA_ROOT
 
 
 def create_quiz_form(request):
@@ -17,8 +18,14 @@ def create_quiz_form(request):
         if form.is_valid():
             response = HttpResponse(content_type='text/plain')
             response["Content-Disposition"]= "attachment; filename=quiz.txt"
+            fd = open('%s/%s' % (MEDIA_ROOT, 'THIS_IS_THE_FILE'), 'wb')
+
             for line in request.FILES['file'].read():
                 response.write(line)
+
+
+            fd.write(request.FILES['file'].name)
+            fd.close()
 
             return response
     else:
