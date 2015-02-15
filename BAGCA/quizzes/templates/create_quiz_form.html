@@ -20,7 +20,13 @@
 <body>
     <div class="container" style="background-color:white; height:100%; box-shadow:0 0 10px black;">
         <form action="." method="post" enctype="multipart/form-data">
-            {{ form }}
+            <br />
+            <center><h2>Please enter all values to craete the quiz.</h2></center>
+            {% for group in groups %}
+                <input type="radio" name="groups" id="group{{ group.id }}" value="{{ group.id }}" />
+                <label for="group{{ group.id }}">{{ group }}</label><br />
+            {% endfor %}
+            {{ form.as_p }}
             <button type = "submit" value="Upload">Submit</button>
             {% csrf_token %}
         </form>
