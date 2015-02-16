@@ -22,8 +22,10 @@
         <form action="." method="post" enctype="multipart/form-data">
             <br />
             <center><h2>Please enter all values to craete the quiz.</h2></center>
+            <h4>Available groups to assign quiz to:</h4>
             {% for group in groups %}
-                <input type="radio" name="groups" id="group{{ group.id }}" value="{{ group.id }}" />
+                <input type="radio" name="groups" id="group{{ group.id }}" value="{{ group.id }}"
+                        style="margin-left: 5em"/>
                 <label for="group{{ group.id }}">{{ group }}</label><br />
             {% endfor %}
             {{ form.as_p }}

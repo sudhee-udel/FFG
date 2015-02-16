@@ -1,4 +1,5 @@
 import random
+import os
 from django.http import Http404
 from quiz_admin.models import Categories
 from reportlab.pdfgen import canvas
@@ -10,16 +11,13 @@ from .forms import UploadQuizData
 from django.shortcuts import render
 from BAGCA.settings import MEDIA_ROOT_FILES
 from django.contrib.auth.models import Group
-import uuid
-import re
-
 
 def create_quiz_form(request):
     quiz_groups = Group.objects.all()
     if request.method == 'POST':
         form = UploadQuizData(request.POST, request.FILES)
         if form.is_valid():
-            filename = "temporary_file.txt" #str(uuid.uuid1()) + "_" + request.FILES['file'].name
+            filename = "temporary_file.txt"
             fd = open('%s/%s' % (MEDIA_ROOT_FILES, filename), 'wb')
 
             category_text = request.POST['category_text']
@@ -29,67 +27,50 @@ def create_quiz_form(request):
             duration_hours = request.POST['duration_hours']
             required_score = request.POST['required_score']
 
-            create_quiz = Categories(category_text=category_text,
-                                     category_description=category_description,
-                                     course_code=course_code,
-                                     due_date=due_date,
-                                     duration_hours=duration_hours,
-                                     required_score=required_score)
-            create_quiz.save()
+            determine_if_quiz_exists = Categories.objects.filter(category_text=category_text)
 
-            quiz_id = Categories.objects.get(category_text=category_text)
-            list = []
-            # fd.write(category_text + "\n" + category_description + "\n" + course_code + "\n" + str(due_date) + "\n" + str(duration_hours) + "\n" + str(required_score) + "\n")
-            for line in request.FILES['file'].read():
-                fd.write(line)
-                list.append(line)
-                #create_question = Question(category=quiz_id, question_text=parts[0])
-                #create_question.save()
+            if not determine_if_quiz_exists:
+                create_quiz = Categories(category_text=category_text,
+                                         category_description=category_description,
+                                         course_code=course_code,
+                                         due_date=due_date,
+                                         duration_hours=duration_hours,
+                                         required_score=required_score)
+                create_quiz.save()
 
-            fd.close()
+                quiz_id = Categories.objects.get(category_text=category_text)
 
-            written_file = open(MEDIA_ROOT_FILES + '/temporary_file.txt')
+                for line in request.FILES['file'].read():
+                    fd.write(line)
 
-            new_fd = open('%s/%s' % (MEDIA_ROOT_FILES, "new_question_" + filename), 'wb')
-            new_fd1 = open('%s/%s' % (MEDIA_ROOT_FILES, "new_choice_" + filename), 'wb')
-            for line in written_file:
-                parts = line.split('\t')
-                new_fd.write(parts[0])
-                create_question = Question(category=quiz_id, question_text=parts[0])
-                create_question.save()
-                for part_counter in range(1, len(parts)):
-                    is_answer = False
-                    if (parts[part_counter][0] == '(') and (parts[part_counter][len(parts[part_counter]) - 1] == ')'):
-                        parts[part_counter] = parts[part_counter][1:len(parts[part_counter]) - 1]
-                        is_answer = True
-                    create_choice = Choice(question=Question.objects.get(pk=create_question.id), choice_text=parts[part_counter], answer=is_answer)
-                    create_choice.save()
-                    new_fd1.write(parts[part_counter] + str(create_question.id) + "\n")
+                fd.close()
 
-            fd.close()
+                written_file = open(MEDIA_ROOT_FILES + '/temporary_file.txt', 'r')
+
+                for line in written_file:
+                    parts = line.split('\t')
+
+                    create_question = Question(category=quiz_id, question_text=parts[0])
+                    create_question.save()
+                    for part_counter in range(1, len(parts)):
+                        is_answer = False
+
+                        if (parts[part_counter][0] == '(') and (parts[part_counter][len(parts[part_counter]) - 1] == ')'):
+                            parts[part_counter] = parts[part_counter][1:len(parts[part_counter]) - 1]
+                            is_answer = True
+
+                        create_choice = Choice(question=Question.objects.get(pk=create_question.id),
+                                               choice_text=parts[part_counter], answer=is_answer)
+                        create_choice.save()
+
+                fd.close()
+                os.remove(MEDIA_ROOT_FILES + '/temporary_file.txt')
 
     else:
         form = UploadQuizData()
 
     data = {'form': form, 'groups': quiz_groups}
     return render(request, 'create_quiz_form.html', data)
-
-
-def create_quiz(request, file):
-    fd = open('%s/%s' % (MEDIA_ROOT_FILES, str(uuid.uuid1()) + "_" + request.FILES['file'].name), 'wb')
-
-    for line in request.FILES['file'].read():
-        fd.write(line)
-
-    fd.close()
-    response = HttpResponse(content_type='text/plain')
-    response["Content-Disposition"] = "attachment; filename=quiz.txt"
-
-    for line in request.FILES['file'].read():
-        response.write(line)
-
-    return response
-
 
 def get_questions_for_quiz(training_id):
     try:
