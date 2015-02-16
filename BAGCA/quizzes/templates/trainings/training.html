@@ -21,7 +21,14 @@
                                 {{ training_info.description }}
                             {% else %}
                                 <i>There is no description for this training.</i>
-                            {% endif %} 
+                            {% endif %}
+
+                            {% if files %}
+                                <p>Available files for download:</p>
+                                {% for file in files %}
+                                    <p><a href="/trainings/download_file/{{ file.id }}/">{{ file.filename }}</a></p>
+                                {% endfor %}
+                            {% endif %}
                         </p>
                     </div>
                 </div>

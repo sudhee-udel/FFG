@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render
-from quiz_admin.models import Categories, Videos
+from quiz_admin.models import Categories, Videos, Files
 from user_data.models import Completed
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz
 from .email_helpers import get_formatted_message
@@ -76,7 +76,9 @@ def training(request, training_id):
     else:
         paginate = False
 
-    context = {'training_info': training_info, 'paginate': paginate}
+    quiz_files = Files.objects.filter(category_id=training_id)
+
+    context = {'training_info': training_info, 'paginate': paginate, 'files': quiz_files}
     return render(request, 'trainings/training.html', context)
 
 @login_required

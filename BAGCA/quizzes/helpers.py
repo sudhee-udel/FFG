@@ -1,7 +1,7 @@
 import random
 import os
 from django.http import Http404
-from quiz_admin.models import Categories
+from quiz_admin.models import Categories, Files
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from .models import Question, Choice
@@ -11,6 +11,30 @@ from .forms import UploadQuizData
 from django.shortcuts import render
 from BAGCA.settings import MEDIA_ROOT_FILES
 from django.contrib.auth.models import Group
+import re
+
+
+def download_file(request, file_id):
+    database_file_object = Files.objects.get(pk=file_id)
+
+    database_file_object_string = str(database_file_object.file)
+
+    out_filename = re.match(r'.*/(.*)', database_file_object_string, re.M | re.I)
+
+    out_file = out_filename.groups(1)[0]
+
+    file_extension = re.match(r'.*\.(.*)', out_file, re.M | re.I)
+
+    response = HttpResponse(content_type=file_extension.groups(1))
+    response["Content-Disposition"] = "attachment; filename=" + out_file + ""
+
+    response_file_object = open(MEDIA_ROOT_FILES + '/' + out_file, 'r')
+
+    for line in response_file_object:
+        response.write(line)
+
+    return response
+
 
 def create_quiz_form(request):
     quiz_groups = Group.objects.all()
@@ -55,7 +79,8 @@ def create_quiz_form(request):
                     for part_counter in range(1, len(parts)):
                         is_answer = False
 
-                        if (parts[part_counter][0] == '(') and (parts[part_counter][len(parts[part_counter]) - 1] == ')'):
+                        if (parts[part_counter][0] == '(') and (
+                                    parts[part_counter][len(parts[part_counter]) - 1] == ')'):
                             parts[part_counter] = parts[part_counter][1:len(parts[part_counter]) - 1]
                             is_answer = True
 
@@ -71,6 +96,7 @@ def create_quiz_form(request):
 
     data = {'form': form, 'groups': quiz_groups}
     return render(request, 'create_quiz_form.html', data)
+
 
 def get_questions_for_quiz(training_id):
     try:
