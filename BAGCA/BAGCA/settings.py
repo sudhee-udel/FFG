@@ -28,7 +28,10 @@ ALLOWED_HOSTS = []
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
-#TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.request',)
+TEMPLATE_CONTEXT_PROCESSORS = ( 'django.core.context_processors.request',
+                                'django.contrib.auth.context_processors.auth',
+                            )
+
 
 # Application definition
 
@@ -41,6 +44,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'embed_video',
     'quizzes',
+    'quiz_admin',
+    'user_data',
+    'jquery',
+    'bootstrap_toolkit',
+    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -86,3 +94,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = '/static/'
+
+# Send email
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'chas.barnajr@tsgforce.com'
+EMAIL_HOST_PASSWORD = 'zm49tb7w'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# typically, os.path.join(os.path.dirname(__file__), 'media')
+MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
+MEDIA_ROOT_FILES = MEDIA_ROOT + '/USER_UPLOADED_FILES/'
+MEDIA_URL = '/media/'

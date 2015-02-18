@@ -1,0 +1,77 @@
+{% include "base.html" %}
+
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+</head>
+
+<body>
+    <div class="container" style="height:100%; background-color:white; box-shadow:0 0 10px black;">
+        <h2>Training: <i>{{ training_info.title }}</i></h2>
+        <hr/>
+        <br/>
+        <div class="row">
+                <div class="col-md-6">
+                    <div class="container">
+                        <h4><b>Training Description:</b></h4>
+                        <p>
+                            {% if training_info.description %}
+                                {{ training_info.description }}
+                            {% else %}
+                                <i>There is no description for this training.</i>
+                            {% endif %}
+
+                            {% if files %}
+                                <p>Available files for download:</p>
+                                {% for file in files %}
+                                    <p><a href="/trainings/download_file/{{ file.id }}/">{{ file.filename }}</a></p>
+                                {% endfor %}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6" style="border-left:1px solid lightgray;">
+                    <br/>
+                    <div style="text-align:center;">
+                        {% if paginate %}
+                            <span class="current">
+                                {% load embed_video_tags %}
+                                {% for video in training_info.videos.object_list %}
+                                    {% video video.url 'small' %}
+                                {% endfor %}
+                                <br />
+                                Training video {{ training_info.videos.number }} of {{ training_info.videos.paginator.num_pages }}.
+                            </span>
+                            <br />
+                                {% if training_info.videos.has_next %}
+                                    <a href="?page={{ training_info.videos.next_page_number }}" class="btn btn-primary">Next</a>
+                                {% endif %}
+                                {% if training_info.videos.has_previous %}
+                                    <a href="?page={{ training_info.videos.previous_page_number }}" class="btn btn-primary">Previous</a>
+                                {% endif %}
+                        {% endif %}
+                        {% if not paginate %}
+                            {% load embed_video_tags %}
+                            {% for video in training_info.videos %}
+                                {% video video.url 'small' %}
+                                <br />
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <br/>
+                </div>
+        </div>
+
+        <br/>
+        <br/>
+        <div style="text-align:center;margin-left:10pt;">
+            <a href="/" class="btn btn-danger">Exit Training</a>
+            <a href="/trainings/print_quiz/{{ training_info.id }}/" class="btn btn-primary">Print Quiz</a>
+            <a href="/trainings/{{ training_info.id }}/quiz" class="btn btn-success">Take the Quiz!</a>
+        </div>
+
+        <br/>
+    </div>
+</body>
