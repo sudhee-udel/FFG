@@ -31,7 +31,7 @@ def index(request):
         if not check_if_user_finished_quiz:
             trainings_need_to_be_completed.add(quiz_name)
 
-    context = {'trainings': trainings_need_to_be_completed}
+    context = {'trainings': sorted(trainings_need_to_be_completed, key=str)}
     return render(request, 'index.html', context)
 
 @login_required
@@ -68,6 +68,8 @@ def training(request, training_id):
     training_info['title']= category.category_text
     training_info['description'] = category.category_description
     training_info['id'] = training_id
+    training_info['training_text'] = category.training_text
+    training_info['duration'] = category.duration_hours
 
     context = {'training_info': training_info}
     return render(request, 'trainings/training.html', context)
@@ -121,7 +123,7 @@ def quiz(request, training_id):
             message = "You have passed!\n\nPlease retain this message for your records."
             email(request, subject, message)
 
-        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color, 'training_id':training_id}
+        context = {'result':result, 'result_msg':result_msg, 'correct':correct, 'count':count, 'score':score, 'color':color, 'training_id':training_id, 'required_score':category.required_score}
 
         return render(request, 'trainings/results.html', context)
 
@@ -210,10 +212,6 @@ def get_formatted_message(post_data, questionList):
 # ***** this should probably go in a helper class
 # this method currently does not link to anything. will be used to send email.
 def email(request, subject, message):
-    #subject = 'Email subject'
-    #message = 'Email message'
-    #from_email = 'chas.barnajr@tsgforce.com'
-    #to_email = 'chas.barnajr@tsgforce.com'
     if request.method == 'POST':
         list = []
 
@@ -221,11 +219,6 @@ def email(request, subject, message):
             if 'question' in value:
                 list.append(value)
 
-        #message = get_formatted_message(request.POST, list)
-
-#        send_mail('Hello', message, 'chas.barnajr@tsgforce.com', ['sudhee1@gmail.com'], fail_silently=False)
         send_mail(subject, message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
-        #return HttpResponse(str(message))
 
-#    send_mail(subject, message, from_addr, to_addr, fail_silently=False)
     return

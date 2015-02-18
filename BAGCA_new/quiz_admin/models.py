@@ -16,6 +16,7 @@ class Categories(models.Model):
     due_date = models.DateField(default=datetime.date.today)
     duration_hours = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     required_score = models.DecimalField(max_digits=3, decimal_places=0, default=100)
+    training_text = models.CharField(max_length=10000, null=True)
 
 class Videos(models.Model):
     def __str__(self):

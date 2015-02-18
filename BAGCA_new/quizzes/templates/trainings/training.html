@@ -7,40 +7,44 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
 </head>
 
-<body>
-    <div class="container" style="height:100%; background-color:white; box-shadow:0 0 10px black;">
+<body style="height:100%;">
+    <div class="container" style="height:150%; background-color:white; box-shadow:0 0 10px black;">
         <h2>Training: <i>{{ training_info.title }}</i></h2>
         <hr/>
-        <br/>
-        <div class="row">
-                <div class="col-md-6">
-                    <div class="container">
-                        <h4><b>Training Description:</b></h4>
-                        <p>
-                            {% if training_info.description %}
-                                {{ training_info.description }}
-                            {% else %}
-                                <i>There is no description for this training.</i>
-                            {% endif %} 
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-6" style="border-left:1px solid lightgray;">
-                    <br/>
-                    <div style="text-align:center;">
-                        {% load embed_video_tags %}
-                        {% for video in training_info.videos %}
-                            {% video video.url 'small' %}
-                            <br />
-                        {% endfor %}
-                    </div>
-                    <br/>
-                </div>
+        <h4><b>Estimated Duration: </b>{{ training_info.duration }} hour(s)</h4>
+        <h4><b>Training Description:</b></h4>
+        <div class="container">
+            <p>
+                {% if training_info.description %}
+                    {{ training_info.description }}
+                {% else %}
+                    <i>There is no description for this training.</i>
+                {% endif %} 
+            </p>
         </div>
+        {% if training_info.training_text %}
+            <hr/>
+            <h4><b>Training Text:</b></h4>
+            <div class="container">
+                {{ training_info.training_text }}
+            </div>
+        {% endif %}
+        {% if training_info.videos %}
+            <hr/>
+            <h4><b>Training Videos:</b></h4>
+            <div style="text-align:center;">
+                <br/>
+                {% load embed_video_tags %}
+                {% for video in training_info.videos %}
+                    {% video video.url 'small' %}
+                    <br />
+                    <br />
+                {% endfor %}
+            </div>
+        {% endif %}
 
-        <br/>
-        <br/>
         <div style="text-align:center;margin-left:10pt;">
+            <hr/>
             <a href="/" class="btn btn-danger">Exit Training</a>
             <a href="/trainings/{{ training_info.id }}/quiz" class="btn btn-success">Take the Quiz!</a>
         </div>
