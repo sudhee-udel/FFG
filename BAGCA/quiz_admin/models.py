@@ -40,7 +40,7 @@ class Files(models.Model):
 @receiver(models.signals.post_delete, sender=Files)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """Deletes file from filesystem
-    when corresponding `MediaFile` object is deleted.
+    when corresponding `Files` object is deleted.
     """
     if instance.file:
         if os.path.isfile(instance.file.path):
@@ -49,7 +49,7 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
 @receiver(models.signals.pre_save, sender=Files)
 def auto_delete_file_on_change(sender, instance, **kwargs):
     """Deletes file from filesystem
-    when corresponding `MediaFile` object is changed.
+    when corresponding `Files` object is changed.
     """
     if not instance.pk:
         return False
