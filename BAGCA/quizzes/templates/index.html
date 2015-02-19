@@ -3,7 +3,8 @@
 <head>
     <style type="text/css">
         td {
-          background-color: white;
+            background-color: white;
+            text-align: center;
         }
         th {
           background-color: #abddfc;
@@ -42,15 +43,12 @@
                             <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
                             <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
                             <td style="margin-left: auto; margin-right: auto;">{{ t.due_date }}</td>
-                            <td>
-                            {% if t.duration_hours > 0 %}
-                                {{ t.duration_hours }}
+                            <td>{{ t.duration_hours }}
                                 {% if t.duration_hours != 1 %}
                                     hours
                                 {% else %}
-                                        hour
-                                    {% endif %}
-                            {% endif %}
+                                    hour
+                                {% endif %}
                             </td>
                             <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
                             <td style="margin-left: auto; margin-right: auto;"><a href="/training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
@@ -86,20 +84,17 @@
                         <tr>
                             <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
                             <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
-                            <td>
-                                {% if t.duration_hours > 0 %}
-                                    {{ t.duration_hours }}
+                            <td>{{ t.duration_hours }}
                                     {% if t.duration_hours != 1 %}
                                         hours
                                     {% else %}
-                                            hour
-                                        {% endif %}
-                                {% endif %}
+                                        hour
+                                    {% endif %}
                             </td>
                             <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
                             <td style="margin-left: auto; margin-right: auto;"><a href="/training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
                             <td style="margin-left: auto; margin-right: auto;">
-                                <a href="/trainings/{{t.id}}/remove_assignment/" class="btn btn-danger">Remove</button>
+                                <a href="/trainings/{{t.id}}/remove_assignment/" class="btn btn-danger">Remove</button></a>
                             </td>
                         </tr>
                     {% endfor %}

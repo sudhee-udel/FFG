@@ -8,4 +8,4 @@ class UploadQuizData(forms.Form):
     due_date = forms.DateField(label='Due date', widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
     duration_hours = forms.DecimalField(label='Duration')
     required_score = forms.IntegerField(label='required_score')
-    file = forms.Field(widget=forms.FileInput, label='File')
+    file = forms.Field(widget=forms.FileInput, label='Quiz file')

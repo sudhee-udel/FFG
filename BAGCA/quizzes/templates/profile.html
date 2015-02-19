@@ -28,8 +28,10 @@
               <div class="panel-body" style="text-align:center;">
                 <form action="/profile" method="post">
                   <div class="form-group" style="text-align:center; margin:auto;">
-                    <p>Change Email Address: </p>
-                    <input type="text" name="email" value="{{user.email}}">
+                      <p>First name: {{ user.first_name }}</p>
+                      <p>Last name: {{ user.last_name }}</p>
+                      <p>Change Email Address: </p>
+                      <input type="text" name="email" value="{{user.email}}">
                   </div>
                   {% csrf_token %}
                   <br/>
