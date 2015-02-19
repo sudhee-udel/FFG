@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'quizzes',
     'quiz_admin',
     'user_data',
+    'locations',
     'jquery',
     'bootstrap_toolkit',
     'bootstrap3',
