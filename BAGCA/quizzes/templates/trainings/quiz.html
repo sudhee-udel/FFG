@@ -41,7 +41,7 @@
         <br/>
         {% if question_dictionary %}
             <div class="container">
-                <form action="/trainings/{{ training_id }}/process_results/" method="post">
+                <form action="/training/{{ training_id }}/process_results/" method="post">
                     {% for question, choices in question_dictionary.items %}
                         <p>{{ forloop.counter }}) {{ question }}</p>
                         <ul>
@@ -66,8 +66,8 @@
                     <!-- <input type="submit" value="Submit"> -->
                     <div style="text-align:center;">
                         <h4>Please click "SUBMIT" to check the results or  "CANCEL" to quit the Quiz!</h4>
-                        <a href="/trainings/{{training_id}}" class="btn btn-danger">Cancel Quiz</a>
-                        <a href="/trainings/print_quiz/{{ training_id }}/" class="btn btn-primary">Print Quiz</a>
+                        <a href="/training/{{training_id}}" class="btn btn-danger">Cancel Quiz</a>
+                        <a href="/training/print_quiz/{{ training_id }}/" class="btn btn-primary">Print Quiz</a>
                         <button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">Submit Answers</button>
                     </div>
                 </form>
