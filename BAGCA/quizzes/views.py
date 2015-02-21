@@ -2,35 +2,21 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, redirect
 from quiz_admin.models import Categories, Videos, Files
-from user_data.models import Completed, UserAssignment
-from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment
+from user_data.models import UserAssignment
+from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
+    get_admin_assigned_trainings, get_user_assigned_trainings
 from .email_helpers import get_formatted_message
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @login_required
 def index(request):
-    user_groups = []
-    display_groups = set()
-    trainings_need_to_be_completed = set()
+    trainings_need_to_be_completed = get_admin_assigned_trainings(request)
 
-    for groups in request.user.groups.all():
-        user_groups.append(groups)
-        for available_trainings in Categories.objects.filter(groups=groups):
-            display_groups.add(available_trainings.id)
+    user_assigned = get_user_assigned_trainings(request)
 
-    for quiz_id in display_groups:
-        check_if_user_finished_quiz = Completed.objects.filter(category=quiz_id, user=request.user.email)
-        quiz_name = Categories.objects.get(pk=quiz_id)
-        if not check_if_user_finished_quiz:
-            trainings_need_to_be_completed.add(quiz_name)
-
-    user_assignments = UserAssignment.objects.filter(user=request.user)
-    user_assigned = set()
-
-    for assignment in user_assignments:
-        user_assigned.add(assignment.category)
-
-    print user_assigned
+    # Subtract any trainings that are assigned to the user
+    if len(trainings_need_to_be_completed) != 0:
+        user_assigned = user_assigned.difference(trainings_need_to_be_completed)
 
     context = {'trainings': trainings_need_to_be_completed, 'user_assigned': user_assigned}
     return render(request, 'index.html', context)
@@ -41,22 +27,37 @@ def trainings(request):
     alert_style = ""
 
     if request.method == 'POST':
-        user = request.user
         training_id = request.POST['training_id']
         result = save_user_assignment(request, training_id)
 
-        if result=="added":
+        if result == "added":
             alert_msg = "You have successfully assigned a training to yourself!"
             alert_style = "alert-success"
-        elif result=="exists":
+        elif result == "exists":
             alert_msg = "You have already assigned this training to yourself."
             alert_style = "alert-info"
         else:
             alert_msg = "An error has occurred when trying to assign training. Please report this to an administrator."
             alert_style = "alert-danger"
 
-    trainings = Categories.objects.all()
-    context = {'trainings': trainings, 'alert_msg': alert_msg, 'alert_style': alert_style }
+    admin_assigned_trainings = get_admin_assigned_trainings(request)
+    available_trainings = Categories.objects.all()
+
+    available_trainings_users_can_add = set()
+
+    for available_training in available_trainings:
+        available_trainings_users_can_add.add(available_training)
+
+    trainings_assigned_by_user = UserAssignment.objects.filter(user=request.user)
+    already_assigned = set()
+
+    for assigned_trainings in trainings_assigned_by_user:
+        already_assigned.add(assigned_trainings.category)
+
+    available_trainings_users_can_add = available_trainings_users_can_add.difference(admin_assigned_trainings)
+    available_trainings_users_can_add = available_trainings_users_can_add.difference(already_assigned)
+
+    context = {'trainings': available_trainings_users_can_add, 'alert_msg': alert_msg, 'alert_style': alert_style}
     return render(request, 'trainings.html', context)
 
 @login_required

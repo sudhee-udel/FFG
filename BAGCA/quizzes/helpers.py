@@ -14,6 +14,35 @@ from django.contrib.auth.models import Group
 import re
 
 
+def get_user_assigned_trainings(request):
+    user_assignments = UserAssignment.objects.filter(user=request.user)
+    user_assigned = set()
+
+    for assignment in user_assignments:
+        user_assigned.add(assignment.category)
+
+    return user_assigned
+
+
+def get_admin_assigned_trainings(request):
+    user_groups = []
+    display_groups = set()
+    trainings_need_to_be_completed = set()
+
+    for groups in request.user.groups.all():
+        user_groups.append(groups)
+        for available_trainings in Categories.objects.filter(groups=groups):
+            display_groups.add(available_trainings.id)
+
+    for quiz_id in display_groups:
+        check_if_user_finished_quiz = Completed.objects.filter(category=quiz_id, user=request.user.email)
+        quiz_name = Categories.objects.get(pk=quiz_id)
+        if not check_if_user_finished_quiz:
+            trainings_need_to_be_completed.add(quiz_name)
+
+    return trainings_need_to_be_completed
+
+
 def download_file(request, file_id):
     database_file_object = Files.objects.get(pk=file_id)
 
@@ -140,9 +169,10 @@ def save_user_completion(request, training_id):
         store_result = Completed(category=training_id, user=request.user.email)
         store_result.save()
 
+
 def save_user_assignment(request, training_id):
     # Store the results of the user in the database; also allow admins to correct any mistakes.
-    training=Categories.objects.get(pk=training_id)
+    training = Categories.objects.get(pk=training_id)
     check_if_user_assigned_quiz = UserAssignment.objects.filter(category=training, user=request.user)
 
     if not check_if_user_assigned_quiz:

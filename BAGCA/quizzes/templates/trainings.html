@@ -57,7 +57,7 @@
                             </td>
                             <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
                             <td style="margin-left: auto; margin-right: auto;">
-                                <form action="/training/" method="post">
+                                <form action="/trainings/" method="post">
                                     {% csrf_token %}
                                     <input type="hidden" name="training_id" value="{{t.id}}" />
                                     <button type="SUBMIT" class="btn btn-success">Add to Assigned Trainings</button>
