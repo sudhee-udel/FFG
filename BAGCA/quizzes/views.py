@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, redirect
-from quiz_admin.models import Categories, Videos, Files
+from quiz_admin.models import Categories, Videos
 from user_data.models import Completed, UserAssignment
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
     get_admin_assigned_trainings, get_user_assigned_trainings, get_current_quiz
@@ -116,7 +116,7 @@ def training(request, training_id):
     except EmptyPage:
         training_info['videos'] = paginated_videos.page(paginated_videos.num_pages)
 
-    training_info['title']= category.category_text
+    training_info['title'] = category.category_text
     training_info['description'] = category.category_description
     training_info['id'] = training_id
 
@@ -125,9 +125,7 @@ def training(request, training_id):
     else:
         paginate = False
 
-    quiz_files = Files.objects.filter(category_id=training_id)
-
-    context = {'training_info': training_info, 'paginate': paginate, 'files': quiz_files}
+    context = {'training_info': training_info, 'paginate': paginate}
     return render(request, 'trainings/training.html', context)
 
 @login_required

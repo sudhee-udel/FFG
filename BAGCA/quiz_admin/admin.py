@@ -1,10 +1,6 @@
 from django.contrib import admin
-from .models import Categories, Videos, Files
+from .models import Categories, Videos
 from quizzes.models import Question
-
-class FilesInLine(admin.TabularInline):
-    model = Files
-    extra = 1
 
 class VideosInLine(admin.TabularInline):
     model = Videos
@@ -17,7 +13,7 @@ class QuestionInLine(admin.StackedInline):
 class CategoriesAdmin(admin.ModelAdmin):
 
     list_display = ('category_text', )
-    inlines = [VideosInLine, FilesInLine, QuestionInLine]
+    inlines = [VideosInLine, QuestionInLine]
 
     search_fields = ['category_text']
 

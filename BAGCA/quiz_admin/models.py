@@ -18,26 +18,19 @@ class Categories(models.Model):
     due_date = models.DateField(default=datetime.date.today)
     duration_hours = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     required_score = models.DecimalField(max_digits=3, decimal_places=0, default=100)
-    #training_text = models.CharField(max_length=10000, null=True)
 
 class Videos(models.Model):
     def __str__(self):
-        return self.url
+        return self.url_name + " = " + self.url + ", " + self.filename + " = " + str(self.file)
 
     category_id = models.ForeignKey(Categories)
-    name = models.CharField(max_length=100)
-    url = models.URLField()
-
-class Files(models.Model):
-    def __str__(self):
-        return self.filename
-
-    category_id = models.ForeignKey(Categories)
-    filename = models.CharField(max_length=100)
-    file = models.FileField(upload_to=MEDIA_ROOT_FILES)
+    url_name = models.CharField(max_length=100, blank=True)
+    url = models.URLField(blank=True)
+    filename = models.CharField(max_length=100, blank=True)
+    file = models.FileField(upload_to=MEDIA_ROOT_FILES, blank=True)
 
 # These two auto-delete files from filesystem when they are unneeded:
-@receiver(models.signals.post_delete, sender=Files)
+@receiver(models.signals.post_delete, sender=Videos)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """Deletes file from filesystem
     when corresponding `Files` object is deleted.
@@ -46,7 +39,7 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
         if os.path.isfile(instance.file.path):
             os.remove(instance.file.path)
 
-@receiver(models.signals.pre_save, sender=Files)
+@receiver(models.signals.pre_save, sender=Videos)
 def auto_delete_file_on_change(sender, instance, **kwargs):
     """Deletes file from filesystem
     when corresponding `Files` object is changed.
@@ -55,8 +48,8 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
         return False
 
     try:
-        old_file = Files.objects.get(pk=instance.pk).file
-    except Files.DoesNotExist:
+        old_file = Videos.objects.get(pk=instance.pk).file
+    except Videos.DoesNotExist:
         return False
 
     new_file = instance.file
