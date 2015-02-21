@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, redirect
 from quiz_admin.models import Categories, Videos, Files
-from user_data.models import UserAssignment
+from user_data.models import Completed, UserAssignment
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
     get_admin_assigned_trainings, get_user_assigned_trainings, get_current_quiz
 from .email_helpers import get_formatted_message
@@ -45,17 +45,27 @@ def trainings(request):
 
     available_trainings_users_can_add = set()
 
+    # Add all available trainings
     for available_training in available_trainings:
         available_trainings_users_can_add.add(available_training)
 
     trainings_assigned_by_user = UserAssignment.objects.filter(user=request.user)
     already_assigned = set()
 
+    # Remove the trainings already assigned to the user by the admin
     for assigned_trainings in trainings_assigned_by_user:
         already_assigned.add(assigned_trainings.category)
 
+    completed_trainings = Completed.objects.filter(user=request.user.email)
+    completed_training_ids = set()
+
+    # Remove the trainings that the user has already completed
+    for completed in completed_trainings:
+        completed_training_ids.add(completed.category)
+
     available_trainings_users_can_add = available_trainings_users_can_add.difference(admin_assigned_trainings)
     available_trainings_users_can_add = available_trainings_users_can_add.difference(already_assigned)
+    available_trainings_users_can_add = available_trainings_users_can_add.difference(completed_training_ids)
 
     context = {'trainings': available_trainings_users_can_add, 'alert_msg': alert_msg, 'alert_style': alert_style}
     return render(request, 'trainings.html', context)
@@ -143,8 +153,10 @@ def process_results(request, training_id):
 
         if result == 'passed':
             check_if_user_assigned_quiz = UserAssignment.objects.filter(category=training_id, user=request.user)
+
             if check_if_user_assigned_quiz:
                 check_if_user_assigned_quiz.delete()
+
             save_user_completion(request, training_id)
 
         context = {'result': result, 'required_score': required_score, 'correct': correct_answers,
