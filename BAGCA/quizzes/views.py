@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from quiz_admin.models import Categories, Videos, Files
 from user_data.models import UserAssignment
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
-    get_admin_assigned_trainings, get_user_assigned_trainings
+    get_admin_assigned_trainings, get_user_assigned_trainings, get_current_quiz
 from .email_helpers import get_formatted_message
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -135,16 +135,20 @@ def process_results(request, training_id):
 
         correct_answers, total_number_of_questions = get_formatted_message(request.POST, question_list)
 
-        current_quiz = Categories.objects.get(pk=training_id)
+        current_quiz = get_current_quiz(training_id)
 
         required_score = current_quiz.required_score
 
         result, color, score = get_result_page_styling(correct_answers, total_number_of_questions, required_score)
 
         if result == 'passed':
+            check_if_user_assigned_quiz = UserAssignment.objects.filter(category=training_id, user=request.user)
+            if check_if_user_assigned_quiz:
+                check_if_user_assigned_quiz.delete()
             save_user_completion(request, training_id)
 
-        context = {'result': result, 'required_score': required_score, 'correct': correct_answers, 'count': total_number_of_questions, 'score': score, 'color': color, 'training_id': training_id}
+        context = {'result': result, 'required_score': required_score, 'correct': correct_answers,
+                   'count': total_number_of_questions, 'score': score, 'color': color, 'training_id': training_id}
 
         return render(request, 'trainings/results.html', context)
 

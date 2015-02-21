@@ -7,9 +7,9 @@ class Completed(models.Model):
         verbose_name_plural = "completed"
 
     def __str__(self):
-        return self.user + " passed " + self.category
+        return self.user + " passed " + self.category_text
 
-    category = models.CharField(max_length=50)
+    category = models.ForeignKey(Categories)
     user = models.CharField(max_length=100)
 
 class UserAssignment(models.Model):
@@ -17,7 +17,7 @@ class UserAssignment(models.Model):
         verbose_name_plural = "UserAssignments"
 
     def __str__(self):
-        return ""
+        return "Category = " + str(self.category) + ", User = " + str(self.user)
 
     category = models.ForeignKey(Categories)
     user = models.ForeignKey(User)
