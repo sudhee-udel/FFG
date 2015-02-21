@@ -2,6 +2,7 @@ import random
 import os
 from django.http import Http404
 from quiz_admin.models import Categories, Videos
+from django.utils.datastructures import MultiValueDictKeyError
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from .models import Question, Choice
@@ -70,55 +71,62 @@ def create_quiz_form(request):
     if request.method == 'POST':
         form = UploadQuizData(request.POST, request.FILES)
         if form.is_valid():
-            filename = "temporary_file.txt"
-            fd = open('%s/%s' % (MEDIA_ROOT_FILES, filename), 'wb')
 
-            category_text = request.POST['category_text']
-            category_description = request.POST['category_description']
-            course_code = request.POST['course_code']
-            due_date = request.POST['due_date']
-            duration_hours = request.POST['duration_hours']
-            required_score = request.POST['required_score']
+            try:
+                filename = "temporary_file.txt"
+                fd = open('%s/%s' % (MEDIA_ROOT_FILES, filename), 'wb')
 
-            determine_if_quiz_exists = Categories.objects.filter(category_text=category_text)
+                group = request.POST['groups']
+                category_text = request.POST['category_text']
+                category_description = request.POST['category_description']
+                course_code = request.POST['course_code']
+                due_date = request.POST['due_date']
+                duration_hours = request.POST['duration_hours']
+                required_score = request.POST['required_score']
 
-            if not determine_if_quiz_exists:
-                create_quiz = Categories(category_text=category_text,
-                                         category_description=category_description,
-                                         course_code=course_code,
-                                         due_date=due_date,
-                                         duration_hours=duration_hours,
-                                         required_score=required_score)
-                create_quiz.save()
+                determine_if_quiz_exists = Categories.objects.filter(category_text=category_text)
 
-                quiz_id = Categories.objects.get(category_text=category_text)
+                if not determine_if_quiz_exists:
+                    create_quiz = Categories(category_text=category_text,
+                                             category_description=category_description,
+                                             course_code=course_code,
+                                             due_date=due_date,
+                                             duration_hours=duration_hours,
+                                             required_score=required_score)
+                    create_quiz.save()
+                    create_quiz.groups.add(group)
+                    quiz_id = Categories.objects.get(category_text=category_text)
 
-                for line in request.FILES['file'].read():
-                    fd.write(line)
+                    for line in request.FILES['file'].read():
+                        fd.write(line)
 
-                fd.close()
+                    fd.close()
 
-                written_file = open(MEDIA_ROOT_FILES + '/temporary_file.txt', 'r')
+                    written_file = open(MEDIA_ROOT_FILES + '/temporary_file.txt', 'r')
 
-                for line in written_file:
-                    parts = line.split('\t')
+                    for line in written_file:
+                        parts = line.split('\t')
 
-                    create_question = Question(category=quiz_id, question_text=parts[0])
-                    create_question.save()
-                    for part_counter in range(1, len(parts)):
-                        is_answer = False
+                        create_question = Question(category=quiz_id, question_text=parts[0])
+                        create_question.save()
+                        for part_counter in range(1, len(parts)):
+                            is_answer = False
 
-                        if (parts[part_counter][0] == '(') and (
-                                    parts[part_counter][len(parts[part_counter]) - 1] == ')'):
-                            parts[part_counter] = parts[part_counter][1:len(parts[part_counter]) - 1]
-                            is_answer = True
+                            if (parts[part_counter][0] == '(') and (
+                                        parts[part_counter][len(parts[part_counter]) - 1] == ')'):
+                                parts[part_counter] = parts[part_counter][1:len(parts[part_counter]) - 1]
+                                is_answer = True
 
-                        create_choice = Choice(question=Question.objects.get(pk=create_question.id),
-                                               choice_text=parts[part_counter], answer=is_answer)
-                        create_choice.save()
+                            create_choice = Choice(question=Question.objects.get(pk=create_question.id),
+                                                   choice_text=parts[part_counter].strip(), answer=is_answer)
+                            create_choice.save()
 
-                fd.close()
-                os.remove(MEDIA_ROOT_FILES + '/temporary_file.txt')
+                    fd.close()
+                    os.remove(MEDIA_ROOT_FILES + '/temporary_file.txt')
+            except MultiValueDictKeyError:
+                group_error = True
+                data = {'form': form, 'groups': quiz_groups, 'group_error': group_error}
+                return render(request, 'create_quiz_form.html', data)
 
     else:
         form = UploadQuizData()
