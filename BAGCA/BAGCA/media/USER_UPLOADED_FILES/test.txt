@@ -1,0 +1,4 @@
+Will this work??	choice_1	(choice_2)	choice_3
+This works?	(Yes)	No	Maybe
+What is wrong with the world??	(i dunno)	who knows?	who cares?
+Refactored quiz works?	No	(Yes)	Maybe	hm
