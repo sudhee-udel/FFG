@@ -28,18 +28,16 @@
               <div class="panel-body">
                 <form action="/profile" method="post">
                   <div class="form-group">
-                      <p>First name: {{ user.first_name }}</p>
-                      <p>Last name: {{ user.last_name }}</p>
-                      <p>Change Email Address: </p>
+                      <p>First name: <input type="text" name="first_name" value="{{ user.first_name }}"></p>
+                      <p>Last name: <input type="text" name="last_name" value="{{ user.last_name }}"></p>
+                      <p>Email address: <input type="text" name="email" value="{{user.email}}"></p>
                       <p>Member of:</p>
-
                       {% for group in groups %}
-                        <ul>{{ group }}</ul>
+                        <p style="padding-left: 1em;"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true" style="padding-right: .5em"></span>{{ group }}</p>
                       {% endfor %}
                   </div>
                   {% csrf_token %}
                     <div style="text-align: center;">
-                        <input type="text" name="email" value="{{user.email}}">
                         <br />
                         <br />
                         <a href="/" class="btn btn-danger center">Cancel</a>
