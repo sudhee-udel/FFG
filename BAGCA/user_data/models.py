@@ -2,6 +2,7 @@ from django.db import models
 from quiz_admin.models import Categories
 from django.contrib.auth.models import User
 
+
 class Completed(models.Model):
     class Meta:
         verbose_name_plural = "completed"
@@ -12,6 +13,7 @@ class Completed(models.Model):
     category = models.ForeignKey(Categories)
     user = models.CharField(max_length=100)
 
+
 class UserAssignment(models.Model):
     class Meta:
         verbose_name_plural = "UserAssignments"
@@ -21,3 +23,9 @@ class UserAssignment(models.Model):
 
     category = models.ForeignKey(Categories)
     user = models.ForeignKey(User)
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    activation_key = models.CharField(max_length=40)
+    key_expires = models.DateTimeField()

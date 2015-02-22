@@ -12,7 +12,18 @@ from .forms import UploadQuizData
 from django.shortcuts import render
 from BAGCA.settings import MEDIA_ROOT_FILES
 from django.contrib.auth.models import Group
+from django.http import HttpResponseRedirect
 import re
+
+
+def add_groups(request):
+    groups = request.POST.getlist('groups')
+
+    for group in groups:
+        quiz_group = Group.objects.get(name=group)
+        quiz_group.user_set.add(request.user)
+
+    return HttpResponseRedirect("/")
 
 
 def get_user_assigned_trainings(request):
@@ -168,8 +179,10 @@ def print_quiz(request, training_id):
 
     return response
 
+
 def get_current_quiz(training_id):
     return Categories.objects.get(pk=training_id)
+
 
 def save_user_completion(request, training_id):
     current_quiz = get_current_quiz(training_id)

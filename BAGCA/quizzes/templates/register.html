@@ -1,0 +1,30 @@
+{% include "base.html" %}
+
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script type="text/javascript" src="TimeCircles.js"></script>
+    <link href="TimeCircles.css" rel="stylesheet">
+
+    <style>
+        body {background-color: LightSkyBlue;}
+    </style>
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+</head>
+
+<body>
+<div class="container" style="background-color:white; height:100%; box-shadow:0 0 10px black;">
+    <form action="." method="post" enctype="multipart/form-data">
+        <br />
+        <center><h2>Please enter the information to register to the site.</h2></center>
+        {{ form.as_p }}
+        <button type = "submit" value="Upload">Submit</button>
+        {% csrf_token %}
+    </form>
+</div>
+</body>

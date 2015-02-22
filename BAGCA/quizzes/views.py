@@ -1,6 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import Group
+from django.http import HttpResponseRedirect
+from django.contrib.auth.forms import UserCreationForm
 from quiz_admin.models import Categories, Videos
 from user_data.models import Completed, UserAssignment
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
@@ -8,17 +11,35 @@ from .helpers import get_result_page_styling, save_user_completion, get_question
 from .email_helpers import get_formatted_message
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/")
+    else:
+        form = UserCreationForm()
+    return render(request, "register.html", {
+        'form': form,
+        })
+
 @login_required
 def index(request):
-    trainings_need_to_be_completed = get_admin_assigned_trainings(request)
+    if request.user.groups.all():
+        trainings_need_to_be_completed = get_admin_assigned_trainings(request)
 
-    user_assigned = get_user_assigned_trainings(request)
+        user_assigned = get_user_assigned_trainings(request)
 
-    # Subtract any trainings that are assigned to the user
-    if len(trainings_need_to_be_completed) != 0:
-        user_assigned = user_assigned.difference(trainings_need_to_be_completed)
+        # Subtract any trainings that are assigned to the user
+        if len(trainings_need_to_be_completed) != 0:
+            user_assigned = user_assigned.difference(trainings_need_to_be_completed)
 
-    context = {'trainings': trainings_need_to_be_completed, 'user_assigned': user_assigned}
+        context = {'trainings': trainings_need_to_be_completed, 'user_assigned': user_assigned}
+    else:
+        groups = Group.objects.all()
+        context = {'no_groups': True, 'groups': groups}
+
     return render(request, 'index.html', context)
 
 @login_required

@@ -11,4 +11,5 @@ urlpatterns = patterns('',
                        url(r'^generate_certificate/(?P<training_id>\d+)/$', helpers.generate_certificate, name='generate_certificate'),
                        url(r'^print_quiz/(?P<training_id>\d+)/$', helpers.print_quiz, name='print_quiz'),
                        url(r'^download_file/(?P<file_id>\d+)/$', helpers.download_file, name='download_file'),
+                       url(r'^add_groups/', helpers.add_groups, name='add_groups'),
                     )

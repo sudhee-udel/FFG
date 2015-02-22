@@ -23,87 +23,99 @@
         <hr/>
         <br>
 
-
-        {% if trainings %}
-            <div class="panel panel-default">
-                <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
-                    <h4 style="color:white;"><b>My Assigned Trainings</b></h4>
-                </div>
-                <table class="table table-striped" style="width:100%;">
-                    <tr>
-                        <th>Training Name</th>
-                        <th>Course Code</th>
-                        <th>Due Date</th>
-                        <th>Duration</th>
-                        <th>Required Score</th>
-                        <th></th>
-                    </tr>
-                    {% for t in trainings %}
+        {% if not no_groups %}
+            {% if trainings %}
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
+                        <h4 style="color:white;"><b>My Assigned Trainings</b></h4>
+                    </div>
+                    <table class="table table-striped" style="width:100%;">
                         <tr>
-                            <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
-                            <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
-                            <td style="margin-left: auto; margin-right: auto;">{{ t.due_date }}</td>
-                            <td>{{ t.duration_hours }}
-                                {% if t.duration_hours != 1 %}
-                                    hours
-                                {% else %}
-                                    hour
-                                {% endif %}
-                            </td>
-                            <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
-                            <td style="margin-left: auto; margin-right: auto;"><a href="/training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
+                            <th>Training Name</th>
+                            <th>Course Code</th>
+                            <th>Due Date</th>
+                            <th>Duration</th>
+                            <th>Required Score</th>
+                            <th></th>
                         </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        {% else %}
-            <div style="text-align:center;">
-                <h3>Sorry, but there are currently no assigned trainings available to display.</h3>
-            </div>
-        {% endif %}
-
-        <br/>
-        <hr/>
-        <br/>
-
-        {% if user_assigned %}
-            <div class="panel panel-default">
-                <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
-                    <h4 style="color:white;"><b>Self Assigned Trainings</b></h4>
-                </div>
-                <table class="table table-striped" style="width:100%;">
-                    <tr>
-                        <th>Training Name</th>
-                        <th>Course Code</th>
-                        <th>Duration</th>
-                        <th>Required Score</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    {% for t in user_assigned %}
-                        <tr>
-                            <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
-                            <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
-                            <td>{{ t.duration_hours }}
+                        {% for t in trainings %}
+                            <tr>
+                                <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
+                                <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
+                                <td style="margin-left: auto; margin-right: auto;">{{ t.due_date }}</td>
+                                <td>{{ t.duration_hours }}
                                     {% if t.duration_hours != 1 %}
                                         hours
                                     {% else %}
                                         hour
                                     {% endif %}
-                            </td>
-                            <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
-                            <td style="margin-left: auto; margin-right: auto;"><a href="/training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
-                            <td style="margin-left: auto; margin-right: auto;">
-                                <a href="/trainings/{{t.id}}/remove_assignment/" class="btn btn-danger">Remove</button></a>
-                            </td>
+                                </td>
+                                <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
+                                <td style="margin-left: auto; margin-right: auto;"><a href="/training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                <div style="text-align:center;">
+                    <h3>Sorry, but there are currently no assigned trainings available to display.</h3>
+                </div>
+            {% endif %}
+
+
+            <br/>
+            <hr/>
+            <br/>
+
+            {% if user_assigned %}
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
+                        <h4 style="color:white;"><b>Self Assigned Trainings</b></h4>
+                    </div>
+                    <table class="table table-striped" style="width:100%;">
+                        <tr>
+                            <th>Training Name</th>
+                            <th>Course Code</th>
+                            <th>Duration</th>
+                            <th>Required Score</th>
+                            <th></th>
+                            <th></th>
                         </tr>
-                    {% endfor %}
-                </table>
-            </div>
+                        {% for t in user_assigned %}
+                            <tr>
+                                <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
+                                <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
+                                <td>{{ t.duration_hours }}
+                                        {% if t.duration_hours != 1 %}
+                                            hours
+                                        {% else %}
+                                            hour
+                                        {% endif %}
+                                </td>
+                                <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
+                                <td style="margin-left: auto; margin-right: auto;"><a href="/training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
+                                <td style="margin-left: auto; margin-right: auto;">
+                                    <a href="/trainings/{{t.id}}/remove_assignment/" class="btn btn-danger">Remove</button></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                <div style="text-align:center;">
+                    <h3>Sorry, but there are currently no user assigned trainings available to display.</h3>
+                </div>
+            {% endif %}
         {% else %}
-            <div style="text-align:center;">
-                <h3>Sorry, but there are currently no user assigned trainings available to display.</h3>
-            </div>
+            <h4>Please select the groups you need to be added to.</h4>
+            <form action="/training/add_groups/" method="post">
+                {% for group in groups %}
+                    <input type="checkbox" name="groups" id="group_{{ group.id }}" value="{{ group }}">
+                    <label for="group_{{ group.id }}">{{ group }}</label><br />
+                {% endfor %}
+                <button type = "submit" value="add">Submit</button>
+                {% csrf_token %}
+            </form>
         {% endif %}
     </div>
 </body>

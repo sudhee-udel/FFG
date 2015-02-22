@@ -1,6 +1,13 @@
 from django import forms
 
 
+class RegistrationForm(forms.Form):
+    username = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    password = forms.PasswordInput
+    re_enter_password = forms.PasswordInput
+
+
 class UploadQuizData(forms.Form):
     category_text = forms.CharField(label='Quiz name', max_length=200)
     category_description = forms.CharField(label='Quiz description', max_length=1000)
