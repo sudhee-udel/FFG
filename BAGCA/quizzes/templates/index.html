@@ -51,7 +51,7 @@
                                     {% endif %}
                                 </td>
                                 <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
-                                <td style="margin-left: auto; margin-right: auto;"><a href="/training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
+                                <td style="margin-left: auto; margin-right: auto;"><a href="/user_assigned_training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
                             </tr>
                         {% endfor %}
                     </table>
@@ -93,7 +93,7 @@
                                         {% endif %}
                                 </td>
                                 <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
-                                <td style="margin-left: auto; margin-right: auto;"><a href="/training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
+                                <td style="margin-left: auto; margin-right: auto;"><a href="/user_assigned_training/{{ t.id }}/" class="btn btn-success">Begin Training</a></td>
                                 <td style="margin-left: auto; margin-right: auto;">
                                     <a href="/trainings/{{t.id}}/remove_assignment/" class="btn btn-danger">Remove</button></a>
                                 </td>
@@ -108,7 +108,7 @@
             {% endif %}
         {% else %}
             <h4>Please select the groups you need to be added to.</h4>
-            <form action="/training/add_groups/" method="post">
+            <form action="/user_assigned_training/add_groups/" method="post">
                 {% for group in groups %}
                     <input type="checkbox" name="groups" id="group_{{ group.id }}" value="{{ group }}">
                     <label for="group_{{ group.id }}">{{ group }}</label><br />

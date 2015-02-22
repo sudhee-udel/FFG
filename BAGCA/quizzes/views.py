@@ -100,21 +100,19 @@ def remove_user_assignment(request, training_id):
 @login_required
 def profile(request):
     if request.method == 'GET':
-
-        return render(request, 'profile.html', {})
+        context = {'groups': request.user.groups.all()}
+        return render(request, 'profile.html', context)
 
     elif request.method == 'POST':
         user = request.user
         user.email = request.POST['email']
         user.save
 
-        context = {}
-
-        return render(request, 'profile.html', context)
+        return render(request, 'profile.html')
     
 
 @login_required
-def training(request, training_id):
+def user_assigned_training(request, training_id):
     try:
         category = Categories.objects.get(pk=training_id)
         videos = Videos.objects.filter(category_id=training_id)

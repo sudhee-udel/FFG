@@ -6,7 +6,7 @@
             <br/>
             {% if result == 'passed' %}
                 <h2><b>Congratulations, you have passed the course!</b></h2>
-                <form action="/training/generate_certificate/{{ training_id }}/" method="POST">
+                <form action="/user_assigned_training/generate_certificate/{{ training_id }}/" method="POST">
                     {% csrf_token %}
                     <center><button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">Print Certificate</button></center>
                 </form>

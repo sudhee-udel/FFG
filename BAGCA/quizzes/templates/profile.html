@@ -25,18 +25,26 @@
          <div class="container" style="margin-top:30px">
           <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-default">
-              <div class="panel-body" style="text-align:center;">
+              <div class="panel-body">
                 <form action="/profile" method="post">
-                  <div class="form-group" style="text-align:center; margin:auto;">
+                  <div class="form-group">
                       <p>First name: {{ user.first_name }}</p>
                       <p>Last name: {{ user.last_name }}</p>
                       <p>Change Email Address: </p>
-                      <input type="text" name="email" value="{{user.email}}">
+                      <p>Member of:</p>
+
+                      {% for group in groups %}
+                        <ul>{{ group }}</ul>
+                      {% endfor %}
                   </div>
                   {% csrf_token %}
-                  <br/>
-                  <a href="/" class="btn btn-danger center">Cancel</a>
-                  <button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">Submit</button>
+                    <div style="text-align: center;">
+                        <input type="text" name="email" value="{{user.email}}">
+                        <br />
+                        <br />
+                        <a href="/" class="btn btn-danger center">Cancel</a>
+                        <button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">Submit</button>
+                    </div>
                 </form>
               </div>
             </div>
