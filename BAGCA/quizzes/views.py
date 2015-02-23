@@ -110,7 +110,8 @@ def profile(request):
         user.email = request.POST['email']
         user.save()
 
-        return render(request, 'profile.html')
+        context = {'groups': request.user.groups.all()}
+        return render(request, 'profile.html', context)
     
 
 @login_required
