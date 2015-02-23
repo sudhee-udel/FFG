@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0693b0ad-c3fa-4f72-9033-622cdde09046" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/quizzes/helpers.py" afterPath="$PROJECT_DIR$/quizzes/helpers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BAGCA/settings.py" afterPath="$PROJECT_DIR$/BAGCA/settings.py" />
     </list>
     <ignored path="BAGCA.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,14 +37,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="helpers.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="helpers.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quizzes/helpers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5732484" vertical-offset="2220" max-vertical-offset="4440">
-              <caret line="166" column="103" selection-start-line="166" selection-start-column="103" selection-end-line="166" selection-end-column="103" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1050" max-vertical-offset="4440">
+              <caret line="88" column="30" selection-start-line="88" selection-start-column="30" selection-end-line="88" selection-end-column="30" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/BAGCA/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.7452229" vertical-offset="1284" max-vertical-offset="1755">
+              <caret line="109" column="53" selection-start-line="109" selection-start-column="53" selection-end-line="109" selection-end-column="53" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -71,7 +80,6 @@
         <option value="$PROJECT_DIR$/BAGCA/media/THIS_IS_THE_FILE" />
         <option value="$PROJECT_DIR$/quizzes/migrations/0001_initial.py" />
         <option value="$PROJECT_DIR$/quiz_admin/migrations/0007_auto_20150219_0100.py" />
-        <option value="$PROJECT_DIR$/BAGCA/settings.py" />
         <option value="$PROJECT_DIR$/locations/admin.py" />
         <option value="$PROJECT_DIR$/locations/models.py" />
         <option value="$PROJECT_DIR$/quizzes/templates/accounts/signup.html" />
@@ -101,6 +109,7 @@
         <option value="$PROJECT_DIR$/quizzes/templates/profile.html" />
         <option value="$PROJECT_DIR$/quizzes/templates/trainings/training.html" />
         <option value="$PROJECT_DIR$/quizzes/helpers.py" />
+        <option value="$PROJECT_DIR$/BAGCA/settings.py" />
       </list>
     </option>
   </component>
@@ -789,7 +798,7 @@
       <workItem from="1424650887514" duration="398000" />
       <workItem from="1424651406847" duration="369000" />
       <workItem from="1424653415480" duration="140000" />
-      <workItem from="1424666951107" duration="342000" />
+      <workItem from="1424666951107" duration="572000" />
     </task>
     <task id="LOCAL-00001" summary="Added ability to group questions into categories.">
       <created>1418359976883</created>
@@ -1035,17 +1044,17 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113663000" />
+    <option name="totallyTimeSpent" value="113893000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="824" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3201635" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3201635" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1439,13 +1448,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BAGCA/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.1974522" vertical-offset="1284" max-vertical-offset="1755">
-          <caret line="48" column="16" selection-start-line="48" selection-start-column="16" selection-end-line="48" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quizzes/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="3.2165606" vertical-offset="105" max-vertical-offset="2910">
@@ -1470,11 +1472,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/quizzes/helpers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5732484" vertical-offset="2220" max-vertical-offset="4440">
-          <caret line="166" column="103" selection-start-line="166" selection-start-column="103" selection-end-line="166" selection-end-column="103" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1050" max-vertical-offset="4440">
+          <caret line="88" column="30" selection-start-line="88" selection-start-column="30" selection-end-line="88" selection-end-column="30" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BAGCA/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7452229" vertical-offset="1284" max-vertical-offset="1755">
+          <caret line="109" column="53" selection-start-line="109" selection-start-column="53" selection-end-line="109" selection-end-column="53" />
+          <folding />
         </state>
       </provider>
     </entry>
