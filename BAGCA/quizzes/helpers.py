@@ -164,7 +164,7 @@ def get_questions_for_quiz(training_id):
 def print_quiz(request, training_id):
     response = HttpResponse(content_type='text/plain')
     quiz = Categories.objects.get(pk=training_id)
-    response["Content-Disposition"] = "attachment; filename=" + quiz.category_text + "_quiz.txt"
+    response["Content-Disposition"] = "attachment; filename=" + re.sub(r"\s+", "_", quiz.category_text) + "_quiz.txt"
 
     question_dictionary = get_questions_for_quiz(training_id)
 
