@@ -13,6 +13,7 @@ from django.shortcuts import render
 from BAGCA.settings import MEDIA_ROOT_FILES
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
+from BAGCA.settings import MEDIA_ROOT
 import re
 
 
@@ -226,7 +227,7 @@ def get_result_page_styling(correct_answers, total_number_of_questions, required
 
 
 def set_certificate_properties(pdf):
-    image = canvas.ImageReader('quizzes/BAGCA.jpg')  # image_data is a raw string containing a JPEG
+    image = canvas.ImageReader(MEDIA_ROOT + '/BAGCA.jpg')  # image_data is a raw string containing a JPEG
 
     pdf.drawImage(image, 100, 600, 400, 200)
     pdf.setLineWidth(.5)
