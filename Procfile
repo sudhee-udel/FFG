@@ -1,1 +1,1 @@
-web: python BAGCA/manage.py runserver
+web: python BAGCA/manage.py runserver 0.0.0.0:$PORT
