@@ -29,7 +29,7 @@
                                 {% load embed_video_tags %}
                                 {% for video in training_info.videos.object_list %}
                                     {% if video.filename %}
-                                        <p>Available reading material: <a href="/training/download_file/{{ video.id }}/">{{ video.filename }}</a></p>
+                                        <p>Available reading material: <a href="/user_assigned_training/download_file/{{ video.id }}/">{{ video.filename }}</a></p>
                                     {% endif %}
                                     {% video video.url 'small' %}
                                 {% endfor %}
@@ -47,7 +47,7 @@
                         {% if not paginate %}
                             {% load embed_video_tags %}
                             {% for video in training_info.videos %}
-                                <p>Available reading material: <a href="/training/download_file/{{ video.id }}/">{{ video.filename }}</a></p>
+                                <p>Available reading material: <a href="/user_assigned_training/download_file/{{ video.id }}/">{{ video.filename }}</a></p>
                                 {% video video.url 'small' %}
                                 <br />
                             {% endfor %}
