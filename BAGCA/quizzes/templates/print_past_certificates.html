@@ -28,7 +28,7 @@
     
     <div class="panel panel-default">
         <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
-            <h4 style="color:white;"><b>Available Trainings</b></h4>
+            <h4 style="color:white;"><b>Trainings you have completed</b></h4>
         </div>
         <table class="table table-striped" style="width:100%; text-align: center">
             <tr>
@@ -39,7 +39,7 @@
             {% for t in trainings %}
             <tr>
                 <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
-                <td style="margin-left: auto; margin-right: auto;">{{ t.completed_date }}</td>
+                <td style="margin-left: auto; margin-right: auto;">{{ t.date_completed }}</td>
                 <td style="margin-left: auto; margin-right: auto;">
                     <form action="/user_assigned_training/generate_certificate/{{ t.category_text.id }}/" method="POST">
                         {% csrf_token %}

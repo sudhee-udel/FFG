@@ -11,18 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Files',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('filename', models.CharField(max_length=100)),
-                ('file', models.FileField(upload_to=b'/Users/errang/Desktop/FFG/BAGCA/BAGCA/media/USER_UPLOADED_FILES/')),
-                ('category_id', models.ForeignKey(to='quiz_admin.Categories')),
-                ],
-            options={
-            },
-            bases=(models.Model,),
-            ),
         migrations.RemoveField(
             model_name='categories',
             name='training_text',
