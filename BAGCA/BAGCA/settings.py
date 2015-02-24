@@ -95,7 +95,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = '/static/'
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 
 # Send email
 EMAIL_HOST = 'smtp.gmail.com'
