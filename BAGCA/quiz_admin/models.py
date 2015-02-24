@@ -49,6 +49,9 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 
     try:
         old_file = Videos.objects.get(pk=instance.pk).file
+
+        if not old_file:
+            return False
     except Videos.DoesNotExist:
         return False
 
