@@ -1,0 +1,54 @@
+{% include "base.html" %}
+
+<head>
+    <style type="text/css">
+        td {
+            background-color: white;
+        }
+        th {
+            background-color: #abddfc;
+            text-align: center;
+        }
+        tr #centered {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="background-color: #ffffff; height:100%; box-shadow:0 0 10px black;">
+    <img src="{{ MEDIA_ROOT }}/media/BAGCA_DEE.png" style= "width: 877.5pt; margin-left:-11pt;"/>
+
+    <br/><br>
+    <hr/>
+    <br>
+
+    {% if alert_msg %}
+    <div class="alert {{alert_style}}" role="alert">{{ alert_msg }}</div>
+    {% endif %}
+    
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
+            <h4 style="color:white;"><b>Available Trainings</b></h4>
+        </div>
+        <table class="table table-striped" style="width:100%; text-align: center">
+            <tr>
+                <th>Training Name</th>
+                <th>Completed Date</th>
+                <th></th>
+            </tr>
+            {% for t in trainings %}
+            <tr>
+                <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
+                <td style="margin-left: auto; margin-right: auto;">{{ t.completed_date }}</td>
+                <td style="margin-left: auto; margin-right: auto;">
+                    <form action="/user_assigned_training/generate_certificate/{{ t.category_text.id }}/" method="POST">
+                        {% csrf_token %}
+                        <center><button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">Print Certificate</button></center>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>

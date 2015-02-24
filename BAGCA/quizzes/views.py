@@ -43,6 +43,22 @@ def index(request):
     return render(request, 'index.html', context)
 
 @login_required
+def print_past_certificates(request):
+    completed_trainings = Completed.objects.filter(user=request.user.email)
+
+    completed_training_list = []
+
+    for training in completed_trainings:
+        data = {'category_text': training.category, 'date_completed': training.date_completed}
+
+        completed_training_list.append(data)
+
+    context = {'trainings': completed_training_list}
+
+    return render(request, 'print_past_certificates.html', context)
+
+
+@login_required
 def trainings(request):
     alert_msg = ""
     alert_style = ""

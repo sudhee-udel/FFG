@@ -14,7 +14,7 @@ class Categories(models.Model):
     groups = models.ManyToManyField(Group, related_name='group')
     category_text = models.CharField(max_length=200, unique=True )
     category_description = models.CharField(max_length=1000, default="")
-    course_code = models.CharField(max_length=40, default="CD"+datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S'))
+    course_code = models.CharField(max_length=40, default="CD")
     due_date = models.DateField(default=datetime.date.today)
     duration_hours = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     required_score = models.DecimalField(max_digits=3, decimal_places=0, default=100)

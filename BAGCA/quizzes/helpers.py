@@ -189,7 +189,7 @@ def save_user_completion(request, training_id):
     current_quiz = get_current_quiz(training_id)
 
     # Store the results of the user in the database; also allow admins to correct any mistakes.
-    check_if_user_finished_quiz = Completed.objects.filter(category=training_id, user=request.user.email)
+    check_if_user_finished_quiz = Completed.objects.filter(category=current_quiz, user=request.user.email)
 
     if not check_if_user_finished_quiz:
         store_result = Completed(category=current_quiz, user=request.user.email)
