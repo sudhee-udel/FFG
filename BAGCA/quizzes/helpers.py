@@ -227,9 +227,12 @@ def get_result_page_styling(correct_answers, total_number_of_questions, required
 
 
 def set_certificate_properties(pdf):
-    image = canvas.ImageReader(MEDIA_ROOT + '/BAGCA.jpg')  # image_data is a raw string containing a JPEG
+    image_top = canvas.ImageReader(MEDIA_ROOT + '/Certificate_top.tiff')  # image_data is a raw string containing a JPEG
+    pdf.drawImage(image_top, 0, 470, 600, 400)
 
-    pdf.drawImage(image, 100, 600, 400, 200)
+    image_bottom = canvas.ImageReader(MEDIA_ROOT + '/Certificate_bottom.tiff')  # image_data is a raw string containing a JPEG
+    pdf.drawImage(image_bottom, 0, 100, 600, 75)
+    pdf.line(300, 90, 550, 90)
     pdf.setLineWidth(.5)
 
     # Add the outer borders; vertical lines
@@ -261,7 +264,8 @@ def generate_certificate(request, training_id):
 
     # Create the PDF object, using the BytesIO object as its "file."
     pdf = canvas.Canvas(buffer)
-
+    pdf.setFont('Helvetica', 15)
+    pdf.drawString(245, 450, "This certifies that")
     pdf.setFont('Helvetica', 30)
 
     user_first_last_name = request.user.first_name + " " + request.user.last_name
@@ -269,13 +273,24 @@ def generate_certificate(request, training_id):
     if user_first_last_name.strip() == '':
         user_first_last_name = request.user.email.split("@")[0]
 
-    user_name_length = len(user_first_last_name) / 2
-    pdf.drawString(250 - user_name_length, 410, user_first_last_name)
-    pdf.setFont('Helvetica', 20)
+    user_name_length = len(user_first_last_name) * 7
 
-    message = "has completed " + str(category.duration_hours) + " hours of training."
+    pdf.drawString(290 - user_name_length, 400, user_first_last_name)
 
-    pdf.drawString(175 - len(message) / 2, 380, message)
+    pdf.line(105, 395, 525, 395)
+    #message = "has completed " + str(category.duration_hours) + " hours of training."
+
+    #pdf.drawString(175 - len(message) / 2, 380, message)
+    pdf.setFont('Helvetica', 15)
+
+    pdf.drawString(205, 350, "has successfully completed the")
+
+    pdf.drawString(275, 300, "Issued:")
+
+    pdf.drawString(155, 280, "Issuing body: Boys & Girls Clubs of Delaware")
+
+    pdf.setFont('Helvetica', 12)
+    pdf.drawString(300, 70, "Trainer: ")
 
     set_certificate_properties(pdf)
 
