@@ -1,7 +1,6 @@
 from django.db import models
 from quiz_admin.models import Categories
 from django.contrib.auth.models import User
-import datetime
 
 
 class Completed(models.Model):
@@ -12,8 +11,8 @@ class Completed(models.Model):
         return self.user + " passed " + str(self.category)
 
     category = models.ForeignKey(Categories)
-    user = models.CharField(max_length=100)
-    date_completed = models.DateField(default=datetime.date.today())
+    user = models.ForeignKey(User)
+    date_completed = models.DateField()
 
 
 class UserAssignment(models.Model):

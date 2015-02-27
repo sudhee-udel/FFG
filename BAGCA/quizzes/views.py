@@ -44,7 +44,7 @@ def index(request):
 
 @login_required
 def print_past_certificates(request):
-    completed_trainings = Completed.objects.filter(user=request.user.email)
+    completed_trainings = Completed.objects.filter(user=request.user)
 
     completed_training_list = []
 
@@ -93,7 +93,7 @@ def trainings(request):
     for assigned_trainings in trainings_assigned_by_user:
         already_assigned.add(assigned_trainings.category)
 
-    completed_trainings = Completed.objects.filter(user=request.user.email)
+    completed_trainings = Completed.objects.filter(user=request.user)
     completed_training_ids = set()
 
     # Remove the trainings that the user has already completed

@@ -15,7 +15,7 @@
         <div class="container-fluid">
             <br/>
             <div class="navbar-header" style="margin-top:-25px;">
-                <a class="navbar-brand" href="/"><img src="/media/bagcd_logo.png" alt="Boys & Girls Club of Delaware" height="70" width="110"></img></a>
+                <a class="navbar-brand" href="/"><img src="/media/bagcd_logo.png" alt="Boys & Girls Club of Delaware" height="70" width="110" /></a>
             </div>
 
             <div class="collapse navbar-collapse">
@@ -35,7 +35,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         {% if user.is_authenticated %}
-                            <p class="navbar-text">Welcome, {{user.email}} - <a href="/accounts/logout/">Logout</a></p>
+                            <p class="navbar-text">Welcome, {{ user.email }} - <a href="/accounts/logout/">Logout</a></p>
                         {% else %}
 
                         {% endif %}

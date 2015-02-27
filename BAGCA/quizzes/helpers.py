@@ -14,6 +14,7 @@ from BAGCA.settings import MEDIA_ROOT_FILES
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from BAGCA.settings import MEDIA_ROOT
+import datetime
 import re
 
 
@@ -48,7 +49,7 @@ def get_admin_assigned_trainings(request):
             display_groups.add(available_trainings.id)
 
     for quiz_id in display_groups:
-        check_if_user_finished_quiz = Completed.objects.filter(category=quiz_id, user=request.user.email)
+        check_if_user_finished_quiz = Completed.objects.filter(category=quiz_id, user=request.user)
         quiz_name = Categories.objects.get(pk=quiz_id)
         if not check_if_user_finished_quiz:
             trainings_need_to_be_completed.add(quiz_name)
@@ -189,10 +190,11 @@ def save_user_completion(request, training_id):
     current_quiz = get_current_quiz(training_id)
 
     # Store the results of the user in the database; also allow admins to correct any mistakes.
-    check_if_user_finished_quiz = Completed.objects.filter(category=current_quiz, user=request.user.email)
+    check_if_user_finished_quiz = Completed.objects.filter(category=current_quiz, user=request.user,
+                                                           date_completed=datetime.date.today())
 
     if not check_if_user_finished_quiz:
-        store_result = Completed(category=current_quiz, user=request.user.email)
+        store_result = Completed(category=current_quiz, user=request.user, date_completed=datetime.date.today())
         store_result.save()
 
 
