@@ -50,7 +50,7 @@
                 <form action="/send_reminder_mail/" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="quiz_id" value="{{ quiz.id }}" />
-                    <input type="hidden" name="user" value="{{ request.user.email }}" />
+                    <input type="hidden" name="user" value="{{ request.user }}" />
                     <button type="SUBMIT" class="btn btn-success">Send Reminder</button>
                 </form>
                 </td>

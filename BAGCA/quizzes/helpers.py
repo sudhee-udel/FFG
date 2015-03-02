@@ -4,6 +4,7 @@ from django.http import Http404
 from quiz_admin.models import Categories, Videos
 from reportlab.pdfgen import canvas
 from io import BytesIO
+from django.contrib.auth.models import User
 from .models import Question, Choice
 from django.http import HttpResponse
 from user_data.models import Completed, UserAssignment
@@ -41,9 +42,11 @@ def send_reminder_mail(request):
     subject = 'You need to complete "' + str(quiz.category_text) + '" by ' + str(quiz.due_date) + '.'
     message = ''
 
-    email(request, subject, message, request.POST['user'])
+    user = User.objects.get(username=request.POST['user'])
 
-    alert_msg = "Email has been successfully sent to: " + str(request.POST['user'])
+    email(request, subject, message, user.email)
+
+    alert_msg = "Email has been successfully sent to: " + str(user.username) + " (" + str(user.email) + ")"
     alert_style = "alert-success"
 
     quizzes_needed_to_be_completed = get_quizzes_needed_to_be_completed(request)
