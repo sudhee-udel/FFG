@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from quiz_admin.models import Categories, Videos
@@ -126,11 +126,16 @@ def profile(request):
         return render(request, 'profile.html', context)
 
     elif request.method == 'POST':
-        user = request.user
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
-        user.email = request.POST['email']
-        user.save()
+        existing_user = User.objects.filter(email=request.POST['email'])
+        if (len(existing_user) == 0) or (len(existing_user) > 0 and str(existing_user[0].username) == str(request.user)):
+            user = request.user
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
+            user.email = request.POST['email']
+            user.save()
+        elif str(existing_user[0].username) != str(request.user):
+            context = {'groups': request.user.groups.all(), 'email_error':  True}
+            return render(request, 'profile.html', context)
 
         return redirect("/")
 

@@ -279,7 +279,7 @@ def generate_certificate(request, training_id):
     pdf.line(105, 395, 525, 395)
     # message = "has completed " + str(category.duration_hours) + " hours of training."
 
-    #pdf.drawString(175 - len(message) / 2, 380, message)
+    # pdf.drawString(175 - len(message) / 2, 380, message)
     pdf.setFont('Helvetica', 15)
 
     pdf.drawString(205, 350, "has successfully completed the course:")

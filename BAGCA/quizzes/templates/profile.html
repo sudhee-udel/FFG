@@ -28,9 +28,13 @@
               <div class="panel-body">
                 <form action="/profile" method="post">
                   <div class="form-group">
-                      <p>First name: <input type="text" name="first_name" value="{{ user.first_name }}"></p>
-                      <p>Last name: <input type="text" name="last_name" value="{{ user.last_name }}"></p>
-                      <p>Email address: <input type="text" name="email" value="{{user.email}}"></p>
+                      {{ form.as_p }}
+                      <p>First name *: <input type="text" name="first_name" value="{{ user.first_name }}"></p>
+                      <p>Last name *: <input type="text" name="last_name" value="{{ user.last_name }}"></p>
+                      {% if email_error %}
+                        <p style="color: red">Email must be unique.</p>
+                      {% endif %}
+                      <p>Email address *: <input type="text" name="email" value="{{ user.email }}"></p>
                       <p>Member of:</p>
                       {% for group in groups %}
                         <p style="padding-left: 1em;"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true" style="padding-right: .5em"></span>{{ group }}</p>
