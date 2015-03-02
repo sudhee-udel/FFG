@@ -2,7 +2,6 @@ import random
 import os
 from django.http import Http404
 from quiz_admin.models import Categories, Videos
-from django.utils.datastructures import MultiValueDictKeyError
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from .models import Question, Choice
@@ -80,71 +79,65 @@ def download_file(request, file_id):
 
 
 def create_quiz_form(request):
-    quiz_groups = Group.objects.all()
     if request.method == 'POST':
         form = UploadQuizData(request.POST, request.FILES)
         if form.is_valid():
 
-            try:
-                filename = "temporary_file.txt"
-                fd = open('%s/%s' % (MEDIA_ROOT_FILES, filename), 'wb')
+            filename = "temporary_file.txt"
+            fd = open('%s/%s' % (MEDIA_ROOT_FILES, filename), 'wb')
 
-                group = request.POST['groups']
-                category_text = request.POST['category_text']
-                category_description = request.POST['category_description']
-                course_code = request.POST['course_code']
-                due_date = request.POST['due_date']
-                duration_hours = request.POST['duration_hours']
-                required_score = request.POST['required_score']
+            group = request.POST['group_choices']
+            category_text = request.POST['category_text']
+            category_description = request.POST['category_description']
+            course_code = request.POST['course_code']
+            due_date = request.POST['due_date']
+            duration_hours = request.POST['duration_hours']
+            required_score = request.POST['required_score']
 
-                determine_if_quiz_exists = Categories.objects.filter(category_text=category_text)
+            determine_if_quiz_exists = Categories.objects.filter(category_text=category_text)
 
-                if not determine_if_quiz_exists:
-                    create_quiz = Categories(category_text=category_text,
-                                             category_description=category_description,
-                                             course_code=course_code,
-                                             due_date=due_date,
-                                             duration_hours=duration_hours,
-                                             required_score=required_score)
-                    create_quiz.save()
-                    create_quiz.groups.add(group)
-                    quiz_id = Categories.objects.get(category_text=category_text)
+            if not determine_if_quiz_exists:
+                create_quiz = Categories(category_text=category_text,
+                                         category_description=category_description,
+                                         course_code=course_code,
+                                         due_date=due_date,
+                                         duration_hours=duration_hours,
+                                         required_score=required_score)
+                create_quiz.save()
+                create_quiz.groups.add(group)
+                quiz_id = Categories.objects.get(category_text=category_text)
 
-                    for line in request.FILES['file'].read():
-                        fd.write(line)
+                for line in request.FILES['file'].read():
+                    fd.write(line)
 
-                    fd.close()
+                fd.close()
 
-                    written_file = open(MEDIA_ROOT_FILES + '/temporary_file.txt', 'r')
+                written_file = open(MEDIA_ROOT_FILES + '/temporary_file.txt', 'r')
 
-                    for line in written_file:
-                        parts = line.split('\t')
+                for line in written_file:
+                    parts = line.split('\t')
 
-                        create_question = Question(category=quiz_id, question_text=parts[0])
-                        create_question.save()
-                        for part_counter in range(1, len(parts)):
-                            is_answer = False
+                    create_question = Question(category=quiz_id, question_text=parts[0])
+                    create_question.save()
+                    for part_counter in range(1, len(parts)):
+                        is_answer = False
 
-                            if (parts[part_counter][0] == '(') and (
-                                        parts[part_counter][len(parts[part_counter]) - 1] == ')'):
-                                parts[part_counter] = parts[part_counter][1:len(parts[part_counter]) - 1]
-                                is_answer = True
+                        if (parts[part_counter][0] == '(') and (
+                                    parts[part_counter][len(parts[part_counter]) - 1] == ')'):
+                            parts[part_counter] = parts[part_counter][1:len(parts[part_counter]) - 1]
+                            is_answer = True
 
-                            create_choice = Choice(question=Question.objects.get(pk=create_question.id),
-                                                   choice_text=parts[part_counter].strip(), answer=is_answer)
-                            create_choice.save()
+                        create_choice = Choice(question=Question.objects.get(pk=create_question.id),
+                                               choice_text=parts[part_counter].strip(), answer=is_answer)
+                        create_choice.save()
 
-                    fd.close()
-                    os.remove(MEDIA_ROOT_FILES + '/temporary_file.txt')
-            except MultiValueDictKeyError:
-                group_error = True
-                data = {'form': form, 'groups': quiz_groups, 'group_error': group_error}
-                return render(request, 'create_quiz_form.html', data)
+                fd.close()
+                os.remove(MEDIA_ROOT_FILES + '/temporary_file.txt')
 
     else:
         form = UploadQuizData()
 
-    data = {'form': form, 'groups': quiz_groups}
+    data = {'form': form}
     return render(request, 'create_quiz_form.html', data)
 
 
@@ -232,7 +225,8 @@ def set_certificate_properties(pdf):
     image_top = canvas.ImageReader(MEDIA_ROOT + '/Certificate_top.tiff')  # image_data is a raw string containing a JPEG
     pdf.drawImage(image_top, 0, 470, 600, 400)
 
-    image_bottom = canvas.ImageReader(MEDIA_ROOT + '/Certificate_bottom.tiff')  # image_data is a raw string containing a JPEG
+    image_bottom = canvas.ImageReader(
+        MEDIA_ROOT + '/Certificate_bottom.tiff')  # image_data is a raw string containing a JPEG
     pdf.drawImage(image_bottom, 0, 100, 600, 75)
     pdf.line(300, 90, 550, 90)
     pdf.setLineWidth(.5)
@@ -280,7 +274,7 @@ def generate_certificate(request, training_id):
     pdf.drawString(290 - user_name_length, 400, user_first_last_name)
 
     pdf.line(105, 395, 525, 395)
-    #message = "has completed " + str(category.duration_hours) + " hours of training."
+    # message = "has completed " + str(category.duration_hours) + " hours of training."
 
     #pdf.drawString(175 - len(message) / 2, 380, message)
     pdf.setFont('Helvetica', 15)

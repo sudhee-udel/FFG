@@ -25,12 +25,6 @@
             {% if group_error %}
                 <label><font color="red">Please select a group for the quiz.</font></label>
             {% endif %}
-            <h4>Available groups to assign quiz to:</h4>
-            {% for group in groups %}
-                <input type="radio" name="groups" id="group{{ group.id }}" value="{{ group.id }}"
-                        style="margin-left: 5em"/>
-                <label for="group{{ group.id }}">{{ group }}</label><br />
-            {% endfor %}
             {{ form.as_p }}
             <button type = "submit" value="Upload">Submit</button>
             {% csrf_token %}

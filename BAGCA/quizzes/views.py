@@ -22,7 +22,8 @@ def register(request):
         form = UserCreationForm()
     return render(request, "register.html", {
         'form': form,
-        })
+    })
+
 
 @login_required
 def index(request):
@@ -41,6 +42,7 @@ def index(request):
         context = {'no_groups': True, 'groups': groups}
 
     return render(request, 'index.html', context)
+
 
 @login_required
 def print_past_certificates(request):
@@ -107,11 +109,13 @@ def trainings(request):
     context = {'trainings': available_trainings_users_can_add, 'alert_msg': alert_msg, 'alert_style': alert_style}
     return render(request, 'trainings.html', context)
 
+
 @login_required
 def remove_user_assignment(request, training_id):
     assignment = UserAssignment.objects.get(category_id=training_id, user_id=request.user.id)
     assignment.delete()
     return redirect("/")
+
 
 @login_required
 def profile(request):
@@ -128,7 +132,7 @@ def profile(request):
 
         context = {'groups': request.user.groups.all()}
         return render(request, 'profile.html', context)
-    
+
 
 @login_required
 def user_assigned_training(request, training_id):
@@ -166,11 +170,14 @@ def user_assigned_training(request, training_id):
     context = {'training_info': training_info, 'paginate': paginate}
     return render(request, 'trainings/training.html', context)
 
+
 @login_required
 def quiz(request, training_id):
     question_dictionary = get_questions_for_quiz(training_id)
 
-    return render(request, 'trainings/quiz.html', {'question_dictionary': question_dictionary, 'training_id': training_id})
+    return render(request, 'trainings/quiz.html',
+                  {'question_dictionary': question_dictionary, 'training_id': training_id})
+
 
 def process_results(request, training_id):
     if request.method == 'POST':
@@ -199,6 +206,7 @@ def process_results(request, training_id):
                    'count': total_number_of_questions, 'score': score, 'color': color, 'training_id': training_id}
 
         return render(request, 'trainings/results.html', context)
+
 
 @login_required
 def results(request):
