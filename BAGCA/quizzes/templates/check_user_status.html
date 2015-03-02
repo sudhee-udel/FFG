@@ -1,0 +1,64 @@
+{% include "base.html" %}
+
+<head>
+    <style type="text/css">
+        td {
+            background-color: white;
+            text-align: center;
+        }
+        th {
+            background-color: #abddfc;
+            text-align: center;
+        }
+        tr #centered {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="background-color: #ffffff; height:100%; box-shadow:0 0 10px black;">
+    <img src="{{ MEDIA_ROOT }}/media/BAGCA_DEE.png" style= "width: 877.5pt; margin-left:-11pt;"/>
+
+    <br/><br>
+    <hr/>
+    <br>
+
+    {% if alert_msg %}
+    <div class="alert {{alert_style}}" role="alert">{{ alert_msg }}</div>
+    {% endif %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
+            <h4 style="color:white;"><b>Trainings still need to be completed by users.</b></h4>
+        </div>
+        <table class="table table-striped" style="width:100%;">
+            <tr>
+                <th>Course Name</th>
+                <th>Course Code</th>
+                <th>Due Date</th>
+                <th>User</th>
+                <th></th>
+            </tr>
+
+            {% for quiz in quizzes_needed_to_be_completed %}
+            <tr>
+                <td>{{ quiz.category_text }}</td>
+                <td>{{ quiz.course_code }}</td>
+                <td>{{ quiz.due_date }}</td>
+                <td>{{ request.user }}</td>
+                <td>
+                <form action="/send_reminder_mail/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="quiz_id" value="{{ quiz.id }}" />
+                    <input type="hidden" name="user" value="{{ request.user.email }}" />
+                    <button type="SUBMIT" class="btn btn-success">Send Reminder</button>
+                </form>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+</div>
+</body>

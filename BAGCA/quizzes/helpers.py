@@ -13,8 +13,50 @@ from BAGCA.settings import MEDIA_ROOT_FILES
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from BAGCA.settings import MEDIA_ROOT
+from .email_helpers import email
 import datetime
 import re
+
+
+def get_quizzes_needed_to_be_completed(request):
+    quizzes = Categories.objects.all()
+    quiz_set = set()
+
+    for quiz in quizzes:
+        quiz_set.add(quiz)
+
+    completed_by_user = Completed.objects.filter(user=request.user)
+    completed_by_user_set = set()
+
+    for completed_quizzes in completed_by_user:
+        completed_by_user_set.add(completed_quizzes.category)
+
+    quizzes_needed_to_be_completed = quiz_set.difference(completed_by_user_set)
+
+    return quizzes_needed_to_be_completed
+
+
+def send_reminder_mail(request):
+    quiz = Categories.objects.get(pk=request.POST['quiz_id'])
+    subject = 'You need to complete "' + str(quiz.category_text) + '" by ' + str(quiz.due_date) + '.'
+    message = ''
+
+    email(request, subject, message, request.POST['user'])
+
+    alert_msg = "Email has been successfully sent to: " + str(request.POST['user'])
+    alert_style = "alert-success"
+
+    quizzes_needed_to_be_completed = get_quizzes_needed_to_be_completed(request)
+
+    need_to_send_mail = set()
+
+    for send_mail_for_quiz in quizzes_needed_to_be_completed:
+        if quiz.id != send_mail_for_quiz.id:
+            need_to_send_mail.add(send_mail_for_quiz)
+
+    context = {'alert_msg': alert_msg, 'alert_style': alert_style,
+               'quizzes_needed_to_be_completed': need_to_send_mail}
+    return render(request, 'check_user_status.html', context)
 
 
 def add_groups(request):

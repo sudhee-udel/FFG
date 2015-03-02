@@ -2,8 +2,10 @@ from .models import Choice
 from django.core.mail import send_mail
 from quiz_admin.models import Categories
 
-def email(request, subject, message):
-    send_mail(subject, message, 'chas.barnajr@tsgforce.com', [request.user.email], fail_silently=False)
+
+def email(request, subject, message, user_email):
+    send_mail(subject, message, 'chas.barnajr@tsgforce.com', [user_email], fail_silently=False)
+
 
 def send_success_email(request, training_id):
     # Send the mail to users, if they have passed the quiz
@@ -11,6 +13,7 @@ def send_success_email(request, training_id):
     subject = "You have finished the " + current_quiz.category_text + " quiz."
     message = "You have passed!\n\nPlease retain this message for your records."
     email(request, subject, message)
+
 
 def get_formatted_message(post_data, question_list):
     count = 0
