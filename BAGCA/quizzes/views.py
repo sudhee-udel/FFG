@@ -37,6 +37,8 @@ def index(request):
             user_assigned = user_assigned.difference(trainings_need_to_be_completed)
 
         context = {'trainings': trainings_need_to_be_completed, 'user_assigned': user_assigned}
+    elif request.user.first_name == '' or request.user.last_name == '' or request.user.email == '':
+        return render(request, 'profile.html')
     else:
         groups = Group.objects.all()
         context = {'no_groups': True, 'groups': groups}
@@ -130,8 +132,7 @@ def profile(request):
         user.email = request.POST['email']
         user.save()
 
-        context = {'groups': request.user.groups.all()}
-        return render(request, 'profile.html', context)
+        return redirect("/")
 
 
 @login_required

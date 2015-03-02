@@ -8,7 +8,7 @@ class Completed(models.Model):
         verbose_name_plural = "completed"
 
     def __str__(self):
-        return self.user + " passed " + str(self.category)
+        return self.user.username + " passed " + str(self.category)
 
     category = models.ForeignKey(Categories)
     user = models.ForeignKey(User)

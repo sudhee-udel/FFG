@@ -133,6 +133,9 @@ def create_quiz_form(request):
 
                 fd.close()
                 os.remove(MEDIA_ROOT_FILES + '/temporary_file.txt')
+                form = UploadQuizData()
+                data = {'form': form}
+                return render(request, 'create_quiz_form.html', data)
 
     else:
         form = UploadQuizData()
@@ -279,14 +282,15 @@ def generate_certificate(request, training_id):
     #pdf.drawString(175 - len(message) / 2, 380, message)
     pdf.setFont('Helvetica', 15)
 
-    pdf.drawString(205, 350, "has successfully completed the")
+    pdf.drawString(205, 350, "has successfully completed the course:")
+    pdf.drawString(215, 325, category.category_text + "(" + category.course_code + ")")
 
-    pdf.drawString(275, 300, "Issued:")
+    pdf.drawString(275, 300, "Issued: " + str(datetime.datetime.now().strftime("%m-%d-%Y")))
 
     pdf.drawString(155, 280, "Issuing body: Boys & Girls Clubs of Delaware")
 
     pdf.setFont('Helvetica', 12)
-    pdf.drawString(300, 70, "Trainer: ")
+    pdf.drawString(280, 70, "Trainer: " + category.trainer)
 
     set_certificate_properties(pdf)
 
