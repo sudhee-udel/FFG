@@ -28,8 +28,29 @@ def check_user_status(request):
         groups.add(value[1])
         users.add(value[2])
 
-    context = {'quizzes_needed_to_be_completed': quizzes_needed_to_be_completed, 'users': users, 'groups': groups,
-               'quizzes': quizzes}
+    quizzes = []
+
+    for quiz_needed_to_be_finished in quizzes_needed_to_be_completed:
+        quizzes.append(quiz_needed_to_be_finished)
+
+    paginated_user_mail = Paginator(quizzes, 5)
+    page = request.GET.get('page')
+    paginated_user_mail_list = {}
+    try:
+        paginated_user_mail_list['user_list'] = paginated_user_mail.page(page)
+    except PageNotAnInteger:
+        paginated_user_mail_list['user_list'] = paginated_user_mail.page(1)
+    except EmptyPage:
+        paginated_user_mail_list['user_list'] = paginated_user_mail.page(paginated_user_mail.num_pages)
+
+    if paginated_user_mail.num_pages > 1:
+        paginate = True
+    else:
+        paginate = False
+
+
+    context = {'paginated_user_mail_list': paginated_user_mail_list, 'users': users, 'groups': groups,
+               'quizzes': quizzes, 'paginate': paginate}
     return render(request, "check_user_status.html", context)
 
 

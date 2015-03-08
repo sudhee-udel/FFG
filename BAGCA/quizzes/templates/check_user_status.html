@@ -62,25 +62,36 @@
                 <th></th>
             </tr>
 
-            {% for quiz in quizzes_needed_to_be_completed %}
+            {% for quiz in paginated_user_mail_list.user_list.object_list %}
             <tr>
                 <td>{{ quiz.category_text }}</td>
                 <td>{{ quiz.course_code }}</td>
                 <td>{{ quiz.due_date }}</td>
                 <td>{{ request.user }}</td>
                 <td>
-                <form action="/send_reminder_mail/" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="quiz_id" value="{{ quiz.id }}" />
-                    <input type="hidden" name="user" value="{{ request.user }}" />
-                    <button type="SUBMIT" class="btn btn-success">Send Reminder</button>
-                </form>
+                    <form action="/send_reminder_mail/" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="quiz_id" value="{{ quiz.id }}" />
+                        <input type="hidden" name="user" value="{{ request.user }}" />
+                        <button type="SUBMIT" class="btn btn-success">Send Reminder</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
 
         </table>
     </div>
+
+    {% if paginate %}
+        <center>
+            {% if paginated_user_mail_list.user_list.has_previous %}
+                <a href="?page={{ paginated_user_mail_list.user_list.previous_page_number }}" class="btn btn-primary" style="width: 10%">Previous</a>
+            {% endif %}
+            {% if paginated_user_mail_list.user_list.has_next %}
+                <a href="?page={{ paginated_user_mail_list.user_list.next_page_number }}" class="btn btn-primary" style="width: 10%">Next</a>
+            {% endif %}
+        </center>
+    {% endif %}
 
 </div>
 </body>
