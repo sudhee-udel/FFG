@@ -468,14 +468,15 @@ def generate_certificate(request, training_id):
     pdf.setFont('Helvetica', 15)
 
     pdf.drawString(205, 350, "has successfully completed the course:")
-    pdf.drawString(215, 325, category.category_text + "(" + category.course_code + ")")
+    course_and_course_code = category.category_text + "(" + category.course_code + ")"
+    pdf.drawString(335 - (len(course_and_course_code) * 7), 325, course_and_course_code)
+    pdf.drawString(220, 300, "This course is worth " + str(category.duration_hours) + " of training.")
+    pdf.drawString(245, 270, "Issued: " + str(datetime.datetime.now().strftime("%m-%d-%Y")))
 
-    pdf.drawString(275, 300, "Issued: " + str(datetime.datetime.now().strftime("%m-%d-%Y")))
-
-    pdf.drawString(155, 280, "Issuing body: Boys & Girls Clubs of Delaware")
+    pdf.drawString(165, 240, "Issuing body: Boys & Girls Clubs of Delaware")
 
     pdf.setFont('Helvetica', 12)
-    pdf.drawString(280, 70, "Trainer: " + category.trainer)
+    pdf.drawString(300, 70, "Trainer: " + category.trainer)
 
     set_certificate_properties(pdf)
 
