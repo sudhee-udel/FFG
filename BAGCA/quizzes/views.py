@@ -7,7 +7,8 @@ from django.contrib.auth.forms import UserCreationForm
 from quiz_admin.models import Categories, Videos
 from user_data.models import Completed, UserAssignment
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
-    get_admin_assigned_trainings, get_user_assigned_trainings, get_current_quiz, get_quizzes_needed_to_be_completed
+    get_admin_assigned_trainings, get_user_assigned_trainings, get_current_quiz, get_quizzes_needed_to_be_completed, \
+    get_users_groups_need_to_complete_quizzes
 from .email_helpers import get_formatted_message
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -15,8 +16,22 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def check_user_status(request):
     quizzes_needed_to_be_completed = get_quizzes_needed_to_be_completed(request)
 
-    context = {'quizzes_needed_to_be_completed': quizzes_needed_to_be_completed}
+    result_set = get_users_groups_need_to_complete_quizzes(request)
+
+    quizzes = set()
+    groups = set()
+    users = set()
+
+    for result in result_set:
+        value = result.split(':')
+        quizzes.add(value[0])
+        groups.add(value[1])
+        users.add(value[2])
+
+    context = {'quizzes_needed_to_be_completed': quizzes_needed_to_be_completed, 'users': users, 'groups': groups,
+               'quizzes': quizzes}
     return render(request, "check_user_status.html", context)
+
 
 def register(request):
     if request.method == 'POST':

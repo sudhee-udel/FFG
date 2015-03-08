@@ -15,26 +15,148 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from BAGCA.settings import MEDIA_ROOT
 from .email_helpers import email
+import threading
 import datetime
 import re
 
 
-def get_quizzes_needed_to_be_completed(request):
-    quizzes = Categories.objects.all()
-    quiz_set = set()
+def get_mass_mail_return_page_context(request):
+    quizzes_needed_to_be_completed = get_quizzes_needed_to_be_completed(request)
 
-    for quiz in quizzes:
-        quiz_set.add(quiz)
+    result_set = get_users_groups_need_to_complete_quizzes(request)
 
-    completed_by_user = Completed.objects.filter(user=request.user)
-    completed_by_user_set = set()
+    quizzes = set()
+    groups = set()
+    users = set()
 
-    for completed_quizzes in completed_by_user:
-        completed_by_user_set.add(completed_quizzes.category)
+    for result in result_set:
+        value = result.split(':')
+        quizzes.add(value[0])
+        groups.add(value[1])
+        users.add(value[2])
 
-    quizzes_needed_to_be_completed = quiz_set.difference(completed_by_user_set)
+    context = {'quizzes_needed_to_be_completed': quizzes_needed_to_be_completed, 'users': users, 'groups': groups,
+               'quizzes': quizzes}
 
-    return quizzes_needed_to_be_completed
+    return context
+
+
+def get_users_groups_need_to_complete_quizzes(request):
+    all_quizzes = Categories.objects.all()
+    all_quiz_sets = set()
+
+    for quiz in all_quizzes:
+        for group in quiz.groups.all():
+            for user in User.objects.filter(groups=group):
+                all_quiz_sets.add(quiz.category_text + ":" + group.name + ":" + user.username)
+
+    completed_quizzes = Completed.objects.all()
+    completed_quiz_set = set()
+
+    for completed in completed_quizzes:
+        for group in completed.user.groups.all():
+            completed_quiz_set.add(completed.category.category_text + ":" + group.name + ":" + completed.user.username)
+
+    remaining_quizzes = all_quiz_sets.difference(completed_quiz_set)
+
+    return remaining_quizzes
+
+'''
+def send_reminder_for_quiz(request):
+    quiz_name = request.POST['quiz']
+
+    quiz = Categories.objects.get(category_text=quiz_name)
+
+    for group in quiz.groups.all():
+        request.POST._mutable = True
+        request.POST['group'] = group
+        request.POST['user'] = request.user.username
+        send_reminder_to_group(request)
+        #send_reminder_to_group_thread = threading.Thread(target=send_reminder_to_group(request), args=request)
+        #send_reminder_to_group_thread.start()
+
+    context = get_mass_mail_return_page_context(request)
+
+    return render(request, "check_user_status.html", context)
+'''
+
+'''
+    try:
+        requested_quiz = request.POST['quiz']
+        requested_group = request.POST['group']
+
+        for group in user.groups.all():
+            for quiz in Categories.objects.filter(groups=group):
+                #if quiz.category_text == requested_quiz and group.name == requested_group:
+                assigned_quizzes.add(quiz)
+    except KeyError:
+'''
+
+
+def send_reminder_to_group(request):
+    group_name = request.POST['group']
+
+    group = Group.objects.get(name=group_name)
+
+    users = User.objects.filter(groups=group)
+
+    for user in users:
+        request.POST._mutable = True
+        request.POST['user'] = user
+        send_reminder_to_user_thread = threading.Thread(target=send_reminder_to_user(request), args=request)
+        send_reminder_to_user_thread.start()
+
+    context = get_mass_mail_return_page_context(request)
+
+    return render(request, "check_user_status.html", context)
+
+
+def send_reminder_to_user(request):
+    username = request.POST['user']
+
+    user = User.objects.get(username=username)
+
+    assigned_quizzes = set()
+
+    try:
+        requested_group = request.POST['group']
+        for group in user.groups.all():
+            for quiz in Categories.objects.filter(groups=group):
+                if group.name == requested_group:
+                    assigned_quizzes.add(quiz)
+    except KeyError:
+        for group in user.groups.all():
+            for quiz in Categories.objects.filter(groups=group):
+                assigned_quizzes.add(quiz)
+
+    completed_quizzes = set()
+    for completed in Completed.objects.filter(user=user):
+        completed_quizzes.add(completed.category)
+
+    remaining_quizzes = assigned_quizzes.difference(completed_quizzes)
+
+    if len(remaining_quizzes) >= 1:
+        email_thread = threading.Thread(target=send_mass_mail(request, user, remaining_quizzes),
+                                        args=[request, user, remaining_quizzes])
+
+        email_thread.start()
+
+    context = get_mass_mail_return_page_context(request)
+
+    return render(request, "check_user_status.html", context)
+
+
+def send_mass_mail(request, user, remaining_quizzes):
+    subject = "Please complete the quizzes listed below."
+
+    message = "Hello " + user.first_name + ",\n\n"
+    for quiz in remaining_quizzes:
+        message += "You need to complete quiz '" + quiz.category_text + "' by " + str(quiz.due_date) + "\n"
+
+    message += "\n\nThank you,\nBoys and Girls Club"
+    email(request, subject, message, user.email)
+
+    return HttpResponse(user.username + " " + str(remaining_quizzes))
 
 
 def send_reminder_mail(request):
@@ -60,6 +182,24 @@ def send_reminder_mail(request):
     context = {'alert_msg': alert_msg, 'alert_style': alert_style,
                'quizzes_needed_to_be_completed': need_to_send_mail}
     return render(request, 'check_user_status.html', context)
+
+
+def get_quizzes_needed_to_be_completed(request):
+    quizzes = Categories.objects.all()
+    quiz_set = set()
+
+    for quiz in quizzes:
+        quiz_set.add(quiz)
+
+    completed_by_user = Completed.objects.filter(user=request.user)
+    completed_by_user_set = set()
+
+    for completed_quizzes in completed_by_user:
+        completed_by_user_set.add(completed_quizzes.category)
+
+    quizzes_needed_to_be_completed = quiz_set.difference(completed_by_user_set)
+
+    return quizzes_needed_to_be_completed
 
 
 def add_groups(request):

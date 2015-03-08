@@ -27,6 +27,28 @@
     <div class="alert {{alert_style}}" role="alert">{{ alert_msg }}</div>
     {% endif %}
 
+    <form action="/send_reminder_to_group/" method="post">
+        <p>Group: <select name="group">
+            <option value="" selected="selected">Please select a group.</option>
+            {% for group in groups %}
+            <option value="{{ group }}">{{ group }}</option>
+            {% endfor %}
+        </select>
+            {% csrf_token %}
+            <button type="SUBMIT" class="btn btn-success">Send reminder to group about pending quizzes</button></p>
+    </form>
+
+    <form action="/send_reminder_to_user/" method="post">
+        <p>User: <select name="user">
+            <option value="" selected="selected">Please select a user.</option>
+            {% for user in users %}
+                <option value="{{ user }}">{{ user }}</option>
+            {% endfor %}
+        </select>
+        {% csrf_token %}
+        <button type="SUBMIT" class="btn btn-success">Send reminder to user about pending quizzes</button></p>
+    </form>
+
     <div class="panel panel-default">
         <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
             <h4 style="color:white;"><b>Trainings still need to be completed by users.</b></h4>
