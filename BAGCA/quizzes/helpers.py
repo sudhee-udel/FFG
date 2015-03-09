@@ -273,6 +273,7 @@ def create_quiz_form(request):
 
             group = request.POST['group_choices']
             category_text = request.POST['category_text']
+            trainer = request.post['trainer']
             category_description = request.POST['category_description']
             course_code = request.POST['course_code']
             due_date = request.POST['due_date']
@@ -284,6 +285,7 @@ def create_quiz_form(request):
             if not determine_if_quiz_exists:
                 create_quiz = Categories(category_text=category_text,
                                          category_description=category_description,
+                                         trainer=trainer,
                                          course_code=course_code,
                                          due_date=due_date,
                                          duration_hours=duration_hours,
@@ -469,7 +471,7 @@ def generate_certificate(request, training_id):
 
     pdf.drawString(205, 350, "has successfully completed the course:")
     course_and_course_code = category.category_text + "(" + category.course_code + ")"
-    pdf.drawString(335 - (len(course_and_course_code) * 7), 325, course_and_course_code)
+    pdf.drawString(335 - (len(course_and_course_code) * 5), 325, course_and_course_code)
     pdf.drawString(220, 300, "This course is worth " + str(category.duration_hours) + " of training.")
     pdf.drawString(245, 270, "Issued: " + str(datetime.datetime.now().strftime("%m-%d-%Y")))
 
