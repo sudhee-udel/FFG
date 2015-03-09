@@ -442,6 +442,8 @@ def set_certificate_properties(pdf):
 
 def generate_certificate(request, training_id):
     category = Categories.objects.get(pk=training_id)
+    user = User.objects.get(username=request.user.username)
+    completed = Completed.objects.get(category=category, user=user)
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="certificate_of_completion.pdf"'
@@ -473,7 +475,7 @@ def generate_certificate(request, training_id):
     course_and_course_code = category.category_text + "(" + category.course_code + ")"
     pdf.drawString(335 - (len(course_and_course_code) * 5), 325, course_and_course_code)
     pdf.drawString(220, 300, "This course is worth " + str(category.duration_hours) + " of training.")
-    pdf.drawString(245, 270, "Issued: " + str(datetime.datetime.now().strftime("%m-%d-%Y")))
+    pdf.drawString(245, 270, "Issued: " + str(completed.date_completed))
 
     pdf.drawString(165, 240, "Issuing body: Boys & Girls Clubs of Delaware")
 
