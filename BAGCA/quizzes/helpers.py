@@ -300,15 +300,15 @@ def create_quiz_form(request):
                 written_file = open(MEDIA_ROOT_FILES + '/temporary_file.txt', 'r')
 
                 for line in written_file:
-                    parts = line.split('\t')
+                    parts = re.split(r'\t', line)
 
                     create_question = Question(category=quiz_id, question_text=parts[0])
                     create_question.save()
                     for part_counter in range(1, len(parts)):
                         is_answer = False
-
-                        if (parts[part_counter][0] == '(') and (
-                                    parts[part_counter][len(parts[part_counter]) - 1] == ')'):
+                        parts[part_counter] = parts[part_counter].strip()
+                        if parts[part_counter][0] == '(' and \
+                           parts[part_counter][len(parts[part_counter]) - 1] == ')':
                             parts[part_counter] = parts[part_counter][1:len(parts[part_counter]) - 1]
                             is_answer = True
 

@@ -11,6 +11,9 @@ class Categories(models.Model):
     def __str__(self):
         return self.category_text
 
+    def __unicode__(self):
+        return u'%s' % self.category_text
+
     groups = models.ManyToManyField(Group, related_name='group')
     category_text = models.CharField(max_length=200, unique=True )
     category_description = models.CharField(max_length=1000, default="")
