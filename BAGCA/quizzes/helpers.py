@@ -273,7 +273,7 @@ def create_quiz_form(request):
 
             group = request.POST['group_choices']
             category_text = request.POST['category_text']
-            trainer = request.post['trainer']
+            trainer = request.POST['trainer']
             category_description = request.POST['category_description']
             course_code = request.POST['course_code']
             due_date = request.POST['due_date']
