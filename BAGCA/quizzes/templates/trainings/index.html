@@ -24,7 +24,7 @@
 
         <hr>
 
-        <h2>Trainings:</h1>
+        <h2>Trainings:</h2>
 
         <div class="container" style="background-color:white;">
 
@@ -37,7 +37,7 @@
                     </tr>
                     {% for t in trainings %}
                         <tr>
-                            <td>{{ t.category_text }}</td>
+                            <td>{{ t.quiz_name }}</td>
                             <td>{{ t.url }}</td>
                             <td><a href="trainings/{{ t.id }}/">Begin Training</a></td>
                         </tr>

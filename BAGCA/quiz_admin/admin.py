@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categories, Content, Files
+from .models import Quiz, Content, Files
 from quizzes.models import Question
 
 
@@ -18,11 +18,11 @@ class QuestionInLine(admin.StackedInline):
     extra = 1
 
 
-class CategoriesAdmin(admin.ModelAdmin):
-    list_display = ('category_text', )
+class QuizAdmin(admin.ModelAdmin):
+    list_display = ('quiz_name', )
     inlines = [FilesInLine, VideosInLine, QuestionInLine]
 
-    search_fields = ['category_text']
+    search_fields = ['quiz_name']
 
 
-admin.site.register(Categories, CategoriesAdmin)
+admin.site.register(Quiz, QuizAdmin)

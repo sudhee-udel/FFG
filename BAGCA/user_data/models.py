@@ -1,5 +1,5 @@
 from django.db import models
-from quiz_admin.models import Categories
+from quiz_admin.models import Quiz
 from django.contrib.auth.models import User
 
 
@@ -8,12 +8,12 @@ class Completed(models.Model):
         verbose_name_plural = "completed"
 
     def __str__(self):
-        return self.user.username + " passed " + str(self.category)
+        return self.user.username + " passed " + str(self.quiz)
 
     def __unicode__(self):
-        return u'%s passed %s' % (self.user.username, self.category)
+        return u'%s passed %s' % (self.user.username, self.quiz)
 
-    category = models.ForeignKey(Categories)
+    quiz = models.ForeignKey(Quiz)
     user = models.ForeignKey(User)
     date_completed = models.DateField()
 
@@ -23,12 +23,12 @@ class UserAssignment(models.Model):
         verbose_name_plural = "UserAssignments"
 
     def __str__(self):
-        return "Category = " + str(self.category) + ", User = " + str(self.user)
+        return "Quiz = " + str(self.quiz) + ", User = " + str(self.user)
 
     def __unicode__(self):
-        return u'Category = %s, User = %s' % (str(self.category), str(self.user))
+        return u'Quiz = %s, User = %s' % (str(self.quiz), str(self.user))
 
-    category = models.ForeignKey(Categories)
+    quiz = models.ForeignKey(Quiz)
     user = models.ForeignKey(User)
 
 

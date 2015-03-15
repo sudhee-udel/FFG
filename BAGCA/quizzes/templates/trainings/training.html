@@ -27,29 +27,29 @@
                         {% if paginate %}
                             <span class="current">
                                 {% load embed_video_tags %}
-                                {% for files in training_info.videos.object_list %}
+                                {% for content in training_info.content.object_list %}
                                     <p>Available reading material: </p>
-                                    {% for file in files.files.all %}
+                                    {% for file in content.files.all %}
                                         <p><a href="/user_assigned_training/download_file/{{ file.id }}/">{{ file }}</a></p>
                                     {% endfor %}
-                                    {% video video.url 'small' %}
+                                    {% video content.url 'small' %}
                                 {% endfor %}
                                 <br />
-                                Training video {{ training_info.videos.number }} of {{ training_info.videos.paginator.num_pages }}.
+                                Training content page {{ training_info.content.number }} of {{ training_info.content.paginator.num_pages }}.
                             </span>
                             <br />
-                                {% if training_info.videos.has_previous %}
-                                    <a href="?page={{ training_info.videos.previous_page_number }}" class="btn btn-primary" style="width: 10%">Previous</a>
+                                {% if training_info.content.has_previous %}
+                                    <a href="?page={{ training_info.content.previous_page_number }}" class="btn btn-primary" style="width: 10%">Previous</a>
                                 {% endif %}
-                                {% if training_info.videos.has_next %}
-                                    <a href="?page={{ training_info.videos.next_page_number }}" class="btn btn-primary" style="width: 10%">Next</a>
+                                {% if training_info.content.has_next %}
+                                    <a href="?page={{ training_info.content.next_page_number }}" class="btn btn-primary" style="width: 10%">Next</a>
                                 {% endif %}
                         {% endif %}
                         {% if not paginate %}
                             {% load embed_video_tags %}
-                            {% for video in training_info.videos %}
-                                <p>Available reading material: <a href="/user_assigned_training/download_file/{{ video.id }}/">{{ video.filename }}</a></p>
-                                {% video video.url 'small' %}
+                            {% for content in training_info.content %}
+                                <p>Available reading material: <a href="/user_assigned_training/download_file/{{ content.id }}/">{{ content.filename }}</a></p>
+                                {% video content.url 'small' %}
                                 <br />
                             {% endfor %}
                         {% endif %}

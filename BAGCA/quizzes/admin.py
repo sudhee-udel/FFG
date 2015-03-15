@@ -8,10 +8,10 @@ class ChoiceInLine(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('question_text', 'category')
+    list_display = ('question_text', 'quiz')
     inlines = [ChoiceInLine]
 
-    search_fields = ['question_text', 'category']
+    search_fields = ['question_text', 'quiz']
 
 
 admin.site.register(Choice)

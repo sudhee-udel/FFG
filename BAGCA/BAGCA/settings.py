@@ -75,16 +75,12 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-'''
-'''
-DEV SETTINGS
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "bagca",
-        #"USER": "errang",
-        "USER": "admin",
-        "PASSWORD": "bagcaADMINpassword",
+        "USER": "errang",
         "HOST": "localhost",
         "PORT": "5432",
         }
@@ -93,10 +89,10 @@ DATABASES = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "d7ek7lbnm89947",
-        "USER": "puylpcctdvubgs",
-        "PASSWORD": "ljUTdGVNuhmOOJLUyOY9mOFamC",
-        "HOST": "ec2-107-21-104-188.compute-1.amazonaws.com",
+        "NAME": "d693c240mhuopn",
+        "USER": "fwiswwhprrntqe",
+        "PASSWORD": "KZnLDk6ZQmHvO5gxK3OcM9GqXx",
+        "HOST": "ec2-107-22-253-198.compute-1.amazonaws.com",
         "PORT": "5432",
         }
 }

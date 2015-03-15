@@ -39,16 +39,16 @@
             </tr>
             {% for t in trainings %}
             <tr>
-                <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
+                <td style="margin-left: auto; margin-right: auto;">{{ t.quiz_name }}</td>
                 <td style="margin-left: auto; margin-right: auto;">{{ t.date_completed }}</td>
                 <td style="margin-left: auto; margin-right: auto;">
-                    <form action="/user_assigned_training/generate_certificate/{{ t.category_text.id }}/" method="POST">
+                    <form action="/user_assigned_training/generate_certificate/{{ t.quiz_name.id }}/" method="POST">
                         {% csrf_token %}
                         <center><button type="SUBMIT" class="btn btn-success" ROLE="LINK" NAME="OP" VALUE="SUBMIT">Print Certificate</button></center>
                     </form>
                 </td>
                 <td style="margin-left: auto; margin-right: auto;">
-                    <center><a href="/access_past_trainings/{{ t.category_text.id }}/" class="btn btn-primary">View Training Documents</a></center>
+                    <center><a href="/access_past_trainings/{{ t.quiz_name.id }}/" class="btn btn-primary">View Training Documents</a></center>
                 </td>
             </tr>
             {% endfor %}

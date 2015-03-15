@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-    <div class="container" style="background-color: #ffffff; height:100%; box-shadow:0 0 10px black;">
+    <div class="container" style="background-color: #ffffff; box-shadow:0 0 10px black;">
         <img src="{{ MEDIA_ROOT }}/media/BAGCA_DEE.png" style= "width: 877.5pt; margin-left:-11pt;"/>
 
         <br/><br>
@@ -40,7 +40,7 @@
                         </tr>
                         {% for t in trainings %}
                             <tr>
-                                <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
+                                <td style="margin-left: auto; margin-right: auto;">{{ t.quiz_name }}</td>
                                 <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
                                 <td style="margin-left: auto; margin-right: auto;">{{ t.due_date }}</td>
                                 <td>{{ t.duration_hours }}
@@ -83,7 +83,7 @@
                         </tr>
                         {% for t in user_assigned %}
                             <tr>
-                                <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
+                                <td style="margin-left: auto; margin-right: auto;">{{ t.quiz_name }}</td>
                                 <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
                                 <td>{{ t.duration_hours }}
                                         {% if t.duration_hours != 1 %}

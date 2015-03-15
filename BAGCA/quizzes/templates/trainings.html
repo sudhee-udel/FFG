@@ -4,12 +4,13 @@
     <style type="text/css">
         td {
           background-color: white;
+            text-align: center;
         }
         th {
           background-color: #abddfc;
           text-align: center;
         }
-        tr #centered {
+        tr {
           text-align: center;
         }
     </style>
@@ -42,7 +43,7 @@
                     </tr>
                     {% for t in trainings %}
                         <tr>
-                            <td style="margin-left: auto; margin-right: auto;">{{ t.category_text }}</td>
+                            <td style="margin-left: auto; margin-right: auto;">{{ t.quiz_name }}</td>
                             <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
                             <td style="margin-left: auto; margin-right: auto;">{{ t.due_date }}</td>
                             <td>

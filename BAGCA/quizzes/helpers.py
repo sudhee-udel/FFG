@@ -1,7 +1,7 @@
 import random
 import os
 from django.http import Http404
-from quiz_admin.models import Categories, Files, Content
+from quiz_admin.models import Quiz, Files, Content
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from django.contrib.auth.models import User
@@ -23,32 +23,32 @@ import re
 
 def get_training_page_content(request, training_id):
     try:
-        category = Categories.objects.get(pk=training_id)
-        videos = Content.objects.filter(category_id=training_id)
-    except Categories.DoesNotExist:
+        quiz = Quiz.objects.get(pk=training_id)
+        contents = Content.objects.filter(quiz_id=training_id)
+    except Quiz.DoesNotExist:
         raise Http404
 
     training_info = {}
-    video_list = []
+    content_list = []
 
-    for video in videos:
-        video_list.append(video)
+    for content in contents:
+        content_list.append(content)
 
-    paginated_videos = Paginator(video_list, 1)
+    paginated_content = Paginator(content_list, 1)
     page = request.GET.get('page')
 
     try:
-        training_info['videos'] = paginated_videos.page(page)
+        training_info['content'] = paginated_content.page(page)
     except PageNotAnInteger:
-        training_info['videos'] = paginated_videos.page(1)
+        training_info['content'] = paginated_content.page(1)
     except EmptyPage:
-        training_info['videos'] = paginated_videos.page(paginated_videos.num_pages)
+        training_info['content'] = paginated_content.page(paginated_content.num_pages)
 
-    training_info['title'] = category.category_text
-    training_info['description'] = category.category_description
+    training_info['title'] = quiz.quiz_name
+    training_info['description'] = quiz.quiz_description
     training_info['id'] = training_id
 
-    if paginated_videos.num_pages > 1:
+    if paginated_content.num_pages > 1:
         paginate = True
     else:
         paginate = False
@@ -80,30 +80,31 @@ def get_mass_mail_return_page_context(request):
 
 
 def get_users_groups_need_to_complete_quizzes(request):
-    all_quizzes = Categories.objects.all()
+    all_quizzes = Quiz.objects.all()
     all_quiz_sets = set()
 
     for quiz in all_quizzes:
         for group in quiz.groups.all():
             for user in User.objects.filter(groups=group):
-                all_quiz_sets.add(quiz.category_text + ":" + group.name + ":" + user.username)
+                all_quiz_sets.add(quiz.quiz_name + ":" + group.name + ":" + user.username)
 
     completed_quizzes = Completed.objects.all()
     completed_quiz_set = set()
 
     for completed in completed_quizzes:
         for group in completed.user.groups.all():
-            completed_quiz_set.add(completed.category.category_text + ":" + group.name + ":" + completed.user.username)
+            completed_quiz_set.add(completed.quiz.quiz_name + ":" + group.name + ":" + completed.user.username)
 
     remaining_quizzes = all_quiz_sets.difference(completed_quiz_set)
 
     return remaining_quizzes
 
+
 '''
 def send_reminder_for_quiz(request):
     quiz_name = request.POST['quiz']
 
-    quiz = Categories.objects.get(category_text=quiz_name)
+    quiz = Categories.objects.get(quiz_name=quiz_name)
 
     for group in quiz.groups.all():
         request.POST._mutable = True
@@ -125,7 +126,7 @@ def send_reminder_for_quiz(request):
 
         for group in user.groups.all():
             for quiz in Categories.objects.filter(groups=group):
-                #if quiz.category_text == requested_quiz and group.name == requested_group:
+                #if quiz.quiz_name == requested_quiz and group.name == requested_group:
                 assigned_quizzes.add(quiz)
     except KeyError:
 '''
@@ -159,17 +160,17 @@ def send_reminder_to_user(request):
     try:
         requested_group = request.POST['group']
         for group in user.groups.all():
-            for quiz in Categories.objects.filter(groups=group):
+            for quiz in Quiz.objects.filter(groups=group):
                 if group.name == requested_group:
                     assigned_quizzes.add(quiz)
     except KeyError:
         for group in user.groups.all():
-            for quiz in Categories.objects.filter(groups=group):
+            for quiz in Quiz.objects.filter(groups=group):
                 assigned_quizzes.add(quiz)
 
     completed_quizzes = set()
     for completed in Completed.objects.filter(user=user):
-        completed_quizzes.add(completed.category)
+        completed_quizzes.add(completed.quiz)
 
     remaining_quizzes = assigned_quizzes.difference(completed_quizzes)
 
@@ -189,7 +190,7 @@ def send_mass_mail(request, user, remaining_quizzes):
 
     message = "Hello " + user.first_name + ",\n\n"
     for quiz in remaining_quizzes:
-        message += "You need to complete quiz '" + quiz.category_text + "' by " + str(quiz.due_date) + "\n"
+        message += "You need to complete quiz '" + quiz.quiz_name + "' by " + str(quiz.due_date) + "\n"
 
     message += "\n\nThank you,\nBoys and Girls Club"
     email(request, subject, message, user.email)
@@ -198,8 +199,8 @@ def send_mass_mail(request, user, remaining_quizzes):
 
 
 def send_reminder_mail(request):
-    quiz = Categories.objects.get(pk=request.POST['quiz_id'])
-    subject = 'You need to complete "' + str(quiz.category_text) + '" by ' + str(quiz.due_date) + '.'
+    quiz = Quiz.objects.get(pk=request.POST['quiz_id'])
+    subject = 'You need to complete "' + str(quiz.quiz_name) + '" by ' + str(quiz.due_date) + '.'
     message = ''
 
     user = User.objects.get(username=request.POST['user'])
@@ -223,7 +224,7 @@ def send_reminder_mail(request):
 
 
 def get_quizzes_needed_to_be_completed(request):
-    quizzes = Categories.objects.all()
+    quizzes = Quiz.objects.all()
     quiz_set = set()
 
     for quiz in quizzes:
@@ -233,7 +234,7 @@ def get_quizzes_needed_to_be_completed(request):
     completed_by_user_set = set()
 
     for completed_quizzes in completed_by_user:
-        completed_by_user_set.add(completed_quizzes.category)
+        completed_by_user_set.add(completed_quizzes.quiz)
 
     quizzes_needed_to_be_completed = quiz_set.difference(completed_by_user_set)
 
@@ -255,7 +256,7 @@ def get_user_assigned_trainings(request):
     user_assigned = set()
 
     for assignment in user_assignments:
-        user_assigned.add(assignment.category)
+        user_assigned.add(assignment.quiz)
 
     return user_assigned
 
@@ -267,12 +268,12 @@ def get_admin_assigned_trainings(request):
 
     for groups in request.user.groups.all():
         user_groups.append(groups)
-        for available_trainings in Categories.objects.filter(groups=groups):
+        for available_trainings in Quiz.objects.filter(groups=groups):
             display_groups.add(available_trainings.id)
 
     for quiz_id in display_groups:
-        check_if_user_finished_quiz = Completed.objects.filter(category=quiz_id, user=request.user)
-        quiz_name = Categories.objects.get(pk=quiz_id)
+        check_if_user_finished_quiz = Completed.objects.filter(quiz=quiz_id, user=request.user)
+        quiz_name = Quiz.objects.get(pk=quiz_id)
         if not check_if_user_finished_quiz:
             trainings_need_to_be_completed.add(quiz_name)
 
@@ -310,27 +311,27 @@ def create_quiz_form(request):
             fd = open('%s/%s' % (MEDIA_ROOT_FILES, filename), 'wb')
 
             group = request.POST['group_choices']
-            category_text = request.POST['category_text']
+            quiz_name = request.POST['quiz_name']
             trainer = request.POST['trainer']
-            category_description = request.POST['category_description']
+            quiz_description = request.POST['quiz_description']
             course_code = request.POST['course_code']
             due_date = request.POST['due_date']
             duration_hours = request.POST['duration_hours']
             required_score = request.POST['required_score']
 
-            determine_if_quiz_exists = Categories.objects.filter(category_text=category_text)
+            determine_if_quiz_exists = Quiz.objects.filter(quiz_name=quiz_name)
 
             if not determine_if_quiz_exists:
-                create_quiz = Categories(category_text=category_text,
-                                         category_description=category_description,
-                                         trainer=trainer,
-                                         course_code=course_code,
-                                         due_date=due_date,
-                                         duration_hours=duration_hours,
-                                         required_score=required_score)
+                create_quiz = Quiz(quiz_name=quiz_name,
+                                   quiz_description=quiz_description,
+                                   trainer=trainer,
+                                   course_code=course_code,
+                                   due_date=due_date,
+                                   duration_hours=duration_hours,
+                                   required_score=required_score)
                 create_quiz.save()
                 create_quiz.groups.add(group)
-                quiz_id = Categories.objects.get(category_text=category_text)
+                quiz_id = Quiz.objects.get(quiz_name=quiz_name)
 
                 for line in request.FILES['file'].read():
                     fd.write(line)
@@ -342,13 +343,13 @@ def create_quiz_form(request):
                 for line in written_file:
                     parts = re.split(r'\t', line)
 
-                    create_question = Question(category=quiz_id, question_text=parts[0])
+                    create_question = Question(quiz=quiz_id, question_text=parts[0])
                     create_question.save()
                     for part_counter in range(1, len(parts)):
                         is_answer = False
                         parts[part_counter] = parts[part_counter].strip()
                         if parts[part_counter][0] == '(' and \
-                           parts[part_counter][len(parts[part_counter]) - 1] == ')':
+                                        parts[part_counter][len(parts[part_counter]) - 1] == ')':
                             parts[part_counter] = parts[part_counter][1:len(parts[part_counter]) - 1]
                             is_answer = True
 
@@ -371,7 +372,7 @@ def create_quiz_form(request):
 
 def get_questions_for_quiz(training_id):
     try:
-        latest_question_list = sorted(Question.objects.filter(category=training_id),
+        latest_question_list = sorted(Question.objects.filter(quiz=training_id),
                                       key=lambda random_key: random.random())
     except Question.DoesNotExist:
         raise Http404
@@ -385,8 +386,8 @@ def get_questions_for_quiz(training_id):
 
 def print_quiz(request, training_id):
     response = HttpResponse(content_type='text/plain')
-    quiz = Categories.objects.get(pk=training_id)
-    response["Content-Disposition"] = "attachment; filename=" + re.sub(r"\s+", "_", quiz.category_text) + "_quiz.txt"
+    quiz = Quiz.objects.get(pk=training_id)
+    response["Content-Disposition"] = "attachment; filename=" + re.sub(r"\s+", "_", quiz.quiz_name) + "_quiz.txt"
 
     question_dictionary = get_questions_for_quiz(training_id)
 
@@ -404,28 +405,28 @@ def print_quiz(request, training_id):
 
 
 def get_current_quiz(training_id):
-    return Categories.objects.get(pk=training_id)
+    return Quiz.objects.get(pk=training_id)
 
 
 def save_user_completion(request, training_id):
     current_quiz = get_current_quiz(training_id)
 
     # Store the results of the user in the database; also allow admins to correct any mistakes.
-    check_if_user_finished_quiz = Completed.objects.filter(category=current_quiz, user=request.user,
+    check_if_user_finished_quiz = Completed.objects.filter(quiz=current_quiz, user=request.user,
                                                            date_completed=datetime.date.today())
 
     if not check_if_user_finished_quiz:
-        store_result = Completed(category=current_quiz, user=request.user, date_completed=datetime.date.today())
+        store_result = Completed(quiz=current_quiz, user=request.user, date_completed=datetime.date.today())
         store_result.save()
 
 
 def save_user_assignment(request, training_id):
     # Store the results of the user in the database; also allow admins to correct any mistakes.
-    training = Categories.objects.get(pk=training_id)
-    check_if_user_assigned_quiz = UserAssignment.objects.filter(category=training, user=request.user)
+    training = Quiz.objects.get(pk=training_id)
+    check_if_user_assigned_quiz = UserAssignment.objects.filter(quiz=training, user=request.user)
 
     if not check_if_user_assigned_quiz:
-        store_assignment = UserAssignment(category=training, user=request.user)
+        store_assignment = UserAssignment(quiz=training, user=request.user)
         store_assignment.save()
         return "added"
 
@@ -479,9 +480,9 @@ def set_certificate_properties(pdf):
 
 
 def generate_certificate(request, training_id):
-    category = Categories.objects.get(pk=training_id)
+    quiz = Quiz.objects.get(pk=training_id)
     user = User.objects.get(username=request.user.username)
-    completed = Completed.objects.get(category=category, user=user)
+    completed = Completed.objects.get(quiz=quiz, user=user)
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="certificate_of_completion.pdf"'
@@ -504,21 +505,21 @@ def generate_certificate(request, training_id):
     pdf.drawString(290 - user_name_length, 400, user_first_last_name)
 
     pdf.line(105, 395, 525, 395)
-    # message = "has completed " + str(category.duration_hours) + " hours of training."
+    # message = "has completed " + str(quiz.duration_hours) + " hours of training."
 
     # pdf.drawString(175 - len(message) / 2, 380, message)
     pdf.setFont('Helvetica', 15)
 
     pdf.drawString(205, 350, "has successfully completed the course:")
-    course_and_course_code = category.category_text + "(" + category.course_code + ")"
+    course_and_course_code = quiz.quiz_name + "(" + quiz.course_code + ")"
     pdf.drawString(335 - (len(course_and_course_code) * 5), 325, course_and_course_code)
-    pdf.drawString(220, 300, "This course is worth " + str(category.duration_hours) + " of training.")
+    pdf.drawString(220, 300, "This course is worth " + str(quiz.duration_hours) + " of training.")
     pdf.drawString(245, 270, "Issued: " + str(completed.date_completed))
 
     pdf.drawString(165, 240, "Issuing body: Boys & Girls Clubs of Delaware")
 
     pdf.setFont('Helvetica', 12)
-    pdf.drawString(300, 70, "Trainer: " + category.trainer)
+    pdf.drawString(300, 70, "Trainer: " + quiz.trainer)
 
     set_certificate_properties(pdf)
 

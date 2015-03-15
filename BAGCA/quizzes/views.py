@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group, User
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
-from quiz_admin.models import Categories
+from quiz_admin.models import Quiz
 from .models import Question
 from user_data.models import Completed, UserAssignment
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
@@ -97,7 +97,7 @@ def print_past_certificates(request):
     completed_training_list = []
 
     for training in completed_trainings:
-        data = {'category_text': training.category, 'date_completed': training.date_completed}
+        data = {'quiz_name': training.quiz, 'date_completed': training.date_completed}
 
         completed_training_list.append(data)
 
@@ -126,7 +126,7 @@ def trainings(request):
             alert_style = "alert-danger"
 
     admin_assigned_trainings = get_admin_assigned_trainings(request)
-    available_trainings = Categories.objects.all()
+    available_trainings = Quiz.objects.all()
 
     available_trainings_users_can_add = set()
 
@@ -139,14 +139,14 @@ def trainings(request):
 
     # Remove the trainings already assigned to the user by the admin
     for assigned_trainings in trainings_assigned_by_user:
-        already_assigned.add(assigned_trainings.category)
+        already_assigned.add(assigned_trainings.quiz)
 
     completed_trainings = Completed.objects.filter(user=request.user)
     completed_training_ids = set()
 
     # Remove the trainings that the user has already completed
     for completed in completed_trainings:
-        completed_training_ids.add(completed.category)
+        completed_training_ids.add(completed.quiz)
 
     available_trainings_users_can_add = available_trainings_users_can_add.difference(admin_assigned_trainings)
     available_trainings_users_can_add = available_trainings_users_can_add.difference(already_assigned)
@@ -158,7 +158,7 @@ def trainings(request):
 
 @login_required
 def remove_user_assignment(request, training_id):
-    assignment = UserAssignment.objects.get(category_id=training_id, user_id=request.user.id)
+    assignment = UserAssignment.objects.get(quiz_id=training_id, user_id=request.user.id)
     assignment.delete()
     return redirect("/")
 
@@ -216,7 +216,7 @@ def process_results(request, training_id):
             if 'question' in value:
                 question_list.append(value)
 
-        questions = Question.objects.filter(category=training_id)
+        questions = Question.objects.filter(quiz=training_id)
 
         if len(questions) != len(question_list):
             return quiz_incomplete(request, training_id)
@@ -230,7 +230,7 @@ def process_results(request, training_id):
         result, color, score = get_result_page_styling(correct_answers, total_number_of_questions, required_score)
 
         if result == 'passed':
-            check_if_user_assigned_quiz = UserAssignment.objects.filter(category=training_id, user=request.user)
+            check_if_user_assigned_quiz = UserAssignment.objects.filter(quiz=training_id, user=request.user)
 
             if check_if_user_assigned_quiz:
                 check_if_user_assigned_quiz.delete()

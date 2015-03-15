@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('date_completed', models.DateField()),
-                ('category', models.ForeignKey(to='quiz_admin.Categories')),
+                ('quiz', models.ForeignKey(to='quiz_admin.Quiz')),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             name='UserAssignment',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('category', models.ForeignKey(to='quiz_admin.Categories')),
+                ('quiz', models.ForeignKey(to='quiz_admin.Quiz')),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={

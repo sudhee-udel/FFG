@@ -67,7 +67,7 @@
 
             {% for quiz in paginated_user_mail_list.user_list.object_list %}
             <tr>
-                <td>{{ quiz.category_text }}</td>
+                <td>{{ quiz.quiz_name }}</td>
                 <td>{{ quiz.course_code }}</td>
                 <td>{{ quiz.due_date }}</td>
                 <td>{{ request.user }}</td>

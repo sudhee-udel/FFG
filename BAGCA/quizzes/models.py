@@ -1,5 +1,5 @@
 from django.db import models
-from quiz_admin.models import Categories
+from quiz_admin.models import Quiz
 
 
 class Question(models.Model):
@@ -9,7 +9,7 @@ class Question(models.Model):
     def __unicode__(self):
         return u'%s' % self.question_text
 
-    category = models.ForeignKey(Categories)
+    quiz = models.ForeignKey(Quiz)
     question_text = models.CharField(max_length=500)
 
 
