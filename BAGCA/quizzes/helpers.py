@@ -1,7 +1,7 @@
 import random
 import os
 from django.http import Http404
-from quiz_admin.models import Categories, Videos
+from quiz_admin.models import Categories, Files
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from django.contrib.auth.models import User
@@ -242,7 +242,7 @@ def get_admin_assigned_trainings(request):
 
 
 def download_file(request, file_id):
-    database_file_object = Videos.objects.get(pk=file_id)
+    database_file_object = Files.objects.get(pk=file_id)
 
     database_file_object_string = str(database_file_object.file)
 

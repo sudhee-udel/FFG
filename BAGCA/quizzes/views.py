@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group, User
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
-from quiz_admin.models import Categories, Videos
+from quiz_admin.models import Categories, Content
 from user_data.models import Completed, UserAssignment
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
     get_admin_assigned_trainings, get_user_assigned_trainings, get_current_quiz, get_quizzes_needed_to_be_completed, \
@@ -187,7 +187,7 @@ def profile(request):
 def user_assigned_training(request, training_id):
     try:
         category = Categories.objects.get(pk=training_id)
-        videos = Videos.objects.filter(category_id=training_id)
+        videos = Content.objects.filter(category_id=training_id)
     except Categories.DoesNotExist:
         raise Http404
 

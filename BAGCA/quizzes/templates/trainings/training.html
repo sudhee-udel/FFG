@@ -28,9 +28,10 @@
                             <span class="current">
                                 {% load embed_video_tags %}
                                 {% for video in training_info.videos.object_list %}
-                                    {% if video.filename %}
-                                        <p>Available reading material: <a href="/user_assigned_training/download_file/{{ video.id }}/">{{ video.filename }}</a></p>
-                                    {% endif %}
+                                    <p>Available reading material: </p>
+                                    {% for file in video.files.all %}
+                                        <p><a href="/user_assigned_training/download_file/{{ file.id }}/">{{ file }}</a></p>
+                                    {% endfor %}
                                     {% video video.url 'small' %}
                                 {% endfor %}
                                 <br />
