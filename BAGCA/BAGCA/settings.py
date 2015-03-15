@@ -76,6 +76,8 @@ DATABASES = {
     }
 }
 '''
+'''
+DEV SETTINGS
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -83,6 +85,17 @@ DATABASES = {
         #"USER": "errang",
         "USER": "admin",
         "PASSWORD": "bagcaADMINpassword",
+        "HOST": "localhost",
+        "PORT": "5432",
+        }
+}
+'''
+DATABASES = {
+    "default": {
+        "ENGINE": "ec2-107-21-104-188.compute-1.amazonaws.com",
+        "NAME": "d7ek7lbnm89947",
+        "USER": "puylpcctdvubgs",
+        "PASSWORD": "ljUTdGVNuhmOOJLUyOY9mOFamC",
         "HOST": "localhost",
         "PORT": "5432",
         }
@@ -120,3 +133,7 @@ EMAIL_USE_TLS = True
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
 MEDIA_ROOT_FILES = MEDIA_ROOT + '/USER_UPLOADED_FILES'
 MEDIA_URL = '/media/'
+
+import dj_database_url
+DATABASES = {'default': dj_database_url.config()}
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
