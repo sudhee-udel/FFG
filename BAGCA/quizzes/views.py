@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group, User
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from quiz_admin.models import Categories
+from .models import Question
 from user_data.models import Completed, UserAssignment
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
     get_admin_assigned_trainings, get_user_assigned_trainings, get_current_quiz, get_quizzes_needed_to_be_completed, \
@@ -193,8 +195,18 @@ def user_assigned_training(request, training_id):
 def quiz(request, training_id):
     question_dictionary = get_questions_for_quiz(training_id)
 
-    return render(request, 'trainings/quiz.html',
-                  {'question_dictionary': question_dictionary, 'training_id': training_id})
+    context = {'question_dictionary': question_dictionary, 'training_id': training_id}
+
+    return render(request, 'trainings/quiz.html', context)
+
+
+@login_required
+def quiz_incomplete(request, training_id):
+    question_dictionary = get_questions_for_quiz(training_id)
+
+    context = {'question_dictionary': question_dictionary, 'training_id': training_id, 'incomplete': True}
+
+    return render(request, 'trainings/quiz.html', context)
 
 
 def process_results(request, training_id):
@@ -203,6 +215,11 @@ def process_results(request, training_id):
         for value in request.POST:
             if 'question' in value:
                 question_list.append(value)
+
+        questions = Question.objects.filter(category=training_id)
+
+        if len(questions) != len(question_list):
+            return quiz_incomplete(request, training_id)
 
         correct_answers, total_number_of_questions = get_formatted_message(request.POST, question_list)
 
