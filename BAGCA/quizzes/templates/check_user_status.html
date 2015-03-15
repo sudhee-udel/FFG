@@ -44,11 +44,11 @@
             <tr><td>User: </td><td><select name="user">
                 <option value="" selected="selected">Please select a user.</option>
                 {% for user in users %}
-                    <option value="{{ user }}">{{ user }}</option>
+                <option value="{{ user }}">{{ user }}</option>
                 {% endfor %}
             </select>
-            {% csrf_token %}
-            <button type="SUBMIT" class="btn btn-success">Send reminder to user about pending quizzes</button></td></tr>
+                {% csrf_token %}
+                <button type="SUBMIT" class="btn btn-success">Send reminder to user about pending quizzes</button></td></tr>
         </form>
     </table>
 
@@ -86,14 +86,14 @@
     </div>
 
     {% if paginate %}
-        <center>
-            {% if paginated_user_mail_list.user_list.has_previous %}
-                <a href="?page={{ paginated_user_mail_list.user_list.previous_page_number }}" class="btn btn-primary" style="width: 10%">Previous</a>
-            {% endif %}
-            {% if paginated_user_mail_list.user_list.has_next %}
-                <a href="?page={{ paginated_user_mail_list.user_list.next_page_number }}" class="btn btn-primary" style="width: 10%">Next</a>
-            {% endif %}
-        </center>
+    <center>
+        {% if paginated_user_mail_list.user_list.has_previous %}
+        <a href="?page={{ paginated_user_mail_list.user_list.previous_page_number }}" class="btn btn-primary" style="width: 10%">Previous</a>
+        {% endif %}
+        {% if paginated_user_mail_list.user_list.has_next %}
+        <a href="?page={{ paginated_user_mail_list.user_list.next_page_number }}" class="btn btn-primary" style="width: 10%">Next</a>
+        {% endif %}
+    </center>
     {% endif %}
 
 </div>
