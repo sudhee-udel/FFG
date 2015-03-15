@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^print_past_certificates/', 'quizzes.views.print_past_certificates', name='print_past_certificates'),
     url(r'^check_user_status/', 'quizzes.views.check_user_status', name='check_user_status'),
     url(r'^register_user/', 'quizzes.views.register', name='register_user'),
+    url(r'^access_past_trainings/(?P<training_id>\d+)/$', 'quizzes.views.access_past_trainings', name='access_past_trainings'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
                  {'document_root': settings.MEDIA_ROOT}),
 

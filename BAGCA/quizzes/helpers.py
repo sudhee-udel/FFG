@@ -1,7 +1,7 @@
 import random
 import os
 from django.http import Http404
-from quiz_admin.models import Categories, Files
+from quiz_admin.models import Categories, Files, Content
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from django.contrib.auth.models import User
@@ -15,9 +15,47 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from BAGCA.settings import MEDIA_ROOT
 from .email_helpers import email
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import threading
 import datetime
 import re
+
+
+def get_training_page_content(request, training_id):
+    try:
+        category = Categories.objects.get(pk=training_id)
+        videos = Content.objects.filter(category_id=training_id)
+    except Categories.DoesNotExist:
+        raise Http404
+
+    training_info = {}
+    video_list = []
+
+    for video in videos:
+        video_list.append(video)
+
+    paginated_videos = Paginator(video_list, 1)
+    page = request.GET.get('page')
+
+    try:
+        training_info['videos'] = paginated_videos.page(page)
+    except PageNotAnInteger:
+        training_info['videos'] = paginated_videos.page(1)
+    except EmptyPage:
+        training_info['videos'] = paginated_videos.page(paginated_videos.num_pages)
+
+    training_info['title'] = category.category_text
+    training_info['description'] = category.category_description
+    training_info['id'] = training_id
+
+    if paginated_videos.num_pages > 1:
+        paginate = True
+    else:
+        paginate = False
+
+    context = {'training_info': training_info, 'paginate': paginate}
+
+    return context
 
 
 def get_mass_mail_return_page_context(request):

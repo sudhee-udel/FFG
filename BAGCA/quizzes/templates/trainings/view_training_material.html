@@ -1,0 +1,69 @@
+{% include "base.html" %}
+
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+</head>
+
+<body>
+<div class="container" style="height:100%; background-color:white; box-shadow:0 0 10px black;">
+    <h2>Training: <i>{{ training_info.title }}</i></h2>
+    <hr/>
+    <br/>
+    <div class="row">
+        <div class="container">
+            <br/>
+            <div style="text-align:center;">
+                <h4><b>Training Description:</b>
+                    {% if training_info.description %}
+                    {{ training_info.description }}
+                    {% else %}
+                    <i>There is no description for this training.</i>
+                    {% endif %}
+                </h4>
+                </p>
+                {% if paginate %}
+                            <span class="current">
+                                {% load embed_video_tags %}
+                                {% for files in training_info.videos.object_list %}
+                                    <p>Available reading material: </p>
+                                    {% for file in files.files.all %}
+                                        <p><a href="/user_assigned_training/download_file/{{ file.id }}/">{{ file }}</a></p>
+                                    {% endfor %}
+                                    {% video video.url 'small' %}
+                                {% endfor %}
+                                <br />
+                                Training video {{ training_info.videos.number }} of {{ training_info.videos.paginator.num_pages }}.
+                            </span>
+                <br />
+                {% if training_info.videos.has_previous %}
+                <a href="?page={{ training_info.videos.previous_page_number }}" class="btn btn-primary" style="width: 10%">Previous</a>
+                {% endif %}
+                {% if training_info.videos.has_next %}
+                <a href="?page={{ training_info.videos.next_page_number }}" class="btn btn-primary" style="width: 10%">Next</a>
+                {% endif %}
+                {% endif %}
+                {% if not paginate %}
+                {% load embed_video_tags %}
+                {% for video in training_info.videos %}
+                <p>Available reading material: <a href="/user_assigned_training/download_file/{{ video.id }}/">{{ video.filename }}</a></p>
+                {% video video.url 'small' %}
+                <br />
+                {% endfor %}
+                {% endif %}
+            </div>
+            <br/>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <div style="text-align:center;margin-left:10pt;">
+        <a href="/" class="btn btn-danger">Exit Training</a>
+    </div>
+
+    <br/>
+</div>
+</body>

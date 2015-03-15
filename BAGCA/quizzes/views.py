@@ -1,14 +1,13 @@
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group, User
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
-from quiz_admin.models import Categories, Content
+from quiz_admin.models import Categories
 from user_data.models import Completed, UserAssignment
 from .helpers import get_result_page_styling, save_user_completion, get_questions_for_quiz, save_user_assignment, \
     get_admin_assigned_trainings, get_user_assigned_trainings, get_current_quiz, get_quizzes_needed_to_be_completed, \
-    get_users_groups_need_to_complete_quizzes
+    get_users_groups_need_to_complete_quizzes, get_training_page_content
 from .email_helpers import get_formatted_message
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -185,38 +184,8 @@ def profile(request):
 
 @login_required
 def user_assigned_training(request, training_id):
-    try:
-        category = Categories.objects.get(pk=training_id)
-        videos = Content.objects.filter(category_id=training_id)
-    except Categories.DoesNotExist:
-        raise Http404
+    context = get_training_page_content(request, training_id)
 
-    training_info = {}
-    video_list = []
-
-    for video in videos:
-        video_list.append(video)
-
-    paginated_videos = Paginator(video_list, 1)
-    page = request.GET.get('page')
-
-    try:
-        training_info['videos'] = paginated_videos.page(page)
-    except PageNotAnInteger:
-        training_info['videos'] = paginated_videos.page(1)
-    except EmptyPage:
-        training_info['videos'] = paginated_videos.page(paginated_videos.num_pages)
-
-    training_info['title'] = category.category_text
-    training_info['description'] = category.category_description
-    training_info['id'] = training_id
-
-    if paginated_videos.num_pages > 1:
-        paginate = True
-    else:
-        paginate = False
-
-    context = {'training_info': training_info, 'paginate': paginate}
     return render(request, 'trainings/training.html', context)
 
 
@@ -257,6 +226,7 @@ def process_results(request, training_id):
         return render(request, 'trainings/results.html', context)
 
 
-@login_required
-def results(request):
-    return render(request, 'quizzes/results.html', {})
+def access_past_trainings(request, training_id):
+    context = get_training_page_content(request, training_id)
+
+    return render(request, 'trainings/view_training_material.html', context)
