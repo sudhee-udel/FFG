@@ -19,15 +19,21 @@
 
 <body>
     <div class="container" style="background-color:white; height:100%; box-shadow:0 0 10px black;">
+        <h2>Create New Quiz</h2>
+        <hr>
         <form action="." method="post" enctype="multipart/form-data">
             <br />
-            <center><h2>Please enter all values to craete the quiz.</h2></center>
-            {% if group_error %}
-                <label><font color="red">Please select a group for the quiz.</font></label>
-            {% endif %}
-            {{ form.as_p }}
-            <button type = "submit" value="Upload">Submit</button>
-            {% csrf_token %}
+            <h4><b>Please enter all values to create the quiz:</b></h4>
+            <br/>
+            <div style="padding-left:30px;">
+                {% if group_error %}
+                    <label><font color="red">Please select a group for the quiz.</font></label>
+                {% endif %}
+                {{ form.as_p }}
+                <br/>
+                <button type = "submit" value="Upload">Submit</button>
+                {% csrf_token %}
+            </div>
         </form>
     </div>
 </body>

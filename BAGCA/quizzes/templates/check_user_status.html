@@ -27,27 +27,30 @@
     <div class="alert {{alert_style}}" role="alert">{{ alert_msg }}</div>
     {% endif %}
 
-    <form action="/send_reminder_to_group/" method="post">
-        <p>Group: <select name="group">
-            <option value="" selected="selected">Please select a group.</option>
-            {% for group in groups %}
-            <option value="{{ group }}">{{ group }}</option>
-            {% endfor %}
-        </select>
+    <table>
+        <tr><th></th><th></th></tr>
+        <form action="/send_reminder_to_group/" method="post">
+            <tr style="margin-bottom:10px;"><td>Group: </td><td><select name="group">
+                <option value="" selected="selected">Please select a group.</option>
+                {% for group in groups %}
+                <option value="{{ group }}">{{ group }}</option>
+                {% endfor %}
+            </select>
+                {% csrf_token %}
+                <button type="SUBMIT" class="btn btn-success">Send reminder to group about pending quizzes</button></td></tr>
+        </form>
+        <tr><td></td><td></td></tr>
+        <form action="/send_reminder_to_user/" method="post">
+            <tr><td>User: </td><td><select name="user">
+                <option value="" selected="selected">Please select a user.</option>
+                {% for user in users %}
+                    <option value="{{ user }}">{{ user }}</option>
+                {% endfor %}
+            </select>
             {% csrf_token %}
-            <button type="SUBMIT" class="btn btn-success">Send reminder to group about pending quizzes</button></p>
-    </form>
-
-    <form action="/send_reminder_to_user/" method="post">
-        <p>User: <select name="user">
-            <option value="" selected="selected">Please select a user.</option>
-            {% for user in users %}
-                <option value="{{ user }}">{{ user }}</option>
-            {% endfor %}
-        </select>
-        {% csrf_token %}
-        <button type="SUBMIT" class="btn btn-success">Send reminder to user about pending quizzes</button></p>
-    </form>
+            <button type="SUBMIT" class="btn btn-success">Send reminder to user about pending quizzes</button></td></tr>
+        </form>
+    </table>
 
     <div class="panel panel-default">
         <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
