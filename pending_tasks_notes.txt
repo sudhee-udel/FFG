@@ -1,0 +1,5 @@
+- on user signup, member of: blank
+    - style this page 
+    - style the "add me to this group" page
+- vertical page sizing on the homepage
+- 

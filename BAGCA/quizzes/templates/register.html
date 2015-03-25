@@ -22,11 +22,11 @@
     <h2>New User Registration</h2>
     <hr>
     <form action="." method="post" enctype="multipart/form-data">
-        <br />
-        <h4><b>Please enter the information to register to the site:</b></h4>
         <br/>
+        <h4>Please enter the information to register to the site:</h4>
         {{ form.as_p }}
-        <button type = "submit" value="Upload">Submit</button>
+
+        <center><button style="btn btn-success" type="submit" value="Upload">Submit</button></center>
         {% csrf_token %}
     </form>
 </div>
