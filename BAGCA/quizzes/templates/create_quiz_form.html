@@ -12,6 +12,9 @@
 
     <style>
         body {background-color: LightSkyBlue;}
+        table th {border-top: none;}
+        #form_left {text-align: right; margin-left:10px; padding-right:15px;}
+        #error_msg {color: red;}
     </style>
     <script type="text/javascript" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
@@ -22,17 +25,68 @@
     <h2>Create New Quiz</h2>
     <hr>
     <form action="." method="post" enctype="multipart/form-data">
-        <br />
-        <h4><b>Please enter all values to create the quiz:</b></h4>
-        <br/>
-        <div style="padding-left:30px;">
+        <h4>Please enter all values to create the quiz:</h4>
+        <div style="padding-left:30px; margin:0 auto;">
             {% if group_error %}
             <label><font color="red">Please select a group for the quiz.</font></label>
             {% endif %}
-            {{ form.as_p }}
+            <table class="table">
+                <tr style="border-top:none;">
+                    <th style="border-top:none;"></th>
+                    <th style="border-top:none;"></th>
+                    <th style="border-top:none;"></th>
+                </tr>
+                <tr class="fieldWrapper">
+                    <td id="form_left"><label for="{{ form.group_choices.id_for_label }}">Assign quiz to group: </label></td>
+                    <td>{{ form.group_choices }}</td>
+                    <td id="error_msg">{{ form.group_choices.errors }}</td>
+                </tr>
+                <tr class="fieldWrapper">
+                    <td id="form_left"><label for="{{ form.quiz_name.id_for_label }}">Quiz name: </label></td>
+                    <td>{{ form.quiz_name }}</td>
+                    <td id="error_msg">{{ form.quiz_name.errors }}</td>
+                </tr>
+                <tr class="fieldWrapper">
+                    <td id="form_left"><label for="{{ form.quiz_description.id_for_label }}">Quiz description: </label></td>
+                    <td>{{ form.quiz_description }}</td>
+                    <td id="error_msg">{{ form.quiz_description.errors }}</td>
+                </tr>
+                <tr class="fieldWrapper">
+                    <td id="form_left"><label for="{{ form.trainer.id_for_label }}">Trainer: </label></td>
+                    <td>{{ form.trainer }}</td>
+                    <td id="error_msg">{{ form.trainer.errors }}</td>
+                </tr>
+                <tr class="fieldWrapper">
+                    <td id="form_left"><label for="{{ form.course_code.id_for_label }}">Course code: </label></td>
+                    <td>{{ form.course_code }}</td>
+                    <td id="error_msg">{{ form.course_code.errors }}</td>
+                </tr>
+                <tr class="fieldWrapper">
+                    <td id="form_left"><label for="{{ form.due_date.id_for_label }}">Due date: </label></td>
+                    <td>{{ form.due_date }}</td>
+                    <td id="error_msg">{{ form.due_date.errors }}</td>
+                </tr>
+                <tr class="fieldWrapper">
+                    <td id="form_left"><label for="{{ form.duration_hours.id_for_label }}">Duration (hours): </label></td>
+                    <td>{{ form.duration_hours }}</td>
+                    <td id="error_msg">{{ form.duration_hours.errors }}</td>
+                </tr>
+                <tr class="fieldWrapper">
+                    <td id="form_left"><label for="{{ form.required_score.id_for_label }}">Required score: </label></td>
+                    <td>{{ form.required_score }}</td>
+                    <td id="error_msg">{{ form.required_score.errors }}</td>
+                </tr>
+                <tr class="fieldWrapper">
+                    <td id="form_left"><label for="{{ form.file.id_for_label }}">File: </label></td>
+                    <td>{{ form.file }}</td>
+                    <td id="error_msg">{{ form.file.errors }}</td>
+                </tr>
+            </table>
             <br/>
-            <button type = "submit" value="Upload">Submit</button>
             {% csrf_token %}
+        </div>
+        <div style="margin:0 auto;">
+            <center><button class="btn btn-success" type="submit" value="Upload">Submit</button></center>
         </div>
     </form>
 </div>
