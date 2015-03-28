@@ -36,9 +36,13 @@
                       {% endif %}
                       <p>Email address *: <input type="text" name="email" value="{{ user.email }}"></p>
                       <p>Member of:</p>
-                      {% for group in groups %}
-                        <p style="padding-left: 1em;"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true" style="padding-right: .5em"></span>{{ group }}</p>
-                      {% endfor %}
+                        {% if groups %}
+                              {% for group in groups %}
+                                <p style="padding-left: 1em;"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true" style="padding-right: .5em"></span>{{ group }}</p>
+                              {% endfor %}
+                        {% else %}
+                            <p style="margin-left:10px;"><i>You are not a member of any groups.</i></p>
+                        {% endif %}
                   </div>
                   {% csrf_token %}
                     <div style="text-align: center;">

@@ -12,6 +12,8 @@
 
     <style>
         body {background-color: LightSkyBlue;}
+        #form_left {text-align: right; margin-left:10px; padding-right:15px;}
+        #error_msg {color: red;}
     </style>
     <script type="text/javascript" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
@@ -22,11 +24,34 @@
     <h2>New User Registration</h2>
     <hr>
     <form action="." method="post" enctype="multipart/form-data">
-        <br />
-        <h4><b>Please enter the information to register to the site:</b></h4>
+        <h4>Please enter the following information in order to register to the site:</h4>
         <br/>
-        {{ form.as_p }}
-        <button type = "submit" value="Upload">Submit</button>
+        <br/>
+        <table style="margin:0 auto;">
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr class="fieldWrapper">
+                <td id="form_left"><label for="{{ form.username.id_for_label }}">Username: </label></td>
+                <td>{{ form.username }}</td>
+                <td id="error_msg">{{ form.username.errors }}</td>
+            </tr>
+            <tr class="fieldWrapper">
+                <td id="form_left"><label for="{{ form.password1.id_for_label }}">Password: </label></td>
+                <td>{{ form.password1 }}</td>
+                <td id="error_msg">{{ form.password1.errors }}</td>
+            </tr>
+            <tr class="fieldWrapper">
+                <td id="form_left"><label for="{{ form.password2.id_for_label }}">Confirm Password: </label></td>
+                <td>{{ form.password2 }}</td>
+                <td id="error_msg">{{ form.password2.errors }}</td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+        <center><button class="btn btn-success" type="submit" value="Upload">Submit</button></center>
         {% csrf_token %}
     </form>
 </div>
