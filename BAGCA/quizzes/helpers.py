@@ -300,12 +300,13 @@ def download_file(request, file_id):
     s3_file_path = bucket.get_key(database_file_object_string)
     url = s3_file_path.generate_url(expires_in=600)
 
+    '''
     response_file_object = open(url)
 
     for line in response_file_object:
         response.write(line)
-
-    return response
+    '''
+    return HttpResponseRedirect(url)
 
 
 def create_quiz_form(request):
