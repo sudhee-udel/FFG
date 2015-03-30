@@ -297,7 +297,7 @@ def download_file(request, file_id):
 
     file_object = Files.object.get(pk=file_id)
 
-    filepath = file_object.file
+    filepath = 'https://s3.amazonaws.com/bagca/' + file_object.file
 
     '''
     url = s3.generate_url(60, 'GET',
@@ -307,7 +307,7 @@ def download_file(request, file_id):
                           force_http=True)
     '''
 
-    response_file_object = open('https://s3.amazonaws.com/bagca/' + filepath)
+    response_file_object = open(filepath)
 
     for line in response_file_object:
         response.write(line)
