@@ -130,4 +130,4 @@ EMAIL_USE_TLS = True
 # typically, os.path.join(os.path.dirname(__file__), 'media')
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
 MEDIA_ROOT_FILES = MEDIA_ROOT + '/USER_UPLOADED_FILES'
-MEDIA_URL = 'http://bagca.s3-website-us-east-1.amazonaws.com'
+MEDIA_URL = '/media/'
