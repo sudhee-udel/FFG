@@ -295,9 +295,7 @@ def download_file(request, file_id):
     response = HttpResponse(content_type=file_extension.groups(1))
     response["Content-Disposition"] = "attachment; filename=" + out_file + ""
 
-    file_object = Files.object.get(pk=file_id)
-
-    filepath = 'https://s3.amazonaws.com/bagca/' + file_object.file
+    filepath = 'https://s3.amazonaws.com/bagca/' + database_file_object_string
 
     '''
     url = s3.generate_url(60, 'GET',
