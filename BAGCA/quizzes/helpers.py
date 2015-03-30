@@ -295,7 +295,9 @@ def download_file(request, file_id):
     response = HttpResponse(content_type=file_extension.groups(1))
     response["Content-Disposition"] = "attachment; filename=" + out_file + ""
 
-    filepath = Files.object.get(pk=file_id)
+    file_object = Files.object.get(pk=file_id)
+
+    filepath = file_object.file
 
     '''
     url = s3.generate_url(60, 'GET',
@@ -305,7 +307,7 @@ def download_file(request, file_id):
                           force_http=True)
     '''
 
-    response_file_object = open(s3._open(filepath.file))
+    response_file_object = open('https://s3.amazonaws.com/bagca/' + filepath)
 
     for line in response_file_object:
         response.write(line)
