@@ -299,7 +299,7 @@ def download_file(request, file_id):
 
     url = s3.generate_url(60, 'GET',
                           bucket=AWS_S3_BUCKET_NAME,
-                          key=filepath,
+                          key=filepath.file,
                           response_headers=response,
                           force_http=True)
 
