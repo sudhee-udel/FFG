@@ -65,6 +65,7 @@ ROOT_URLCONF = 'BAGCA.urls'
 
 WSGI_APPLICATION = 'BAGCA.wsgi.application'
 
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
