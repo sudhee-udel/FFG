@@ -10,12 +10,13 @@ from django.http import HttpResponse
 from user_data.models import Completed, UserAssignment
 from .forms import UploadQuizData
 from django.shortcuts import render
-from BAGCA.settings import MEDIA_ROOT_FILES
+from BAGCA.settings import MEDIA_ROOT_FILES, AWS_S3_BUCKET_NAME
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from BAGCA.settings import MEDIA_ROOT
 from .email_helpers import email
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from boto import s3
 import threading
 import datetime
 import re
@@ -294,7 +295,15 @@ def download_file(request, file_id):
     response = HttpResponse(content_type=file_extension.groups(1))
     response["Content-Disposition"] = "attachment; filename=" + out_file + ""
 
-    response_file_object = open(MEDIA_ROOT_FILES + '/' + out_file, 'r')
+    filepath = Files.objects.get(pk=file_id)
+
+    url = s3.generate_url(60, 'GET',
+                          bucket=AWS_S3_BUCKET_NAME,
+                          key=filepath,
+                          response_headers=response,
+                          force_http=True)
+
+    response_file_object = open(url)
 
     for line in response_file_object:
         response.write(line)
