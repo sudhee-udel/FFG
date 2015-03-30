@@ -10,13 +10,13 @@ from django.http import HttpResponse
 from user_data.models import Completed, UserAssignment
 from .forms import UploadQuizData
 from django.shortcuts import render
-from BAGCA.settings import MEDIA_ROOT_FILES, AWS_S3_BUCKET_NAME
+from BAGCA.settings import MEDIA_ROOT_FILES
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from BAGCA.settings import MEDIA_ROOT
 from .email_helpers import email
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from boto import s3
+import urllib2
 import threading
 import datetime
 import re
@@ -297,15 +297,7 @@ def download_file(request, file_id):
 
     filepath = 'https://s3.amazonaws.com/bagca' + database_file_object_string
 
-    '''
-    url = s3.generate_url(60, 'GET',
-                          bucket=AWS_S3_BUCKET_NAME,
-                          key=filepath,
-                          response_headers=response,
-                          force_http=True)
-    '''
-
-    response_file_object = open(filepath)
+    response_file_object = urllib2.urlopen(filepath)
 
     for line in response_file_object:
         response.write(line)
