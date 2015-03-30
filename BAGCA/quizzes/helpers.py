@@ -295,15 +295,17 @@ def download_file(request, file_id):
     response = HttpResponse(content_type=file_extension.groups(1))
     response["Content-Disposition"] = "attachment; filename=" + out_file + ""
 
-    filepath = Files.objects.get(pk=file_id)
+    filepath = Files.object.get(pk=file_id)
 
+    '''
     url = s3.generate_url(60, 'GET',
                           bucket=AWS_S3_BUCKET_NAME,
-                          key=filepath.file,
+                          key=filepath,
                           response_headers=response,
                           force_http=True)
+    '''
 
-    response_file_object = open(url)
+    response_file_object = open(s3._open(filepath.file))
 
     for line in response_file_object:
         response.write(line)
