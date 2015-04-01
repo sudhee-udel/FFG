@@ -5,3 +5,5 @@ class CredentialsAdmin(admin.ModelAdmin):
     list_display = ('credential', 'password')
 
     search_fields = ['credential']
+
+admin.site.register(CredentialsAdmin)
