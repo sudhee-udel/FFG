@@ -130,8 +130,8 @@ STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 
 # Send email
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'chas.barnajr@tsgforce.com'
-EMAIL_HOST_PASSWORD = 'zm49tb7w'
+EMAIL_HOST_USER = 'bagca.training@gmail.com'
+EMAIL_HOST_PASSWORD = 'adminpassw'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
