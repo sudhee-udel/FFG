@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'quizzes',
     'quiz_admin',
     'user_data',
+    'credentials',
     'jquery',
     'bootstrap_toolkit',
     'bootstrap3',
@@ -91,10 +92,10 @@ DATABASES = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "d693c240mhuopn",
-        "USER": "fwiswwhprrntqe",
-        "PASSWORD": "KZnLDk6ZQmHvO5gxK3OcM9GqXx",
-        "HOST": "ec2-107-22-253-198.compute-1.amazonaws.com",
+        "NAME": "d992jvtp2r1c48",
+        "USER": "qrdjmzkwlzqznz",
+        "PASSWORD": "uNCneQOKoi2YdO6o3TTqY_tt8x",
+        "HOST": "ec2-23-23-225-50.compute-1.amazonaws.com",
         "PORT": "5432",
         }
 }

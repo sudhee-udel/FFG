@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0693b0ad-c3fa-4f72-9033-622cdde09046" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="0693b0ad-c3fa-4f72-9033-622cdde09046" name="Default" comment="- modified email address">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/credentials/migrations/0001_initial.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/credentials/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/credentials/migrations/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/credentials/admin.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/credentials/models.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/credentials/tests.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/credentials/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BAGCA/settings.py" afterPath="$PROJECT_DIR$/BAGCA/settings.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -29,7 +35,7 @@
       <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quizzes/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="-0.0">
               <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
               <folding />
             </state>
@@ -40,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/quizzes/helpers.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="88" column="30" selection-start-line="88" selection-start-column="30" selection-end-line="88" selection-end-column="30" />
+              <caret line="309" column="28" selection-start-line="309" selection-start-column="28" selection-end-line="309" selection-end-column="28" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -51,8 +57,40 @@
       <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/BAGCA/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.2707889">
-              <caret line="67" column="63" selection-start-line="67" selection-start-column="63" selection-end-line="67" selection-end-column="63" />
+            <state vertical-scroll-proportion="0.3923241">
+              <caret line="96" column="47" selection-start-line="96" selection-start-column="47" selection-end-line="96" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/credentials/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="7" column="12" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/credentials/admin.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/quiz_admin/admin.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="24" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -93,7 +131,6 @@
         <option value="$PROJECT_DIR$/BAGCA/media/USER_UPLOADED_FILES/temporary_file.txt" />
         <option value="$PROJECT_DIR$/quiz_admin/migrations/0019_auto_20150221_0458.py" />
         <option value="$PROJECT_DIR$/quiz_admin/migrations/0018_auto_20150221_0457.py" />
-        <option value="$PROJECT_DIR$/quiz_admin/models.py" />
         <option value="$PROJECT_DIR$/quizzes/email_helpers.py" />
         <option value="$PROJECT_DIR$/quiz_admin/admin.py" />
         <option value="$PROJECT_DIR$/quizzes/models.py" />
@@ -112,7 +149,10 @@
         <option value="$PROJECT_DIR$/quizzes/views.py" />
         <option value="$PROJECT_DIR$/quizzes/templates/profile.html" />
         <option value="$PROJECT_DIR$/quizzes/templates/trainings/training.html" />
+        <option value="$PROJECT_DIR$/quiz_admin/models.py" />
         <option value="$PROJECT_DIR$/quizzes/helpers.py" />
+        <option value="$PROJECT_DIR$/credentials/models.py" />
+        <option value="$PROJECT_DIR$/credentials/admin.py" />
         <option value="$PROJECT_DIR$/BAGCA/settings.py" />
       </list>
     </option>
@@ -154,6 +194,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
@@ -184,75 +225,39 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="user_data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BAGCA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BAGCA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quizzes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BAGCA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BAGCA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quizzes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BAGCA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BAGCA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quizzes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trainings" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BAGCA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BAGCA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="quiz_admin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BAGCA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BAGCA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="credentials" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BAGCA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BAGCA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="credentials" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migrations" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -290,7 +295,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -536,6 +540,34 @@
     <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
       <method />
     </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="BAGCA" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="BAGCA" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -560,6 +592,44 @@
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <extension name="scalaCoverage" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="Specs2RunConfiguration" factoryName="Specs2">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <extension name="scalaCoverage" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -709,6 +779,27 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
+    <configuration default="true" type="uTestRunConfiguration" factoryName="utest">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <extension name="scalaCoverage" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
+      <method />
+    </configuration>
+  </component>
+  <component name="SbtLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="SvnConfiguration">
@@ -756,49 +847,8 @@
       <workItem from="1424653415480" duration="140000" />
       <workItem from="1424666951107" duration="572000" />
       <workItem from="1427255751973" duration="25000" />
-      <workItem from="1427674636064" duration="449000" />
-    </task>
-    <task id="LOCAL-00001" summary="Added ability to group questions into categories.">
-      <created>1418359976883</created>
-      <option name="number" value="00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1418359976883</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Added ability to group questions into categories.">
-      <created>1418359990729</created>
-      <option name="number" value="00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1418359990729</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Added unique constraint to the 'category_text' field in the Categories table.">
-      <created>1418360497621</created>
-      <option name="number" value="00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1418360497622</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Added ability to filter questions by category.">
-      <created>1421993450688</created>
-      <option name="number" value="00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1421993450688</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Allows users to print out PDF after successfully passing quiz.">
-      <created>1422073407417</created>
-      <option name="number" value="00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1422073407417</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Users get an email when they have successfully passed a quiz.">
-      <created>1422074481421</created>
-      <option name="number" value="00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1422074481421</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Allow users to add multiple videos per quiz">
-      <created>1422078135471</created>
-      <option name="number" value="00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1422078135471</updated>
+      <workItem from="1427674636064" duration="4184000" />
+      <workItem from="1427903616822" duration="1953000" />
     </task>
     <task id="LOCAL-00008" summary="- Refactored code&#10;- Need to add tests">
       <created>1423291582735</created>
@@ -1004,11 +1054,101 @@
       <option name="project" value="LOCAL" />
       <updated>1427674681308</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="- reverted storage option&#10;">
+      <created>1427675947802</created>
+      <option name="number" value="00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1427675947802</updated>
+    </task>
+    <task id="LOCAL-00043" summary="- Added amazon storage.&#10;">
+      <created>1427676991115</created>
+      <option name="number" value="00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1427676991115</updated>
+    </task>
+    <task id="LOCAL-00044" summary="- modified for amazon storage.&#10;">
+      <created>1427677254426</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1427677254426</updated>
+    </task>
+    <task id="LOCAL-00045" summary="- modified for amazon storage.&#10;">
+      <created>1427679488173</created>
+      <option name="number" value="00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1427679488173</updated>
+    </task>
+    <task id="LOCAL-00046" summary="- modified for amazon storage.&#10;">
+      <created>1427679736622</created>
+      <option name="number" value="00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1427679736622</updated>
+    </task>
+    <task id="LOCAL-00047" summary="- modified for amazon storage.&#10;">
+      <created>1427680214739</created>
+      <option name="number" value="00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1427680214739</updated>
+    </task>
+    <task id="LOCAL-00048" summary="- modified for amazon storage.">
+      <created>1427680447927</created>
+      <option name="number" value="00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1427680447927</updated>
+    </task>
+    <task id="LOCAL-00049" summary="- modified for amazon storage.">
+      <created>1427681296216</created>
+      <option name="number" value="00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1427681296216</updated>
+    </task>
+    <task id="LOCAL-00050" summary="- modified for amazon storage.">
+      <created>1427681364531</created>
+      <option name="number" value="00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1427681364532</updated>
+    </task>
+    <task id="LOCAL-00051" summary="- modified for amazon storage.">
+      <created>1427681433664</created>
+      <option name="number" value="00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1427681433664</updated>
+    </task>
+    <task id="LOCAL-00052" summary="- modified for amazon storage.">
+      <created>1427681766292</created>
+      <option name="number" value="00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1427681766292</updated>
+    </task>
+    <task id="LOCAL-00053" summary="- modified for amazon storage.">
+      <created>1427682211479</created>
+      <option name="number" value="00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1427682211479</updated>
+    </task>
+    <task id="LOCAL-00054" summary="- modified for amazon storage.">
+      <created>1427682503267</created>
+      <option name="number" value="00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1427682503267</updated>
+    </task>
+    <task id="LOCAL-00055" summary="- modified for amazon storage.">
+      <created>1427682648152</created>
+      <option name="number" value="00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1427682648152</updated>
+    </task>
+    <task id="LOCAL-00056" summary="- modified email address">
+      <created>1427908416689</created>
+      <option name="number" value="00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1427908416690</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114367000" />
+    <option name="totallyTimeSpent" value="120055000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="824" extended-state="6" />
@@ -1029,7 +1169,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24892704" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20028612" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1055,11 +1195,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="- Users can now print the quiz, before they start taking the quiz." />
-    <MESSAGE value="- Refactored send_success_email&#10;  - Split saving what quizzes the user completed into a new function called save_user_completion" />
-    <MESSAGE value="- Fixing the login issue" />
-    <MESSAGE value="- Fixed the login issue" />
-    <MESSAGE value="- Organized imports&#10;- Added form class to handle file upload to create the quiz" />
     <MESSAGE value="- Added basic file upload capability." />
     <MESSAGE value="- Added ability to save files on the file system." />
     <MESSAGE value="- Users can now create a Quiz, complete with questions and answers through the quiz creation form." />
@@ -1080,7 +1215,12 @@
     <MESSAGE value="- Moved BAGCA.jpg to media folder." />
     <MESSAGE value="- Initialized db.sqlite3 with the bare minimum values." />
     <MESSAGE value="- added Amazon storage." />
-    <option name="LAST_COMMIT_MESSAGE" value="- added Amazon storage." />
+    <MESSAGE value="- reverted storage option&#10;" />
+    <MESSAGE value="- Added amazon storage.&#10;" />
+    <MESSAGE value="- modified for amazon storage.&#10;" />
+    <MESSAGE value="- modified for amazon storage." />
+    <MESSAGE value="- modified email address" />
+    <option name="LAST_COMMIT_MESSAGE" value="- modified email address" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1089,6 +1229,16 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/quiz_admin/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/quizzes/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1246,13 +1396,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quizzes/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06410257">
-          <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quizzes/templates/accounts/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5381166">
@@ -1278,20 +1421,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.80851066">
           <caret line="27" column="17" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quiz_admin/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="16" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quiz_admin/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.477707">
-          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -1334,13 +1463,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.2916667">
           <caret line="8" column="53" selection-start-line="8" selection-start-column="53" selection-end-line="8" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BAGCA/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="111" selection-start-line="16" selection-start-column="111" selection-end-line="16" selection-end-column="111" />
         </state>
       </provider>
     </entry>
@@ -1420,20 +1542,71 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/quizzes/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.031982943">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/quizzes/helpers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="88" column="30" selection-start-line="88" selection-start-column="30" selection-end-line="88" selection-end-column="30" />
+          <caret line="309" column="28" selection-start-line="309" selection-start-column="28" selection-end-line="309" selection-end-column="28" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/quiz_admin/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25586355">
+          <caret line="18" column="64" selection-start-line="18" selection-start-column="64" selection-end-line="18" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BAGCA/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26439232">
+          <caret line="16" column="111" selection-start-line="16" selection-start-column="111" selection-end-line="16" selection-end-column="111" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quiz_admin/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="24" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/credentials/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/credentials/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/BAGCA/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.2707889">
-          <caret line="67" column="63" selection-start-line="67" selection-start-column="63" selection-end-line="67" selection-end-column="63" />
+        <state vertical-scroll-proportion="0.3923241">
+          <caret line="96" column="47" selection-start-line="96" selection-start-column="47" selection-end-line="96" selection-end-column="47" />
           <folding />
         </state>
       </provider>
