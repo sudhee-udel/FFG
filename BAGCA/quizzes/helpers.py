@@ -3,6 +3,9 @@ import os
 from django.http import Http404
 from quiz_admin.models import Quiz, Files, Content
 from reportlab.pdfgen import canvas
+from reportlab.lib import pagesizes
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import landscape, letter, A4 
 from io import BytesIO
 from django.contrib.auth.models import User
 from .models import Question, Choice
@@ -456,36 +459,6 @@ def get_result_page_styling(correct_answers, total_number_of_questions, required
     else:
         return "failed", "red", score
 
-
-def set_certificate_properties(pdf):
-    image_top = canvas.ImageReader(MEDIA_ROOT + '/Certificate_top.tiff')  # image_data is a raw string containing a JPEG
-    pdf.drawImage(image_top, 0, 470, 600, 400)
-
-    image_bottom = canvas.ImageReader(
-        MEDIA_ROOT + '/Certificate_bottom.tiff')  # image_data is a raw string containing a JPEG
-    pdf.drawImage(image_bottom, 0, 100, 600, 75)
-    pdf.line(300, 90, 550, 90)
-    pdf.setLineWidth(.5)
-
-    # Add the outer borders; vertical lines
-    pdf.line(10, 830, 10, 10)
-    pdf.line(585, 830, 585, 10)
-
-    # Add the inner borders; vertical lines
-    pdf.line(15, 825, 15, 15)
-    pdf.line(580, 825, 580, 15)
-
-    # Add the outer borders; horizontal lines
-    pdf.line(10, 10, 585, 10)
-    pdf.line(10, 830, 585, 830)
-
-    # Add the inner borders; horizontal lines
-    pdf.line(15, 15, 580, 15)
-    pdf.line(15, 825, 580, 825)
-
-    return pdf
-
-
 def generate_certificate(request, training_id):
     quiz = Quiz.objects.get(pk=training_id)
     user = User.objects.get(username=request.user.username)
@@ -497,38 +470,35 @@ def generate_certificate(request, training_id):
     buffer = BytesIO()
 
     # Create the PDF object, using the BytesIO object as its "file."
-    pdf = canvas.Canvas(buffer)
-    pdf.setFont('Helvetica', 15)
-    pdf.drawString(245, 450, "This certifies that")
-    pdf.setFont('Helvetica', 30)
+    pdf = canvas.Canvas(buffer, pagesize=(1099, 849))
 
+    # setup background image
+    image = canvas.ImageReader(
+        MEDIA_ROOT + '/Training Cert.tif')  # image_data is a raw string containing a JPEG
+    pdf.drawImage(image, 0, 0, 1099, 849)
+
+    #printTestGrid(pdf)         # prints test grid on pdf to locate various coordinates
+
+    # user name
+    pdf.setFont('Helvetica-Oblique', 45)
     user_first_last_name = request.user.first_name + " " + request.user.last_name
-
     if user_first_last_name.strip() == '':
         user_first_last_name = request.user.email.split("@")[0]
+    user_name_length = len(user_first_last_name) * 12 
+    pdf.drawString((1099/2) - (user_name_length), 625, user_first_last_name)
 
-    user_name_length = len(user_first_last_name) * 7
-
-    pdf.drawString(290 - user_name_length, 400, user_first_last_name)
-
-    pdf.line(105, 395, 525, 395)
-    # message = "has completed " + str(quiz.duration_hours) + " hours of training."
-
-    # pdf.drawString(175 - len(message) / 2, 380, message)
-    pdf.setFont('Helvetica', 15)
-
-    pdf.drawString(205, 350, "has successfully completed the course:")
+    # course code
+    pdf.setFont('Helvetica', 25)
     course_and_course_code = quiz.quiz_name + "(" + quiz.course_code + ")"
-    pdf.drawString(335 - (len(course_and_course_code) * 5), 325, course_and_course_code)
-    pdf.drawString(220, 300, "This course is worth " + str(quiz.duration_hours) + " of training.")
-    pdf.drawString(245, 270, "Issued: " + str(completed.date_completed))
+    pdf.drawString((1099/2) - (len(course_and_course_code) * 7), 280, course_and_course_code)
 
-    pdf.drawString(165, 240, "Issuing body: Boys & Girls Clubs of Delaware")
+    # date and duration
+    pdf.setFont('Helvetica', 15)
+    pdf.drawString(720, 218, str(quiz.duration_hours) )
+    pdf.drawString(430, 218, str(completed.date_completed))
 
-    pdf.setFont('Helvetica', 12)
-    pdf.drawString(300, 70, "Trainer: " + quiz.trainer)
-
-    set_certificate_properties(pdf)
+    pdf.setFont('Helvetica-Oblique', 20)
+    pdf.drawString(450, 125, str(quiz.trainer))
 
     # Close the PDF object cleanly.
     pdf.showPage()
@@ -539,3 +509,9 @@ def generate_certificate(request, training_id):
     buffer.close()
     response.write(pdf)
     return response
+
+def printTestGrid(pdf):
+    for x in range(0,1099,100):
+        # setup a guidance grid for image placement initially
+        for y in range(0,849,100):
+            pdf.drawString(x,y,".%d,%d" % (x,y)) 
