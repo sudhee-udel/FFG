@@ -1,85 +1,9 @@
-{% include "base.html" %}
+{% include "training_files_videos.html" %}
 
-<head>
-    {% load bootstrap3 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
-</head>
-
-<body>
-    <div class="container" style="background-color:white; box-shadow:0 0 10px black;">
-        <h2>Training: <i>{{ training_info.title }}</i></h2>
-        <div class="row">
-                <div class="container">
-                    <div>
-                        <h4><b>Training Description:</b>
-                            {% if training_info.description %}
-                                {{ training_info.description }}
-                            {% else %}
-                            <i>There is no description for this training.</i>
-                            {% endif %}
-                        </h4>
-                    </div>
-                    <hr/>
-                    <div style="text-align:center;">
-                        {% if paginate %}
-                            <span class="current">
-                                {% load embed_video_tags %}
-                                {% for content in training_info.content.object_list %}
-                                    <table style="margin: 0 auto;">
-                                       <tr>
-                                          <th></th>
-                                          <th></th>
-                                       </tr>
-                                       <tr>
-                                          <td style="padding-right: 15px;">
-                                            <b><p>Available reading material: </p></b>
-                                          </td>
-                                          <td> 
-                                            {% for file in content.files.all %}
-                                                <p><a href="/user_assigned_training/download_file/{{ file.id }}/">{{ file }}</a></p>
-                                            {% endfor %}
-                                          </td>
-                                        </tr>
-                                    </table>
-                                    <br/>
-                                    <br/>
-                                    {% video content.url 'small' %}
-                                {% endfor %}
-                                <br />
-                                <br />
-                                Training content page {{ training_info.content.number }} of {{ training_info.content.paginator.num_pages }}.
-                            </span>
-                            <br />
-                            {% if training_info.content.has_previous %}
-                                <a href="?page={{ training_info.content.previous_page_number }}" class="btn btn-primary" style="width: 10%">Previous</a>
-                            {% endif %}
-                            {% if training_info.content.has_next %}
-                                <a href="?page={{ training_info.content.next_page_number }}" class="btn btn-primary" style="width: 10%">Next</a>
-                            {% endif %}
-                        {% endif %}
-                        {% if not paginate %}
-                            {% load embed_video_tags %}
-                            {% for content in training_info.content %}
-                                <p>Available reading material: <a href="/user_assigned_training/download_file/{{ content.id }}/">{{ content.filename }}</a></p>
-                                {% video content.url 'small' %}
-                                <br />
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-                    <br/>
-                </div>
-        </div>
-
-        <hr/>
-        <br/>
+<div class="container" style="background-color:white; margin-top: 20px; padding: 10px; box-shadow:0 0 10px black;">
         <div style="text-align:center;margin-left:10pt;">
             <a href="/" class="btn btn-danger">Exit Training</a>
             <a href="/user_assigned_training/print_quiz/{{ training_info.id }}/" class="btn btn-primary">Print Quiz</a>
             <a href="/user_assigned_training/{{ training_info.id }}/quiz" class="btn btn-success">Take the Quiz!</a>
         </div>
-
-        <br/>
-    </div>
-</body>
+</div>

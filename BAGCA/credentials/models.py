@@ -8,4 +8,4 @@ class Credentials(models.Model):
         return u'%s' % self.credential
 
     credential = models.CharField(max_length=100)
-    password = models.CharField(max_length=200)
+    value = models.CharField(max_length=200)
