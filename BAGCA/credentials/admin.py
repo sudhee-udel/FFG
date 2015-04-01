@@ -6,4 +6,4 @@ class CredentialsAdmin(admin.ModelAdmin):
 
     search_fields = ['credential']
 
-admin.site.register(CredentialsAdmin)
+admin.site.register(Credentials, CredentialsAdmin)
