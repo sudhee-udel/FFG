@@ -25,6 +25,18 @@ import datetime
 import re
 
 
+def get_remaining_trainings(request):
+    trainings_need_to_be_completed = get_admin_assigned_trainings(request)
+
+    user_assigned = get_user_assigned_trainings(request)
+
+    # Subtract any trainings that are assigned to the user
+    if len(trainings_need_to_be_completed) != 0:
+        user_assigned = user_assigned.difference(trainings_need_to_be_completed)
+
+    return trainings_need_to_be_completed, user_assigned
+
+
 def get_training_page_content(request, training_id):
     try:
         quiz = Quiz.objects.get(pk=training_id)
@@ -102,38 +114,6 @@ def get_users_groups_need_to_complete_quizzes(request):
     remaining_quizzes = all_quiz_sets.difference(completed_quiz_set)
 
     return remaining_quizzes
-
-
-'''
-def send_reminder_for_quiz(request):
-    quiz_name = request.POST['quiz']
-
-    quiz = Categories.objects.get(quiz_name=quiz_name)
-
-    for group in quiz.groups.all():
-        request.POST._mutable = True
-        request.POST['group'] = group
-        request.POST['user'] = request.user.username
-        send_reminder_to_group(request)
-        #send_reminder_to_group_thread = threading.Thread(target=send_reminder_to_group(request), args=request)
-        #send_reminder_to_group_thread.start()
-
-    context = get_mass_mail_return_page_context(request)
-
-    return render(request, "check_user_status.html", context)
-'''
-
-'''
-    try:
-        requested_quiz = request.POST['quiz']
-        requested_group = request.POST['group']
-
-        for group in user.groups.all():
-            for quiz in Categories.objects.filter(groups=group):
-                #if quiz.quiz_name == requested_quiz and group.name == requested_group:
-                assigned_quizzes.add(quiz)
-    except KeyError:
-'''
 
 
 def send_reminder_to_group(request):

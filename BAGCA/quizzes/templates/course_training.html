@@ -1,0 +1,61 @@
+{% include "base.html" %}
+
+<head>
+    <style type="text/css">
+        td {
+            background-color: white;
+            text-align: center;
+        }
+
+        th {
+            background-color: #abddfc;
+            text-align: center;
+        }
+
+        tr #centered {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="background-color: #ffffff; box-shadow:0 0 10px black;">
+    <img src="{{ MEDIA_ROOT }}/media/BAGCA_DEE.png" style="width: 877.5pt; margin-left:-11pt;"/>
+
+    <br/><br>
+    <hr/>
+    <br>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:rgb(51,122,183);margin-bottom:-2px;">
+            <h4 style="color:white;"><b>My Assigned Trainings</b></h4>
+        </div>
+        <table class="table table-striped" style="width:100%;">
+            <tr>
+                <th>Training Name</th>
+                <th>Course Code</th>
+                <th>Due Date</th>
+                <th>Duration</th>
+                <th>Required Score</th>
+                <th></th>
+            </tr>
+            {% for t in trainings %}
+            <tr>
+                <td style="margin-left: auto; margin-right: auto;">{{ t.quiz_name }}</td>
+                <td style="margin-left: auto; margin-right: auto;">{{ t.course_code }}</td>
+                <td style="margin-left: auto; margin-right: auto;">{{ t.due_date }}</td>
+                <td>{{ t.duration_hours }}
+                    {% if t.duration_hours != 1 %}
+                    hours
+                    {% else %}
+                    hour
+                    {% endif %}
+                </td>
+                <td style="margin-left: auto; margin-right: auto;">{{ t.required_score }}%</td>
+                <td style="margin-left: auto; margin-right: auto;"><a href="/user_assigned_training/{{ t.id }}/"
+                                                                      class="btn btn-success">Begin Training</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>

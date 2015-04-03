@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 
     #url(r'^$', TemplateView.as_view(template_name='accounts/signup.html'), name="signup"),
     url(r'^$', include('quizzes.urls', namespace='quizzes'), name='index'),
+    url(r'^show_course_trainings/(?P<group_id>\d+)/$', 'quizzes.views.show_course_trainings', name='show_course_trainings'),
     url(r'^profile$', 'quizzes.views.profile', name='profile'),
     url(r'^trainings/$', 'quizzes.views.trainings', name='trainings'),
     url(r'^trainings/(?P<training_id>\d+)/remove_assignment/$', 'quizzes.views.remove_user_assignment'),
