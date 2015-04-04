@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_s3_storage',
     'embed_video',
     'quizzes',
     'quiz_admin',
@@ -69,8 +68,6 @@ DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer
 ROOT_URLCONF = 'BAGCA.urls'
 
 WSGI_APPLICATION = 'BAGCA.wsgi.application'
-
-DEFAULT_FILE_STORAGE = 'django_s3_storage.storage.S3Storage'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -102,14 +99,6 @@ DATABASES = {
         "PORT": "5432",
         }
 }
-
-AWS_REGION = "us-east-1"
-
-AWS_ACCESS_KEY_ID = "AKIAIIG7RD53TWKTDUNQ"
-
-AWS_SECRET_ACCESS_KEY = "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"
-
-AWS_S3_BUCKET_NAME = "bagca"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/

@@ -3,9 +3,6 @@ import os
 from django.http import Http404
 from quiz_admin.models import Quiz, Files, Content
 from reportlab.pdfgen import canvas
-from reportlab.lib import pagesizes
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import landscape, letter, A4 
 from io import BytesIO
 from django.contrib.auth.models import User
 from .models import Question, Choice
@@ -13,13 +10,12 @@ from django.http import HttpResponse
 from user_data.models import Completed, UserAssignment
 from .forms import UploadQuizData
 from django.shortcuts import render
-from BAGCA.settings import MEDIA_ROOT_FILES, AWS_S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+from BAGCA.settings import MEDIA_ROOT_FILES
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from BAGCA.settings import MEDIA_ROOT
 from .email_helpers import email
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import boto
 import threading
 import datetime
 import re
@@ -278,18 +274,12 @@ def download_file(request, file_id):
     response = HttpResponse(content_type=file_extension.groups(1))
     response["Content-Disposition"] = "attachment; filename=" + out_file + ""
 
-    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-    bucket = conn.get_bucket(AWS_S3_BUCKET_NAME)
-    s3_file_path = bucket.get_key(database_file_object_string)
-    url = s3_file_path.generate_url(expires_in=600)
-
-    '''
-    response_file_object = open(url)
+    response_file_object = open(MEDIA_ROOT_FILES + '/' + out_file, 'r')
 
     for line in response_file_object:
         response.write(line)
-    '''
-    return HttpResponseRedirect(url)
+
+    return response
 
 
 def create_quiz_form(request):

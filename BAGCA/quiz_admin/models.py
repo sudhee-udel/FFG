@@ -47,7 +47,7 @@ class Content(models.Model):
     url = models.URLField(blank=True)
     files = models.ManyToManyField(Files, blank=True)
 
-'''
+
 # These two auto-delete files from filesystem when they are unneeded:
 @receiver(models.signals.post_delete, sender=Files)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
@@ -79,4 +79,3 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     if not old_file == new_file:
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
-'''

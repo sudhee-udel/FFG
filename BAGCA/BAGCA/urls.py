@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 import settings
 
+admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'BAGCA.views.home', name='home'),
