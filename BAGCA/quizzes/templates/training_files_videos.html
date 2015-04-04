@@ -62,7 +62,9 @@
                 {% if not paginate %}
                 {% load embed_video_tags %}
                 {% for content in training_info.content %}
-                <p>Available reading material: <a href="/user_assigned_training/download_file/{{ content.id }}/">{{ content.filename }}</a></p>
+                {% for file in content.files.all %}
+                <p>Available reading material: <a href="/user_assigned_training/download_file/{{ file.id }}/">{{ file }}</a></p>
+                {% endfor %}
                 {% video content.url 'small' %}
                 <br />
                 {% endfor %}
